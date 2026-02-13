@@ -104,7 +104,7 @@ La navigation est basée sur les rôles et **contrôlée côté serveur**.
 
 ### Cloner le repo
 ```bash
-git clone https://github.com/chedy256/PFA.git
+git clone git@github.com:chedy256/PFA.git
 checkout frontend
 ```
 
