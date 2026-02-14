@@ -110,12 +110,6 @@ Row quickLoginOptions() {
         color: const Color(0xFF0072C6), // Outlook Blue
         onTap: () {},
       ),
-      const SizedBox(width: 24),
-      SocialLoginButton(
-        icon: FontAwesomeIcons.apple,
-        color: Colors.black,
-        onTap: () {},
-      ),
     ],
   );
 }
@@ -139,7 +133,7 @@ class SocialLoginButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: Container(
         height: 70,
-        width: 80,
+        width: 70,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -148,7 +142,7 @@ class SocialLoginButton extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade300,
-              blurRadius: 10,
+              blurRadius: 4,
               offset: const Offset(0, 4),
             ),
           ],
