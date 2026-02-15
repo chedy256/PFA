@@ -65,6 +65,20 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Listen for Authentication Errors
+    ref.listen(authProvider, (previous, next) {
+      if (next.hasError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(next.error?.toString() ?? 'An error occurred'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    });
+
+    final authState = ref.watch(authProvider);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -158,7 +172,14 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         _isLogin
                             ? const SizedBox(height: 12)
                             : const SizedBox(height: 32),
-                        quickLoginOptions(),
+                        quickLoginOptions(
+                          onGoogleTap: () {
+                            ref.read(authProvider.notifier).loginWithGoogle();
+                          },
+                          onMicrosoftTap: () {
+                            ref.read(authProvider.notifier).loginWithMicrosoft();
+                          },
+                        ),
                         const SizedBox(height: 12),
                         TextButton(
                           onPressed: _toggleAuthMode,
@@ -177,6 +198,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         callToActionButton(
                           _isLogin ? 'Se Connecter' : 'S\'inscrire',
                           _submit,
+                          isLoading: authState.isLoading,
                         ),
                       ],
                     ),

@@ -95,20 +95,23 @@ TextFormField emailInputField({TextEditingController? controller}) =>
       validator: Validators.validateEmail,
     );
 
-Row quickLoginOptions() {
+Row quickLoginOptions({
+  required VoidCallback onGoogleTap,
+  required VoidCallback onMicrosoftTap,
+}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       SocialLoginButton(
         icon: FontAwesomeIcons.google,
         color: Colors.red,
-        onTap: () {},
+        onTap: onGoogleTap,
       ),
       const SizedBox(width: 24),
       SocialLoginButton(
         icon: FontAwesomeIcons.microsoft,
         color: const Color(0xFF0072C6), // Outlook Blue
-        onTap: () {},
+        onTap: onMicrosoftTap,
       ),
     ],
   );
@@ -153,19 +156,21 @@ class SocialLoginButton extends StatelessWidget {
   }
 }
 
-ElevatedButton callToActionButton(String text, VoidCallback onPressed) => ElevatedButton(
-  onPressed: onPressed,
+ElevatedButton callToActionButton(String text, VoidCallback onPressed, {bool isLoading = false}) => ElevatedButton(
+  onPressed: isLoading ? null : onPressed,
   style: ElevatedButton.styleFrom(
     backgroundColor: Colors.black87,
     padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 10),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
   ),
-  child: Text(
-    text,
-    style: const TextStyle(
-      fontSize: 18,
-      color: Colors.white,
-      fontWeight: FontWeight.bold,
-    ),
-  ),
+  child: isLoading 
+      ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+      : Text(
+          text,
+          style: const TextStyle(
+            fontSize: 18,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
 );

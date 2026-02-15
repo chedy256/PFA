@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "266737849674",
+    "project_id": "isimm-intern",
+    "storage_bucket": "isimm-intern.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266737849674:android:bc47a9d349a85c741e5db3",
+        "android_client_info": {
+          "package_name": "tech.chedy.projects.isimm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "266737849674-6r322emcom0bf9mfrjq0nthl02cb6svq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tech.chedy.projects.isimm",
+            "certificate_hash": "adc1e01d83569e7690147a3585ffafe7c3fc0044"
+          }
+        },
+        {
+          "client_id": "266737849674-04cb3a4dps0fvrl7sp0p6roj3f29t2ip.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjF1ZbA0FQXVkwGLWYJBCkbQjvruziO_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "266737849674-04cb3a4dps0fvrl7sp0p6roj3f29t2ip.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "266737849674-0q5v6kdnln9roeru9s9a2ajed87qh4ok.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pfa"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
