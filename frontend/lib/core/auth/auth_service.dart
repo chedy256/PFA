@@ -13,7 +13,9 @@ class AuthService {
 
   // Sign in with Email and Password
   Future<UserCredential> signInWithEmailAndPassword(
-      String email, String password) async {
+    String email,
+    String password,
+  ) async {
     try {
       return await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
@@ -27,7 +29,9 @@ class AuthService {
 
   // Sign up with Email and Password
   Future<UserCredential> signUpWithEmailAndPassword(
-      String email, String password) async {
+    String email,
+    String password,
+  ) async {
     try {
       return await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
@@ -38,7 +42,6 @@ class AuthService {
     }
   }
 
-  // Sign in with Google (using version 7.x API)
   Future<UserCredential> signInWithGoogle() async {
     try {
       // Initialize Google Sign In if needed
@@ -53,7 +56,6 @@ class AuthService {
       // Create a new credential using the ID token
       final OAuthCredential credential = GoogleAuthProvider.credential(
         idToken: googleAuth.idToken,
-        accessToken: googleAuth.idToken, // In v7.x, use idToken for both if accessToken is not available
       );
 
       // Sign in to Firebase with the Google credential
@@ -68,12 +70,10 @@ class AuthService {
     try {
       // Define the provider
       final microsoftProvider = OAuthProvider('microsoft.com');
-      microsoftProvider.setCustomParameters({
-        'prompt': 'select_account',
-      });
+      microsoftProvider.setCustomParameters({'prompt': 'select_account'});
       // Use signInWithProvider (for generic OAuth flows)
-      final UserCredential userCredential =
-          await _firebaseAuth.signInWithProvider(microsoftProvider);
+      final UserCredential userCredential = await _firebaseAuth
+          .signInWithProvider(microsoftProvider);
 
       final user = userCredential.user;
 
@@ -89,7 +89,6 @@ class AuthService {
           );
         }
       }
-
       return userCredential;
     } catch (e) {
       rethrow;
