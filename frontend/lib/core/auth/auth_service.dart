@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -42,24 +43,28 @@ class AuthService {
     }
   }
 
+  // Sign in with Google
   Future<UserCredential> signInWithGoogle() async {
     try {
-      // Initialize Google Sign In if needed
-      await _googleSignIn.initialize();
+      if (kIsWeb) {
+        // Web: Use Firebase Auth directly with popup
+        final GoogleAuthProvider googleProvider = GoogleAuthProvider();
+        return await _firebaseAuth.signInWithPopup(googleProvider);
+      } else {
+        // Native: Use google_sign_in package
+        final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
 
-      // Trigger the authentication flow
-      final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
+        // Get the authentication tokens
+        final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
-      // Get the authentication tokens
-      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
-
-      // Create a new credential using the ID token
-      final OAuthCredential credential = GoogleAuthProvider.credential(
-        idToken: googleAuth.idToken,
-      );
-
-      // Sign in to Firebase with the Google credential
-      return await _firebaseAuth.signInWithCredential(credential);
+        // Create a new credential using the ID token
+        final OAuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.idToken,
+          idToken: googleAuth.idToken,
+        );
+        // Sign in to Firebase with the Google credential
+        return await _firebaseAuth.signInWithCredential(credential);
+      }
     } catch (e) {
       rethrow;
     }
@@ -69,11 +74,16 @@ class AuthService {
   Future<UserCredential> signInWithMicrosoft() async {
     try {
       // Define the provider
-      final microsoftProvider = OAuthProvider('microsoft.com');
+      final microsoftProvider = MicrosoftAuthProvider();
       microsoftProvider.setCustomParameters({'prompt': 'select_account'});
-      // Use signInWithProvider (for generic OAuth flows)
-      final UserCredential userCredential = await _firebaseAuth
-          .signInWithProvider(microsoftProvider);
+      
+      // Use the appropriate sign-in method based on platform
+      final UserCredential userCredential;
+      if (kIsWeb) {
+        userCredential = await _firebaseAuth.signInWithPopup(microsoftProvider);
+      } else {
+        userCredential = await _firebaseAuth.signInWithProvider(microsoftProvider);
+      }
 
       final user = userCredential.user;
 
@@ -97,7 +107,10 @@ class AuthService {
 
   // Sign Out
   Future<void> signOut() async {
-    await _googleSignIn.disconnect();
+    // Only disconnect Google Sign-In on native platforms
+    if (!kIsWeb) {
+      await _googleSignIn.disconnect();
+    }
     await _firebaseAuth.signOut();
   }
 }
