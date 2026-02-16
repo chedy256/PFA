@@ -147,3 +147,90 @@ docker-compose up
 ```
 Le backend est accessible sur :
 http://localhost:8000
+
+---
+
+
+---
+
+# Technical Reference (Setup & Security)
+
+    this is AI generated content, it may contain inaccuracies. Please verify with the original source.
+
+## 1. Project Structure
+
+This is the canonical structure for the backend:
+
+```
+backend/
+├── app/
+│   ├── main.py
+│   ├── database.py
+│   ├── models.py
+│   ├── schemas.py
+│   ├── deps.py          # Dependency injection (Auth)
+│   ├── auth.py          # Firebase verification
+│   ├── security.py      # Role-based access control
+│   ├── routers/
+│   │   ├── users.py
+│   │   ├── internships.py
+│   │   └── documents.py
+│   └── utils/
+│       └── files.py
+├── storage/             # Persistent storage
+│   ├── internships/     # Generated PDFs
+│   └── templates/       # HTML templates for WeasyPrint
+├── requirements.txt
+├── Dockerfile
+└── docker-compose.yml
+```
+
+## 2. Docker & Deployment
+
+The project is containerized using Docker and Docker Compose.
+
+**Dockerfile** uses `python:3.11-slim` and installs system dependencies for WeasyPrint (PDF generation).
+
+**docker-compose.yml** sets up:
+- **Backend Service**: Port 8000, mounts `storage/` and `firebase.json`.
+- **Database Service**: PostgreSQL 15.
+
+### Running the Project
+Ensure `firebase.json` is present in the `backend/` directory.
+```bash
+docker-compose up --build
+```
+
+## 3. Security Model
+
+| Layer    | Responsibility                 |
+| -------- | ------------------------------ |
+| Firebase | Authentication (Who are you?)  |
+| Backend  | Authorization (What can you do?)|
+| Database | Data Integrity & Relationships |
+
+### Authentication Flow
+1.  **Client (Flutter)** logs in via Firebase and retrieves an ID Token.
+    ```dart
+    final token = await user!.getIdToken();
+    ```
+2.  **Client** sends request with header: `Authorization: Bearer <token>`.
+3.  **Backend (`deps.py`)**:
+    -   Extracts token.
+    -   Verifies signature with Firebase Admin SDK.
+    -   Extracts UID.
+    -   Loads User from Database.
+
+### Role-Based Access Control (RBAC)
+We use a decorator approach in `security.py` to enforce roles cleanly:
+```python
+@router.post("/internships")
+def create(user = Depends(require_role("student"))):
+    ...
+```
+
+## 4. Document Storage & Generation
+Documents are generated securely on the backend:
+-   **Templates**: HTML files in `backend/storage/templates/`.
+-   **Output**: PDFs saved in `backend/storage/internships/internship_<id>/`.
+

@@ -1,21 +1,29 @@
+version: "3.9"
+
 services:
+  backend:
+    build: .
+    container_name: internship-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./storage:/app/storage
+      - ./firebase.json:/app/firebase.json:ro
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/internships
+      DOCUMENTS_PATH: /app/storage/internships
+    depends_on:
+      - db
+
   db:
     image: postgres:15
-    container_name: internship_db
-    restart: always
+    container_name: internship-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: internships
-    ports:
-      - "5432:5432"
     volumes:
-      - db_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
-  db_data:
+  pgdata:
