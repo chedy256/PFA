@@ -5,9 +5,9 @@ class Validators {
   );
 
   // Password regex pattern
-  // At least 8 characters, 1 uppercase, 1 lowercase, 1 digit, 1 special character
+  // At least 8 characters, 1 uppercase, 1 lowercase, 1 digit
   static final RegExp passwordRegex = RegExp(
-    r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$',
+    r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z]{8,}$',
   );
 
   /// Validates email format
@@ -22,26 +22,24 @@ class Validators {
   }
 
   /// Validates password strength
-  /// Requires: min 8 chars, 1 uppercase, 1 lowercase, 1 digit, 1 special char
+  /// Requires: min 8 chars, 1 uppercase, 1 lowercase, 1 digit
   static String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Le mot de passe est requis';
     }
     if (value.length < 8) {
-      return 'Le mot de passe doit contenir au moins 8 caractères';
+      return 'Au moins 8 caractères sont requis';
     }
     if (!value.contains(RegExp(r'[A-Z]'))) {
-      return 'Le mot de passe doit contenir au moins une lettre majuscule';
+      return 'Au moins une lettre majuscule est requise';
     }
     if (!value.contains(RegExp(r'[a-z]'))) {
-      return 'Le mot de passe doit contenir au moins une lettre minuscule';
+      return 'Au moins une lettre minuscule est requise';
     }
     if (!value.contains(RegExp(r'\d'))) {
-      return 'Le mot de passe doit contenir au moins un chiffre';
+      return 'Au moins un chiffre est requis';
     }
-    if (!value.contains(RegExp(r'[@$!%*?&]'))) {
-      return 'Le mot de passe doit contenir au moins un caractère spécial (@\$!%*?&)';
-    }
+    //if (!value.contains(RegExp(r'[@$!%*?&]'))) {return 'Le mot de passe doit contenir au moins un caractère spécial (@\$!%*?&)';}
     return null;
   }
 
