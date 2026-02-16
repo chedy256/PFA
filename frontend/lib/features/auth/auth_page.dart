@@ -123,7 +123,37 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                             _selectedRole = role;
                           },
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 16),
+                        if (!_isLogin) ...[
+                          Row(
+                            spacing: 16,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                // Added Expanded
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    labelText: 'Prénom',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    labelText: 'Nom',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                        const SizedBox(height: 16),
                         emailInputField(controller: _emailController),
                         const SizedBox(height: 16),
                         passwordInputField(
@@ -151,35 +181,42 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                                 ),
                           ),
                         ],
-                        if (_isLogin)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/resetpass');
-                                },
-                                child: const Text(
-                                  'Mot de passe oubliée?',
-                                  style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    color: Colors.black54,
+                        _isLogin
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/resetpass',
+                                      );
+                                    },
+                                    child: const Text(
+                                      'Mot de passe oubliée?',
+                                      style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        color: Colors.black54,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ],
-                          ),
+                                ],
+                              )
+                            : const SizedBox(height: 2),
                         _isLogin
                             ? const SizedBox(height: 12)
                             : const SizedBox(height: 32),
-                        quickLoginOptions(
-                          onGoogleTap: () {
-                            ref.read(authProvider.notifier).loginWithGoogle();
-                          },
-                          onMicrosoftTap: () {
-                            ref.read(authProvider.notifier).loginWithMicrosoft();
-                          },
-                        ),
+                        if (_isLogin)
+                          quickLoginOptions(
+                            onGoogleTap: () {
+                              ref.read(authProvider.notifier).loginWithGoogle();
+                            },
+                            onMicrosoftTap: () {
+                              ref
+                                  .read(authProvider.notifier)
+                                  .loginWithMicrosoft();
+                            },
+                          ),
                         const SizedBox(height: 12),
                         TextButton(
                           onPressed: _toggleAuthMode,

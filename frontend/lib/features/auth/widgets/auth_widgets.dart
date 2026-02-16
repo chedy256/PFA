@@ -16,7 +16,7 @@ class _RoleSelectorState extends State<RoleSelector> {
   // Default selected role
   String _selectedRole = 'Etudiant';
 
-  final List<String> _roles = ['Etudiant', 'Enseignant', 'Administration'];
+  final List<String> _roles = ['Etudiant', 'Enseignant'];
 
   @override
   Container build(BuildContext context) {
