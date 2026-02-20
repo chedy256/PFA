@@ -125,12 +125,8 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         spacing: 16,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
-                            child: nameInputField(label: 'Prénom'),
-                          ),
-                          Expanded(
-                            child: nameInputField(label: 'Nom'),
-                          ),
+                          Expanded(child: nameInputField(label: 'Prénom')),
+                          Expanded(child: nameInputField(label: 'Nom')),
                         ],
                       ),
                     ],
@@ -143,16 +139,9 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                     ),
                     if (!_isLogin) ...[
                       const SizedBox(height: 16),
-                      TextFormField(
+                      passwordInputField(
+                        'Confirmer le mot de passe',
                         controller: _confirmPasswordController,
-                        decoration: InputDecoration(
-                          labelText: 'Confirmer le mot de passe',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          prefixIcon: const Icon(Icons.lock_outline_rounded),
-                        ),
-                        obscureText: true,
                         validator: (value) => Validators.validatePasswordMatch(
                           value,
                           _passwordController.text,

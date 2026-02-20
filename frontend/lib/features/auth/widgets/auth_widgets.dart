@@ -74,20 +74,63 @@ class _RoleSelectorState extends State<RoleSelector> {
   }
 }
 
-TextFormField passwordInputField(
+Widget passwordInputField(
   String label, {
   String? Function(String?)? validator,
   TextEditingController? controller,
-}) => TextFormField(
+}) => _PasswordInputField(
+  label: label,
+  validator: validator,
   controller: controller,
-  decoration: InputDecoration(
-    labelText: label,
-    border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
-    prefixIcon: const Icon(Icons.lock_outline_rounded),
-  ),
-  obscureText: true,
-  validator: validator ?? Validators.validatePassword,
 );
+
+class _PasswordInputField extends StatefulWidget {
+  final String label;
+  final String? Function(String?)? validator;
+  final TextEditingController? controller;
+
+  const _PasswordInputField({
+    required this.label,
+    this.validator,
+    this.controller,
+  });
+
+  @override
+  State<_PasswordInputField> createState() => _PasswordInputFieldState();
+}
+
+class _PasswordInputFieldState extends State<_PasswordInputField> {
+  bool _obscureText = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: widget.controller,
+      decoration: InputDecoration(
+        labelText: widget.label,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+        prefixIcon: const Icon(Icons.lock_outline_rounded),
+        suffixIcon: Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: IconButton(
+            onPressed: () {
+              setState(() {
+                _obscureText = !_obscureText;
+              });
+            },
+            icon: Icon(
+              _obscureText
+                  ? Icons.visibility_off_rounded
+                  : Icons.visibility_rounded,
+            ),
+          ),
+        ),
+      ),
+      obscureText: _obscureText,
+      validator: widget.validator ?? Validators.validatePassword,
+    );
+  }
+}
 
 TextFormField emailInputField({TextEditingController? controller}) =>
     TextFormField(
@@ -101,17 +144,19 @@ TextFormField emailInputField({TextEditingController? controller}) =>
       validator: Validators.validateEmail,
     );
 
-TextFormField nameInputField({TextEditingController? controller, String? label}) =>
-    TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: label ?? 'Nom',
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
-        prefixIcon: const Icon(Icons.person_outline_rounded),
-      ),
-      textInputAction: TextInputAction.next,
-      validator: (value) => Validators.validateName(value, label ?? 'Nom'),
-    );
+TextFormField nameInputField({
+  TextEditingController? controller,
+  String? label,
+}) => TextFormField(
+  controller: controller,
+  decoration: InputDecoration(
+    labelText: label ?? 'Nom',
+    border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+    prefixIcon: const Icon(Icons.person_outline_rounded),
+  ),
+  textInputAction: TextInputAction.next,
+  validator: (value) => Validators.validateName(value, label ?? 'Nom'),
+);
 
 Column quickLoginOptions({
   required VoidCallback onGoogleTap,
@@ -130,7 +175,7 @@ Column quickLoginOptions({
           const SizedBox(width: 24),
           SocialLoginButton(
             icon: FontAwesomeIcons.microsoft,
-            color: const Color(0xFF0072C6), // Outlook Blue
+            color: const Color(0xFF0072C6),
             onTap: onMicrosoftTap,
           ),
         ],
