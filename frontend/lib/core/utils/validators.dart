@@ -1,4 +1,6 @@
 class Validators {
+  static final RegExp nameRegex = RegExp(r'^[a-zA-Z]+$');
+
   // Email regex pattern
   static final RegExp emailRegex = RegExp(
     r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
@@ -39,7 +41,6 @@ class Validators {
     if (!value.contains(RegExp(r'\d'))) {
       return 'Au moins un chiffre est requis';
     }
-    //if (!value.contains(RegExp(r'[@$!%*?&]'))) {return 'Le mot de passe doit contenir au moins un caractère spécial (@\$!%*?&)';}
     return null;
   }
 
@@ -50,6 +51,18 @@ class Validators {
     }
     if (value != passwordValue) {
       return 'Les mots de passe ne correspondent pas';
+    }
+    return null;
+  }
+
+  /// Requires: non-empty and letters only [a-zA-Z]
+  static String? validateName(String? value,String label) {
+    final normalizedValue = value?.trim() ?? '';
+    if (normalizedValue.isEmpty) {
+      return '$label est requis';
+    }
+    if (!nameRegex.hasMatch(normalizedValue)) {
+      return '$label doit contenir uniquement des lettres (a-z, A-Z)';
     }
     return null;
   }

@@ -82,168 +82,138 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                const SizedBox(height: 24),
-                Container(
-                  alignment: Alignment.topCenter,
-                  height: 100,
-                  child: Center(
-                    child: Image(image: AssetImage('assets/images/logo.png')),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
+              margin: const EdgeInsets.symmetric(horizontal: 24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 4,
+                    offset: Offset(0, 2),
                   ),
-                ),
-              ],
-            ),
-            Center(
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
-                  margin: const EdgeInsets.symmetric(horizontal: 24),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
+                ],
+              ),
+              alignment: Alignment.center,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      alignment: Alignment.topCenter,
+                      height: 100,
+                      child: Center(
+                        child: Image(
+                          image: AssetImage('assets/images/logo.png'),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    RoleSelector(
+                      onRoleChanged: (role) {
+                        _selectedRole = role;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    if (!_isLogin) ...[
+                      Row(
+                        spacing: 16,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: nameInputField(label: 'Prénom'),
+                          ),
+                          Expanded(
+                            child: nameInputField(label: 'Nom'),
+                          ),
+                        ],
                       ),
                     ],
-                  ),
-                  alignment: Alignment.center,
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        RoleSelector(
-                          onRoleChanged: (role) {
-                            _selectedRole = role;
-                          },
+                    const SizedBox(height: 16),
+                    emailInputField(controller: _emailController),
+                    const SizedBox(height: 16),
+                    passwordInputField(
+                      'Mot de passe',
+                      controller: _passwordController,
+                    ),
+                    if (!_isLogin) ...[
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _confirmPasswordController,
+                        decoration: InputDecoration(
+                          labelText: 'Confirmer le mot de passe',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          prefixIcon: const Icon(Icons.lock_outline_rounded),
                         ),
-                        const SizedBox(height: 16),
-                        if (!_isLogin) ...[
-                          Row(
-                            spacing: 16,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        obscureText: true,
+                        validator: (value) => Validators.validatePasswordMatch(
+                          value,
+                          _passwordController.text,
+                        ),
+                      ),
+                    ],
+                    _isLogin
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Expanded(
-                                // Added Expanded
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Prénom',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Nom',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(context, '/resetpass');
+                                },
+                                child: const Text(
+                                  'Mot de passe oubliée?',
+                                  style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    color: Colors.black54,
                                   ),
                                 ),
                               ),
                             ],
-                          ),
-                        ],
-                        const SizedBox(height: 16),
-                        emailInputField(controller: _emailController),
-                        const SizedBox(height: 16),
-                        passwordInputField(
-                          'Mot de passe',
-                          controller: _passwordController,
-                        ),
-                        if (!_isLogin) ...[
-                          const SizedBox(height: 16),
-                          TextFormField(
-                            controller: _confirmPasswordController,
-                            decoration: InputDecoration(
-                              labelText: 'Confirmer le mot de passe',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              prefixIcon: const Icon(
-                                Icons.lock_outline_rounded,
-                              ),
-                            ),
-                            obscureText: true,
-                            validator: (value) =>
-                                Validators.validatePasswordMatch(
-                                  value,
-                                  _passwordController.text,
-                                ),
-                          ),
-                        ],
+                          )
+                        : const SizedBox(height: 2),
+                    _isLogin
+                        ? const SizedBox(height: 12)
+                        : const SizedBox(height: 32),
+                    if (_isLogin)
+                      quickLoginOptions(
+                        onGoogleTap: () {
+                          ref.read(authProvider.notifier).loginWithGoogle();
+                        },
+                        onMicrosoftTap: () {
+                          ref.read(authProvider.notifier).loginWithMicrosoft();
+                        },
+                      ),
+                    TextButton(
+                      onPressed: _toggleAuthMode,
+                      child: Text(
                         _isLogin
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                        context,
-                                        '/resetpass',
-                                      );
-                                    },
-                                    child: const Text(
-                                      'Mot de passe oubliée?',
-                                      style: TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : const SizedBox(height: 2),
-                        _isLogin
-                            ? const SizedBox(height: 12)
-                            : const SizedBox(height: 32),
-                        if (_isLogin)
-                          quickLoginOptions(
-                            onGoogleTap: () {
-                              ref.read(authProvider.notifier).loginWithGoogle();
-                            },
-                            onMicrosoftTap: () {
-                              ref
-                                  .read(authProvider.notifier)
-                                  .loginWithMicrosoft();
-                            },
-                          ),
-                        const SizedBox(height: 12),
-                        TextButton(
-                          onPressed: _toggleAuthMode,
-                          child: Text(
-                            _isLogin
-                                ? "Vous n'avez pas de compte?"
-                                : "Vous avez déjà un compte?",
-                            style: const TextStyle(
-                              fontSize: 16,
-                              decoration: TextDecoration.underline,
-                              color: Color.fromARGB(255, 100, 100, 100),
-                            ),
-                          ),
+                            ? "Vous n'avez pas de compte?"
+                            : "Vous avez déjà un compte?",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          decoration: TextDecoration.underline,
+                          color: Color.fromARGB(255, 100, 100, 100),
                         ),
-                        const SizedBox(height: 24),
-                        callToActionButton(
-                          _isLogin ? 'Se Connecter' : 'S\'inscrire',
-                          _submit,
-                          isLoading: authState.isLoading,
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 18),
+                    callToActionButton(
+                      _isLogin ? 'Se Connecter' : 'S\'inscrire',
+                      _submit,
+                      isLoading: authState.isLoading,
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
