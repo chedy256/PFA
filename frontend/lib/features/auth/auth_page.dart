@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pfa/core/providers/auth_provider.dart';
-import 'package:pfa/core/theme/app_colors.dart';
 import 'package:pfa/features/auth/widgets/auth_widgets.dart';
 import 'package:pfa/core/utils/validators.dart';
+
+import '../../core/theme/app_fonts.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
   const AuthPage({super.key});
@@ -68,6 +70,9 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     // Listen for Authentication Errors
     ref.listen(authProvider, (previous, next) {
       if (next.hasError) {
+        if (kDebugMode) {
+          print('Authentication Error: ${next.error}');
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(next.error?.toString() ?? 'An error occurred'),
@@ -80,32 +85,18 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     final authState = ref.watch(authProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
-              margin: const EdgeInsets.symmetric(horizontal: 24),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 4,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              alignment: Alignment.center,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18),
               child: Form(
                 key: _formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                      alignment: Alignment.topCenter,
+                    SizedBox(
                       height: 100,
                       child: Center(
                         child: Image(
@@ -113,14 +104,14 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 24),
                     RoleSelector(
                       onRoleChanged: (role) {
                         _selectedRole = role;
                       },
                     ),
                     const SizedBox(height: 16),
-                    if (!_isLogin) ...[
+                    if (!_isLogin)
                       Row(
                         spacing: 16,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,7 +120,6 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                           Expanded(child: nameInputField(label: 'Nom')),
                         ],
                       ),
-                    ],
                     const SizedBox(height: 16),
                     emailInputField(controller: _emailController),
                     const SizedBox(height: 16),
@@ -159,6 +149,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                                 child: const Text(
                                   'Mot de passe oubliée?',
                                   style: TextStyle(
+                                    fontFamily: AppFonts.outfit,
                                     decoration: TextDecoration.underline,
                                     color: Colors.black54,
                                   ),
@@ -186,6 +177,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                             ? "Vous n'avez pas de compte?"
                             : "Vous avez déjà un compte?",
                         style: const TextStyle(
+                          fontFamily: AppFonts.outfit,
                           fontSize: 16,
                           decoration: TextDecoration.underline,
                           color: Color.fromARGB(255, 100, 100, 100),
@@ -194,6 +186,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                     ),
                     const SizedBox(height: 18),
                     callToActionButton(
+                      context,
                       _isLogin ? 'Se Connecter' : 'S\'inscrire',
                       _submit,
                       isLoading: authState.isLoading,

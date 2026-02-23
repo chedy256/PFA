@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pfa/core/theme/app_colors.dart';
+import 'package:pfa/core/theme/app_text_styles.dart';
 import 'package:pfa/core/utils/validators.dart';
 
 class RoleSelector extends StatefulWidget {
@@ -21,12 +22,13 @@ class _RoleSelectorState extends State<RoleSelector> {
   @override
   Container build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
         color: AppColors.background, // Light grey background for the container
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
+        spacing: 4,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: _roles.map((role) {
           final isSelected = _selectedRole == role;
@@ -51,13 +53,13 @@ class _RoleSelectorState extends State<RoleSelector> {
                   decoration: isSelected
                       ? BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(6),
                         )
                       : null,
                   child: Text(
                     role,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: isSelected
                           ? FontWeight.bold
                           : FontWeight.w500,
@@ -105,10 +107,10 @@ class _PasswordInputFieldState extends State<_PasswordInputField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      cursorColor: Colors.grey,
       controller: widget.controller,
       decoration: InputDecoration(
         labelText: widget.label,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
         prefixIcon: const Icon(Icons.lock_outline_rounded),
         suffixIcon: Padding(
           padding: const EdgeInsets.only(right: 8.0),
@@ -134,10 +136,10 @@ class _PasswordInputFieldState extends State<_PasswordInputField> {
 
 TextFormField emailInputField({TextEditingController? controller}) =>
     TextFormField(
+      cursorColor: Colors.grey,
       controller: controller,
       decoration: InputDecoration(
         labelText: 'Email',
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
         prefixIcon: const Icon(Icons.email_outlined),
       ),
       keyboardType: TextInputType.emailAddress,
@@ -148,10 +150,10 @@ TextFormField nameInputField({
   TextEditingController? controller,
   String? label,
 }) => TextFormField(
+  cursorColor: Colors.grey,
   controller: controller,
   decoration: InputDecoration(
     labelText: label ?? 'Nom',
-    border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
     prefixIcon: const Icon(Icons.person_outline_rounded),
   ),
   textInputAction: TextInputAction.next,
@@ -165,14 +167,13 @@ Column quickLoginOptions({
   return Column(
     children: [
       Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SocialLoginButton(
             icon: FontAwesomeIcons.google,
             color: Colors.red,
             onTap: onGoogleTap,
           ),
-          const SizedBox(width: 24),
           SocialLoginButton(
             icon: FontAwesomeIcons.microsoft,
             color: const Color(0xFF0072C6),
@@ -180,7 +181,7 @@ Column quickLoginOptions({
           ),
         ],
       ),
-      const SizedBox(height: 24),
+      const SizedBox(height: 20),
     ],
   );
 }
@@ -204,7 +205,7 @@ class SocialLoginButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: Container(
         height: 70,
-        width: 70,
+        width: 100,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -218,35 +219,36 @@ class SocialLoginButton extends StatelessWidget {
             ),
           ],
         ),
-        child: FaIcon(icon, size: 32, color: color),
+        child: FaIcon(icon, size: 36, color: color),
       ),
     );
   }
 }
 
 ElevatedButton callToActionButton(
+  BuildContext context,
   String text,
   VoidCallback onPressed, {
   bool isLoading = false,
-}) => ElevatedButton(
-  onPressed: isLoading ? null : onPressed,
-  style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.black87,
-    padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 10),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-  ),
-  child: isLoading
-      ? const SizedBox(
-          height: 20,
-          width: 20,
-          child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
-        )
-      : Text(
-          text,
-          style: const TextStyle(
-            fontSize: 18,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+}) {
+  final double targetWidth = (MediaQuery.of(context).size.width * 0.8).clamp(250.0, 450.0);
+  
+  return ElevatedButton(
+    onPressed: isLoading ? null : onPressed,
+    style: ElevatedButton.styleFrom(
+      fixedSize: Size(targetWidth, 60),
+      backgroundColor: Colors.black87,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    ),
+    child: isLoading
+        ? const SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+          )
+        : Text(
+            text,
+            style: AppTextStyles.callToActionButton,
           ),
-        ),
-);
+  );
+}

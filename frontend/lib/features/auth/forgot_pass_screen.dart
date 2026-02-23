@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pfa/core/theme/app_colors.dart';
 import 'package:pfa/features/auth/widgets/auth_widgets.dart';
 
+import '../../core/theme/app_fonts.dart';
+
 class ForgotPassScreen extends StatefulWidget {
   const ForgotPassScreen({super.key});
 
@@ -54,11 +56,12 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                         const SizedBox(height: 12),
                         TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/login');
+                            Navigator.popAndPushNamed(context, '/login');
                           },
                           child: const Text(
                             "Vous avez déjà un compte?",
                             style: TextStyle(
+                              fontFamily: AppFonts.outfit,
                               fontSize: 16,
                               decoration: TextDecoration.underline,
                               color: Color.fromARGB(255, 100, 100, 100),
@@ -66,8 +69,8 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        callToActionButton('Envoier', () {
-                          (){};
+                        callToActionButton(context, 'Envoier', () {
+                          () {};
                         }),
                       ],
                     ),
