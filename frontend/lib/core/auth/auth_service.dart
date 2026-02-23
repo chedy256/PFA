@@ -52,14 +52,17 @@ class AuthService {
         return await _firebaseAuth.signInWithPopup(googleProvider);
       } else {
         // Native: Use google_sign_in package
-        final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
+        //initialize the GoogleSignIn instance before calling authenticate
+        await _googleSignIn.initialize();
+        
+        final GoogleSignInAccount googleUser = await _googleSignIn
+            .authenticate();
 
         // Get the authentication tokens
         final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
         // Create a new credential using the ID token
         final OAuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.idToken,
           idToken: googleAuth.idToken,
         );
         // Sign in to Firebase with the Google credential
@@ -76,13 +79,15 @@ class AuthService {
       // Define the provider
       final microsoftProvider = MicrosoftAuthProvider();
       microsoftProvider.setCustomParameters({'prompt': 'select_account'});
-      
+
       // Use the appropriate sign-in method based on platform
       final UserCredential userCredential;
       if (kIsWeb) {
         userCredential = await _firebaseAuth.signInWithPopup(microsoftProvider);
       } else {
-        userCredential = await _firebaseAuth.signInWithProvider(microsoftProvider);
+        userCredential = await _firebaseAuth.signInWithProvider(
+          microsoftProvider,
+        );
       }
 
       final user = userCredential.user;
