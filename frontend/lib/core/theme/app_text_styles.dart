@@ -5,11 +5,11 @@ import 'app_fonts.dart';
 final class AppTextStyles {
   const AppTextStyles._();
 
-  static TextStyle callToActionButton = TextStyle(
+  static final TextStyle callToActionButton = TextStyle(
     fontFamily: AppFonts.outfit,
-    fontSize: 24,
+    fontSize: 20,
     color: Colors.white,
     fontWeight: FontWeight.bold,
-    letterSpacing: 1.1
+    letterSpacing: 1.2
   );
 }
