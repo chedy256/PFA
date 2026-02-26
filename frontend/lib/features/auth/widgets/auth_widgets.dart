@@ -23,12 +23,12 @@ class _RoleSelectorState extends State<RoleSelector> {
   Container build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(6),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.background, // Light grey background for the container
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.all(Radius.circular(8)),
       ),
       child: Row(
-        spacing: 4,
+        spacing: 6,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: _roles.map((role) {
           final isSelected = _selectedRole == role;
@@ -47,13 +47,13 @@ class _RoleSelectorState extends State<RoleSelector> {
                   }
                 },
                 child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
+                  duration: const Duration(milliseconds: 100),
                   alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
                   decoration: isSelected
                       ? BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.all(Radius.circular(6)),
                         )
                       : null,
                   child: Text(
@@ -76,32 +76,23 @@ class _RoleSelectorState extends State<RoleSelector> {
   }
 }
 
-Widget passwordInputField(
-  String label, {
-  String? Function(String?)? validator,
-  TextEditingController? controller,
-}) => _PasswordInputField(
-  label: label,
-  validator: validator,
-  controller: controller,
-);
-
-class _PasswordInputField extends StatefulWidget {
+class PasswordInputField extends StatefulWidget {
   final String label;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
 
-  const _PasswordInputField({
+  const PasswordInputField({
+    super.key,
     required this.label,
     this.validator,
     this.controller,
   });
 
   @override
-  State<_PasswordInputField> createState() => _PasswordInputFieldState();
+  State<PasswordInputField> createState() => _PasswordInputFieldState();
 }
 
-class _PasswordInputFieldState extends State<_PasswordInputField> {
+class _PasswordInputFieldState extends State<PasswordInputField> {
   bool _obscureText = true;
 
   @override
@@ -134,8 +125,14 @@ class _PasswordInputFieldState extends State<_PasswordInputField> {
   }
 }
 
-TextFormField emailInputField({TextEditingController? controller}) =>
-    TextFormField(
+class EmailInputField extends StatelessWidget {
+  final TextEditingController? controller;
+
+  const EmailInputField({super.key, this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
       cursorColor: Colors.grey,
       controller: controller,
       decoration: InputDecoration(
@@ -145,45 +142,67 @@ TextFormField emailInputField({TextEditingController? controller}) =>
       keyboardType: TextInputType.emailAddress,
       validator: Validators.validateEmail,
     );
+  }
+}
 
-TextFormField nameInputField({
-  TextEditingController? controller,
-  String? label,
-}) => TextFormField(
-  cursorColor: Colors.grey,
-  controller: controller,
-  decoration: InputDecoration(
-    labelText: label ?? 'Nom',
-    prefixIcon: const Icon(Icons.person_outline_rounded),
-  ),
-  textInputAction: TextInputAction.next,
-  validator: (value) => Validators.validateName(value, label ?? 'Nom'),
-);
+class NameInputField extends StatelessWidget {
+  final TextEditingController? controller;
+  final String? label;
 
-Column quickLoginOptions({
-  required VoidCallback onGoogleTap,
-  required VoidCallback onMicrosoftTap,
-}) {
-  return Column(
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          SocialLoginButton(
-            icon: FontAwesomeIcons.google,
-            color: Colors.red,
-            onTap: onGoogleTap,
-          ),
-          SocialLoginButton(
-            icon: FontAwesomeIcons.microsoft,
-            color: const Color(0xFF0072C6),
-            onTap: onMicrosoftTap,
-          ),
-        ],
+  const NameInputField({
+    super.key,
+    this.controller,
+    this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      cursorColor: Colors.grey,
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label ?? 'Nom',
+        prefixIcon: const Icon(Icons.person_outline_rounded),
       ),
-      const SizedBox(height: 20),
-    ],
-  );
+      textInputAction: TextInputAction.next,
+      validator: (value) => Validators.validateName(value, label ?? 'Nom'),
+    );
+  }
+}
+
+class QuickLoginOptions extends StatelessWidget {
+  final VoidCallback onGoogleTap;
+  final VoidCallback onMicrosoftTap;
+
+  const QuickLoginOptions({
+    super.key,
+    required this.onGoogleTap,
+    required this.onMicrosoftTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SocialLoginButton(
+              icon: FontAwesomeIcons.google,
+              color: Colors.red,
+              onTap: onGoogleTap,
+            ),
+            SocialLoginButton(
+              icon: FontAwesomeIcons.microsoft,
+              color: const Color(0xFF0072C6),
+              onTap: onMicrosoftTap,
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+      ],
+    );
+  }
 }
 
 class SocialLoginButton extends StatelessWidget {
@@ -202,20 +221,19 @@ class SocialLoginButton extends StatelessWidget {
   InkWell build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: const BorderRadius.all(Radius.circular(16)),
       child: Container(
         height: 70,
         width: 100,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.grey.shade300),
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
           boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade300,
-              blurRadius: 4,
-              offset: const Offset(0, 4),
+            const BoxShadow(
+              color: Colors.grey,
+              blurRadius: 8,
+              offset: Offset(0, 4),
             ),
           ],
         ),
@@ -225,30 +243,44 @@ class SocialLoginButton extends StatelessWidget {
   }
 }
 
-ElevatedButton callToActionButton(
-  BuildContext context,
-  String text,
-  VoidCallback onPressed, {
-  bool isLoading = false,
-}) {
-  final double targetWidth = (MediaQuery.of(context).size.width * 0.8).clamp(250.0, 450.0);
-  
-  return ElevatedButton(
-    onPressed: isLoading ? null : onPressed,
-    style: ElevatedButton.styleFrom(
-      fixedSize: Size(targetWidth, 60),
-      backgroundColor: Colors.black87,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-    ),
-    child: isLoading
-        ? const SizedBox(
-            height: 20,
-            width: 20,
-            child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
-          )
-        : Text(
-            text,
-            style: AppTextStyles.callToActionButton,
-          ),
-  );
+class CallToActionButton extends StatelessWidget {
+  final String text;
+  final VoidCallback onPressed;
+  final bool isLoading;
+
+  const CallToActionButton(
+    this.text,
+    this.onPressed, {
+    super.key,
+    this.isLoading = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final double targetWidth = (MediaQuery.of(context).size.width * 0.8).clamp(
+      250.0,
+      450.0,
+    );
+
+    return ElevatedButton(
+      onPressed: isLoading ? null : onPressed,
+      style: ElevatedButton.styleFrom(
+        fixedSize: Size(targetWidth, 60),
+        backgroundColor: Colors.black87,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+        ),
+      ),
+      child: isLoading
+          ? const SizedBox(
+              height: 20,
+              width: 20,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+                strokeWidth: 2,
+              ),
+            )
+          : Text(text, style: AppTextStyles.callToActionButton),
+    );
+  }
 }

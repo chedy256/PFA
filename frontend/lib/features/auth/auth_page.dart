@@ -90,14 +90,14 @@ class _AuthPageState extends ConsumerState<AuthPage> {
         child: Center(
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18),
+              padding: const EdgeInsets.all(24),
               child: Form(
                 key: _formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(
-                      height: 100,
+                    const SizedBox(
+                      height: 128,
                       child: Center(
                         child: Image(
                           image: AssetImage('assets/images/logo.png'),
@@ -116,21 +116,21 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         spacing: 16,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(child: nameInputField(label: 'Prénom')),
-                          Expanded(child: nameInputField(label: 'Nom')),
+                          Expanded(child: NameInputField(label: 'Prénom')),
+                          Expanded(child: NameInputField(label: 'Nom')),
                         ],
                       ),
                     const SizedBox(height: 16),
-                    emailInputField(controller: _emailController),
+                    EmailInputField(controller: _emailController),
                     const SizedBox(height: 16),
-                    passwordInputField(
-                      'Mot de passe',
+                    PasswordInputField(
+                      label: 'Mot de passe',
                       controller: _passwordController,
                     ),
                     if (!_isLogin) ...[
                       const SizedBox(height: 16),
-                      passwordInputField(
-                        'Confirmer le mot de passe',
+                      PasswordInputField(
+                        label: 'Confirmer le mot de passe',
                         controller: _confirmPasswordController,
                         validator: (value) => Validators.validatePasswordMatch(
                           value,
@@ -162,7 +162,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         ? const SizedBox(height: 12)
                         : const SizedBox(height: 32),
                     if (_isLogin)
-                      quickLoginOptions(
+                      QuickLoginOptions(
                         onGoogleTap: () {
                           ref.read(authProvider.notifier).loginWithGoogle();
                         },
@@ -185,8 +185,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                       ),
                     ),
                     const SizedBox(height: 18),
-                    callToActionButton(
-                      context,
+                    CallToActionButton(
                       _isLogin ? 'Se Connecter' : 'S\'inscrire',
                       _submit,
                       isLoading: authState.isLoading,
