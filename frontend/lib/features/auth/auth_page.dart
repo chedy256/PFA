@@ -67,7 +67,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Listen for Authentication Errors
+    // Listen for Authentication State Changes
     ref.listen(authProvider, (previous, next) {
       if (next.hasError) {
         if (kDebugMode) {
@@ -79,6 +79,8 @@ class _AuthPageState extends ConsumerState<AuthPage> {
             backgroundColor: Colors.red,
           ),
         );
+      } else if (next.value != null && !next.isLoading) {
+        Navigator.pushReplacementNamed(context, '/student');
       }
     });
 
