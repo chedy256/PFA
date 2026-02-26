@@ -5,6 +5,7 @@ import 'core/theme/app_fonts.dart';
 import 'firebase_options.dart';
 import 'package:pfa/features/auth/auth_page.dart';
 import 'package:pfa/features/auth/forgot_pass_screen.dart';
+import 'package:pfa/features/student/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,14 +13,14 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  State<StatefulWidget> createState() => _MyAppState();
+  ConsumerState<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -62,6 +63,7 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/login': (context) => const AuthPage(),
         '/resetpass': (context) => const ForgotPassScreen(),
+        '/student': (context) => const StudentHomePage(),
       },
     );
   }
