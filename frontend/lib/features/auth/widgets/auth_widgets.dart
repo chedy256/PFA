@@ -184,6 +184,14 @@ class QuickLoginOptions extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const Text(
+          'Ou connectez-vous avec',
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.black87,
+          ),
+        ),
+        const SizedBox(height: 12),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -223,7 +231,7 @@ class SocialLoginButton extends StatelessWidget {
       onTap: onTap,
       borderRadius: const BorderRadius.all(Radius.circular(16)),
       child: Container(
-        height: 70,
+        height: 60,
         width: 100,
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -237,7 +245,7 @@ class SocialLoginButton extends StatelessWidget {
             ),
           ],
         ),
-        child: FaIcon(icon, size: 36, color: color),
+        child: FaIcon(icon, size: 32, color: color),
       ),
     );
   }

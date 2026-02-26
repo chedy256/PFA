@@ -11,6 +11,15 @@ class ForgotPassScreen extends StatefulWidget {
 }
 
 class _ForgotPassScreenState extends State<ForgotPassScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +30,7 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
             const Padding(
               padding: EdgeInsets.only(top: 48),
               child: SizedBox(
-                height: 128,
+                height: 110,
                 child: Center(
                   child: Image(image: AssetImage('assets/images/logo.png')),
                 ),
@@ -30,29 +39,36 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
             Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 120),
-                    const EmailInputField(),
-                    const SizedBox(height: 12),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.popAndPushNamed(context, '/login');
-                      },
-                      child: const Text(
-                        "Vous avez déjà un compte?",
-                        style: TextStyle(
-                          fontFamily: AppFonts.outfit,
-                          fontSize: 16,
-                          decoration: TextDecoration.underline,
-                          color: Color.fromARGB(255, 100, 100, 100),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(height: 120),
+                      EmailInputField(controller: _emailController),
+                      const SizedBox(height: 12),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          "Vous avez déjà un compte?",
+                          style: TextStyle(
+                            fontFamily: AppFonts.outfit,
+                            fontSize: 16,
+                            decoration: TextDecoration.underline,
+                            color: Color.fromARGB(255, 100, 100, 100),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    CallToActionButton('Envoier', () {}),
-                  ],
+                      const SizedBox(height: 16),
+                      CallToActionButton('Envoier', () {
+                        if (_formKey.currentState!.validate()) {
+                          // TODO: Implement forgot password logic
+                        }
+                      }),
+                    ],
+                  ),
                 ),
               ),
             ),
