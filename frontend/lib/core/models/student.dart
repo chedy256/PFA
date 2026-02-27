@@ -1,17 +1,15 @@
 import 'package:pfa/core/models/internship.dart';
+import 'package:pfa/core/models/user.dart';
 
-class Student {
-  String firstName = '';
-  String lastName = '';
-  String email = '';
-  String department = '';
-  String level = '';
+class Student extends User {
+  final int level;
   Internship? currentIntership;
   Student({
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    required this.department,
+    required super.id,
+    required super.firstName,
+    required super.lastName,
+    required super.email,
+    required super.department,
     required this.level,
     this.currentIntership,
   });

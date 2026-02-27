@@ -1,15 +1,14 @@
 import 'package:pfa/core/models/internship.dart';
+import 'package:pfa/core/models/user.dart';
 
-class Teacher {
-  String firstName = '';
-  String lastName = '';
-  String email = '';
-  String department = '';
-  Teacher({
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    required this.department,
-  });
+class Teacher extends User {
   List<Internship> interships = [];
+  Teacher({
+    required super.id,
+    required super.firstName,
+    required super.lastName,
+    required super.email,
+    required super.department,
+  });
+  
 }

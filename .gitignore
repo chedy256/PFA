@@ -48,3 +48,4 @@ app.*.map.json
 
 frontend/.vscode/settings.json
 /app/
+frontend/TODO.md
