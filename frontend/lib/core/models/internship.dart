@@ -1,7 +1,41 @@
+import 'package:flutter/material.dart';
 import 'package:pfa/core/models/student.dart';
 import 'package:pfa/core/models/teacher.dart';
+import 'package:pfa/core/theme/app_colors.dart';
 
-enum InternshipStatus { enCours, terminee, pasCommance, enAttente }
+enum InternshipStatus {
+  enCours,
+  terminee,
+  pasCommance,
+  enAttente;
+
+  String get displayName {
+    switch (this) {
+      case InternshipStatus.enCours:
+        return 'En Cours';
+      case InternshipStatus.terminee:
+        return 'Terminée';
+      case InternshipStatus.pasCommance:
+        return 'Pas Commencé';
+      case InternshipStatus.enAttente:
+        return 'En Attente';
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case InternshipStatus.enCours:
+        return AppColors.blue;
+      case InternshipStatus.terminee:
+        return AppColors.green;
+      case InternshipStatus.pasCommance:
+        return AppColors.yellow;
+      case InternshipStatus.enAttente:
+        return AppColors.purple;
+    }
+  }
+}
+
 enum InternshipTag {
   softwareDevelopment,
   flutter,
@@ -15,18 +49,14 @@ enum InternshipTag {
 
 class Internship {
   Teacher? supervisorTeacher;
-  Student? internStudent;
-  String companyName = 'Tech Solutions Inc.';
-  String position = 'Software Engineering Intern';
-  DateTime startDate = DateTime(2026, 6, 1);
-  DateTime endDate = DateTime(2026, 8, 31);
-  String description = '';
-  InternshipStatus status = InternshipStatus.enCours;
-  List<InternshipTag> tags = [
-    InternshipTag.softwareDevelopment,
-    InternshipTag.flutter,
-    InternshipTag.mobileApp,
-  ];
+  final Student internStudent;
+  final String companyName;
+  final String position;
+  final DateTime startDate;
+  final DateTime endDate;
+  final String description;
+  final InternshipStatus status;
+  final List<InternshipTag> tags;
 
   Internship({
     required this.companyName,
@@ -35,12 +65,14 @@ class Internship {
     required this.endDate,
     required this.description,
     required this.status,
-    required this.tags, // Make tags required in the constructor
+    required this.tags,
+    required this.internStudent,
+    this.supervisorTeacher,
   });
 
-  // Optional: Convert tags to user-friendly strings
   List<String> getTagNames() {
     return tags.map((tag) => tag.name).toList();
   }
 }
+
 

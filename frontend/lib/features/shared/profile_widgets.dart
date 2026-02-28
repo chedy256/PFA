@@ -17,7 +17,7 @@ Column infosSection(User user) => Column(
           color: Colors.black,
           fontFamily: AppFonts.outfit,
           letterSpacing: 2,
-          fontSize: 46,
+          fontSize: 48,
           fontWeight: FontWeight.w600,
         ),
       ),

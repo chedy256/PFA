@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pfa/core/models/student.dart';
 import 'package:pfa/core/models/teacher.dart';
 import 'package:pfa/core/theme/app_colors.dart';
 import 'package:pfa/core/models/internship.dart';
@@ -68,6 +69,7 @@ class _TeacherHomePageState extends ConsumerState<TeacherHomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         intershipCard(
+                          context,
                           Internship(
                               companyName: 'Tech Solutions Inc.',
                               description:
@@ -76,6 +78,14 @@ class _TeacherHomePageState extends ConsumerState<TeacherHomePage> {
                               startDate: DateTime(2026, 6, 1),
                               endDate: DateTime(2026, 8, 31),
                               status: InternshipStatus.pasCommance,
+                              internStudent: Student(
+                                id: "S001",
+                                firstName: "Chedy Amine",
+                                lastName: "El Haj",
+                                email: "elhaj@isimm.me",
+                                department: "Informatique",
+                                level: 3,
+                              ),
                               tags: [
                                 InternshipTag.softwareDevelopment,
                                 InternshipTag.flutter,
@@ -91,6 +101,7 @@ class _TeacherHomePageState extends ConsumerState<TeacherHomePage> {
                             ),
                         ),
                         intershipCard(
+                          context,
                           Internship(
                               companyName: 'Tech Solutions Inc.',
                               description:
@@ -99,6 +110,14 @@ class _TeacherHomePageState extends ConsumerState<TeacherHomePage> {
                               startDate: DateTime(2026, 6, 1),
                               endDate: DateTime(2026, 8, 31),
                               status: InternshipStatus.pasCommance,
+                              internStudent: Student(
+                                id: "S001",
+                                firstName: "Chedy Amine",
+                                lastName: "El Haj",
+                                email: "elhaj@isimm.me",
+                                department: "Informatique",
+                                level: 3,
+                              ),
                               tags: [
                                 InternshipTag.softwareDevelopment,
                                 InternshipTag.flutter,
@@ -114,6 +133,7 @@ class _TeacherHomePageState extends ConsumerState<TeacherHomePage> {
                             ),
                         ),
                         intershipCard(
+                          context,
                           Internship(
                             companyName: 'Tech Solutions Inc.',
                             description:
@@ -122,6 +142,14 @@ class _TeacherHomePageState extends ConsumerState<TeacherHomePage> {
                             startDate: DateTime(2026, 6, 1),
                             endDate: DateTime(2026, 8, 31),
                             status: InternshipStatus.pasCommance,
+                            internStudent: Student(
+                              id: "S001",
+                              firstName: "Chedy Amine",
+                              lastName: "El Haj",
+                              email: "elhaj@isimm.me",
+                              department: "Informatique",
+                              level: 3,
+                            ),
                             tags: [
                               InternshipTag.softwareDevelopment,
                               InternshipTag.flutter,

@@ -47,6 +47,7 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
                 ),
               ),
               intershipCard(
+                context,
                 Internship(
                   companyName: 'Tech Solutions Inc.',
                   description:
@@ -55,6 +56,14 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
                   startDate: DateTime(2026, 6, 1),
                   endDate: DateTime(2026, 8, 31),
                   status: InternshipStatus.enCours,
+                  internStudent: Student(
+                    id: 'S001',
+                    firstName: 'Chedy Amine',
+                    lastName: 'El Haj',
+                    email: 'elhaj.chedyamine@isimm.me',
+                    department: 'Informatique',
+                    level: 3,
+                  ),
                   tags: [
                     InternshipTag.softwareDevelopment,
                     InternshipTag.flutter,
@@ -90,25 +99,25 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
                             spacing: 8,
                             crossAxisAlignment: .start,
                             children: [
-                              quickActionCard(
+                              _quickActionCard(
                                 Icons.download,
                                 'Documents officiels',
                                 'Télécharger vos documents de stage',
                                 () {},
                               ),
-                              quickActionCard(
+                              _quickActionCard(
                                 Icons.document_scanner,
                                 'Demander des Documents',
                                 'Demander des documents de stage',
                                 () {},
                               ),
-                              quickActionCard(
+                              _quickActionCard(
                                 Icons.upload_file,
                                 'Rapport de Stage',
                                 'Envoyer votre rapport de stage',
                                 () {},
                               ),
-                              quickActionCard(
+                              _quickActionCard(
                                 Icons.access_time_outlined,
                                 'Journal de Stage',
                                 'Consulter votre journal de stage',
@@ -130,7 +139,7 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
   }
 }
 
-Card quickActionCard(
+Card _quickActionCard(
   IconData icon,
   String title,
   String subtitle,

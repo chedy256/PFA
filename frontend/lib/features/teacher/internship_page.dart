@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pfa/core/models/student.dart';
 import 'package:pfa/core/models/teacher.dart';
 import 'package:pfa/core/models/internship.dart';
 import 'package:pfa/features/shared/card_widgets.dart';
@@ -61,6 +62,7 @@ class _TeacherInternshipPageState extends State<TeacherInternshipPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         intershipCard(
+                          context,
                           Internship(
                               companyName: 'Tech Solutions Inc.',
                               description:
@@ -69,6 +71,14 @@ class _TeacherInternshipPageState extends State<TeacherInternshipPage> {
                               startDate: DateTime(2026, 6, 1),
                               endDate: DateTime(2026, 8, 31),
                               status: InternshipStatus.pasCommance,
+                              internStudent: Student(
+                                id: "S001",
+                                firstName: "Chedy Amine",
+                                lastName: "El Haj",
+                                email: "elhaj@isimm.me",
+                                department: "Informatique",
+                                level: 3,
+                              ),
                               tags: [
                                 InternshipTag.softwareDevelopment,
                                 InternshipTag.flutter,
@@ -84,6 +94,7 @@ class _TeacherInternshipPageState extends State<TeacherInternshipPage> {
                             ),
                         ),
                         intershipCard(
+                          context,
                           Internship(
                               companyName: 'Tech Solutions Inc.',
                               description:
@@ -92,6 +103,14 @@ class _TeacherInternshipPageState extends State<TeacherInternshipPage> {
                               startDate: DateTime(2026, 6, 1),
                               endDate: DateTime(2026, 8, 31),
                               status: InternshipStatus.pasCommance,
+                              internStudent: Student(
+                                id: "S002",
+                                firstName: "Zied",
+                                lastName: "Mabrouk",
+                                email: "zied.mabrouk@isimm.me",
+                                department: "Informatique",
+                                level: 3,
+                              ),
                               tags: [
                                 InternshipTag.softwareDevelopment,
                                 InternshipTag.flutter,
@@ -107,6 +126,7 @@ class _TeacherInternshipPageState extends State<TeacherInternshipPage> {
                             ),
                         ),
                         intershipCard(
+                          context,
                           Internship(
                             companyName: 'Tech Solutions Inc.',
                             description:
@@ -115,6 +135,14 @@ class _TeacherInternshipPageState extends State<TeacherInternshipPage> {
                             startDate: DateTime(2026, 6, 1),
                             endDate: DateTime(2026, 8, 31),
                             status: InternshipStatus.pasCommance,
+                            internStudent: Student(
+                              id: "S003",
+                              firstName: "Ahmed",
+                              lastName: "Hafssi",
+                              email: "ahmed.hafssi@isimm.me",
+                              department: "Informatique",
+                              level: 3,
+                            ),
                             tags: [
                               InternshipTag.softwareDevelopment,
                               InternshipTag.flutter,

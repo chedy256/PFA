@@ -4,6 +4,7 @@ import 'package:pfa/core/models/internship.dart';
 import 'package:pfa/core/models/user.dart';
 import 'package:pfa/core/theme/app_colors.dart';
 import 'package:pfa/features/shared/profile_page.dart';
+import 'package:pfa/features/shared/internship_details_page.dart';
 
 Row welcomeWidget(BuildContext context, WidgetRef ref, User user) {
   return Row(
@@ -33,7 +34,7 @@ Row welcomeWidget(BuildContext context, WidgetRef ref, User user) {
           );
         },
         child: CircleAvatar(
-          radius: 30,
+          radius: 28,
           backgroundColor: AppColors.cardBackground,
           child: Text(
             user.firstName[0] + user.lastName[0],
@@ -42,7 +43,7 @@ Row welcomeWidget(BuildContext context, WidgetRef ref, User user) {
               fontFamily: 'Outfit',
               letterSpacing: 2,
               fontSize: 24,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
@@ -51,14 +52,21 @@ Row welcomeWidget(BuildContext context, WidgetRef ref, User user) {
   );
 }
 
-Material intershipCard(Internship? internship) {
+Material intershipCard(BuildContext context, Internship? internship) {
   return Material(
     color: AppColors.cardBackground,
     borderRadius: BorderRadius.circular(12),
     child: InkWell(
       borderRadius: BorderRadius.circular(12),
       onTap: () {
-        //open internship details page
+        if (internship != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => InternshipDetailsPage(internship: internship),
+            ),
+          );
+        }
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
@@ -113,15 +121,16 @@ Material intershipCard(Internship? internship) {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.green.shade100,
+                          color: internship.status.color.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: internship.status.color.withValues(alpha: 0.3)),
                         ),
                         child: Text(
-                          internship.status.name.toUpperCase(),
+                          internship.status.displayName.toUpperCase(),
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: Colors.green.shade800,
+                            color: internship.status.color,
                           ),
                         ),
                       ),
