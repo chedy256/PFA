@@ -30,6 +30,11 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
     _confirmPasswordController = TextEditingController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     precacheImage(const AssetImage('assets/images/logo.png'), context);
   }
 
