@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pfa/features/auth/widgets/auth_widgets.dart';
 
@@ -62,9 +63,54 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      CallToActionButton('Envoier', () {
+                      CallToActionButton('Envoyer', () async {
                         if (_formKey.currentState!.validate()) {
-                          // TODO: Implement forgot password logic
+                          try {
+                            await FirebaseAuth.instance.sendPasswordResetEmail(
+                              email: _emailController.text.trim(),
+                            );
+                            if (context.mounted) {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text('Email envoyé'),
+                                  content: Text(
+                                    'Un email de réinitialisation de mot de passe a été envoyé à ${_emailController.text}. Veuillez vérifier votre boîte de réception.',
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context); // Close dialog
+                                        Navigator.pop(
+                                          context,
+                                        ); // Go back to previous screen
+                                      },
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          } on FirebaseAuthException catch (e) {
+                            String message = 'Une erreur est survenue.';
+                            if (e.code == 'user-not-found') {
+                              message =
+                                  'Aucun utilisateur trouvé avec cet email.';
+                            } else if (e.code == 'invalid-email') {
+                              message = 'L\'adresse email est mal formatée.';
+                            } else {
+                              message = e.message ?? message;
+                            }
+
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(message),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                          }
                         }
                       }),
                     ],
