@@ -2,21 +2,41 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   const AppColors._();
-  //
-  static const Color background = Color(0xFFE8E8E8);
-  static const Color cardBackground = Color.fromARGB(255, 240, 240, 240);
-  static const Color textPrimary = Colors.black87;
-  static const Color textSecondary = Colors.black54;
-  static const Color textTertiary = Colors.black38;
-  static const Color textGrey = Colors.grey;
 
-  static const Color darkBackground = Color(0xFFE8E8E8);
+  static const Color primary = Color(0xFF0066CC);
+  static const Color primaryLight = Color(0xFF4D94DB);
+  static const Color primaryDark = Color(0xFF004C99);
 
+  static const Color secondary = Color(0xFF6C63FF);
+  static const Color accent = Color(0xFFFFD700);
 
+  static const Color background = Color(0xFFF8F9FD);
+  static const Color surface = Colors.white;
+  static const Color cardBackground = Color(
+    0xFFF0F0F0,
+  ); // Reverted to previous slightly grey color
 
-  static const Color yellow = Color.fromARGB(255, 217, 174, 0);
-  static const Color green = Color.fromARGB(255, 44, 157, 59);
-  static const Color blue = Color(0xFF006BD4);
-  static const Color purple = Color(0xFFBF5AF2);
-  static const Color red = Color(0xFFCD0E00);
+  static const Color textPrimary = Color(0xFF1A1C1E);
+  static const Color textSecondary = Color(0xFF42474E);
+  static const Color textTertiary = Color(0xFF72777F);
+  static const Color textGrey = Color(0xFF9EA4AA);
+  static const Color textInverse = Colors.white;
+
+  // Borders and Shadows
+  static const Color border = Color(0xFFE0E6ED);
+  static const Color borderLight = Color(0xFFF1F5F9);
+  static const Color shadow = Color(0x0C000000); // 5% opacity black
+
+  static const Color success = Color(0xFF2E8B57);
+  static const Color warning = Color(0xFFF59E0B);
+  static const Color error = Color(0xFFDC2626);
+  static const Color info = Color(0xFF3B82F6);
+
+  static const Color yellow = warning;
+  static const Color green = success;
+  static const Color blue = primary;
+  static const Color purple = secondary;
+  static const Color red = error;
+
+  static const Color darkBackground = Color(0xFF1A1C1E);
 }

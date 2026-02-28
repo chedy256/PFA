@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:pfa/features/teacher/home_page.dart';
-import 'core/theme/app_fonts.dart';
+import 'core/theme/app_theme.dart';
 import 'firebase_options.dart';
 import 'package:pfa/features/auth/auth_page.dart';
 import 'package:pfa/features/auth/forgot_pass_screen.dart';
@@ -25,51 +25,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        useMaterial3: true,
-        fontFamily: AppFonts.outfit,
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-          elevation: 0,
-          titleTextStyle: TextStyle(
-            fontFamily: AppFonts.outfit,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-        textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.grey,
-            textStyle: const TextStyle(
-              fontFamily: AppFonts.outfit,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          contentPadding: const EdgeInsets.all(14),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-          labelStyle: const TextStyle(
-            fontFamily: AppFonts.outfit,
-            fontSize: 16,
-            color: Colors.black54,
-          ),
-          errorStyle: const TextStyle(
-            fontFamily: AppFonts.outfit,
-            fontSize: 14,
-            color: Colors.redAccent,
-          ),
-          suffixIconColor: Colors.black87,
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: Colors.blue, width: 2),
-          ),
-        ),
-      ),
+      theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
       title: 'ISIMM Internship Management',
       initialRoute: '/login',

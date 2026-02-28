@@ -16,11 +16,20 @@ Row welcomeWidget(BuildContext context, WidgetRef ref, User user) {
         children: [
           const Text(
             'Bienvenue,',
-            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.w800,
+              color: AppColors.textPrimary,
+            ),
           ),
           Text(
             '${user.firstName} ${user.lastName} !',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: AppColors.textSecondary,
+              letterSpacing: 0.2,
+            ),
           ),
         ],
       ),
@@ -34,16 +43,16 @@ Row welcomeWidget(BuildContext context, WidgetRef ref, User user) {
           );
         },
         child: CircleAvatar(
-          radius: 28,
-          backgroundColor: AppColors.cardBackground,
+          radius: 26,
+          backgroundColor: AppColors.primary.withValues(alpha: 0.1),
           child: Text(
             user.firstName[0] + user.lastName[0],
             style: const TextStyle(
-              color: Colors.black87,
+              color: AppColors.primary,
               fontFamily: 'Outfit',
               letterSpacing: 2,
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ),
@@ -54,24 +63,30 @@ Row welcomeWidget(BuildContext context, WidgetRef ref, User user) {
 
 Material intershipCard(BuildContext context, Internship? internship) {
   return Material(
-    color: AppColors.cardBackground,
-    borderRadius: BorderRadius.circular(12),
+    color: AppColors.surface,
+    shadowColor: AppColors.shadow,
+    elevation: 4,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20),
+      side: const BorderSide(color: AppColors.border),
+    ),
     child: InkWell(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(20),
       onTap: () {
         if (internship != null) {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => InternshipDetailsPage(internship: internship),
+              builder: (context) =>
+                  InternshipDetailsPage(internship: internship),
             ),
           );
         }
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
         width: double.infinity,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
         child: (internship == null)
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,39 +95,66 @@ Material intershipCard(BuildContext context, Internship? internship) {
                 children: [
                   const Text(
                     'Stage en cours',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
                   const Text(
                     'Aucun stage en cours',
-                    style: TextStyle(fontSize: 14, color: Colors.black54),
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: AppColors.textSecondary,
+                    ),
                   ),
+                  const SizedBox(height: 8),
                   Center(
                     child: TextButton(
-                      style: const ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(Colors.white),
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(
+                          AppColors.primary.withValues(alpha: 0.1),
+                        ),
                         alignment: Alignment.center,
+                        padding: const WidgetStatePropertyAll(
+                          EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        ),
+                        shape: WidgetStatePropertyAll(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
                       ),
                       onPressed: () {},
                       child: const Text(
                         'Postuler votre stage',
-                        style: TextStyle(fontSize: 18, color: Colors.black87),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
                 ],
               )
             : Column(
-                spacing: 12,
+                spacing: 16,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        internship.position,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
+                      Expanded(
+                        child: Text(
+                          internship.position,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       Container(
@@ -123,14 +165,14 @@ Material intershipCard(BuildContext context, Internship? internship) {
                         decoration: BoxDecoration(
                           color: internship.status.color.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: internship.status.color.withValues(alpha: 0.3)),
                         ),
                         child: Text(
                           internship.status.displayName.toUpperCase(),
                           style: TextStyle(
                             fontSize: 12,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w800,
                             color: internship.status.color,
+                            letterSpacing: 0.5,
                           ),
                         ),
                       ),
@@ -138,37 +180,68 @@ Material intershipCard(BuildContext context, Internship? internship) {
                   ),
                   Text(
                     internship.companyName,
-                    style: TextStyle(fontSize: 16, color: Colors.black87),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   Text(
                     internship.description,
-                    style: TextStyle(fontSize: 14, color: Colors.black54),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textSecondary,
+                      height: 1.4,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
-                      vertical: 8,
+                      vertical: 12,
                     ),
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Colors.white70,
-                      borderRadius: BorderRadius.circular(8),
+                      color: AppColors.background,
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Column(
-                      spacing: 4,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Encadré par:',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Encadré par:',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: AppColors.textTertiary,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              '${internship.supervisorTeacher?.firstName ?? 'Pas encore assigné'} ${internship.supervisorTeacher?.lastName ?? ''}',
+                              style: const TextStyle(
+                                fontSize: 15,
+                                color: AppColors.textPrimary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          '${internship.supervisorTeacher?.firstName ?? 'Pas encore assigné'} ${internship.supervisorTeacher?.lastName ?? ''}',
-                          style: TextStyle(fontSize: 16, color: Colors.black87),
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withValues(alpha: 0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 14,
+                            color: AppColors.primary,
+                          ),
                         ),
                       ],
                     ),

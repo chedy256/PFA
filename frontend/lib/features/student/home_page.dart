@@ -26,6 +26,7 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -78,8 +79,10 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
                     const Text(
                       "Actions Rapides",
                       style: TextStyle(
-                        fontSize: 28,
+                        fontSize: 24,
                         fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                        letterSpacing: -0.5,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -139,24 +142,59 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
   }
 }
 
-Card _quickActionCard(
+Container _quickActionCard(
   IconData icon,
   String title,
   String subtitle,
   VoidCallback onTap,
 ) {
-  return Card(
-    color: Color.fromARGB(255, 250, 250, 250),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    child: ListTile(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      leading: Icon(icon, color: AppColors.textPrimary),
-      title: Text(
-        title,
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-      ),
-      subtitle: Text(subtitle),
+  return Container(
+    margin: const EdgeInsets.only(bottom: 8),
+    decoration: BoxDecoration(
+      color: AppColors.surface,
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(color: AppColors.border),
+      boxShadow: [
+        BoxShadow(
+          color: AppColors.shadow,
+          blurRadius: 10,
+          offset: const Offset(0, 4),
+        ),
+      ],
+    ),
+    child: InkWell(
+      borderRadius: BorderRadius.circular(16),
       onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: ListTile(
+          leading: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: AppColors.blue.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: AppColors.blue, size: 24),
+          ),
+          title: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          subtitle: Text(
+            subtitle,
+            style: const TextStyle(
+              fontSize: 13,
+              color: AppColors.textTertiary,
+              height: 1.4,
+            ),
+          ),
+          trailing: const Icon(Icons.chevron_right, color: AppColors.textGrey),
+        ),
+      ),
     ),
   );
 }

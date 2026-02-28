@@ -10,11 +10,13 @@ class InternshipDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('Détails du Stage'),
         centerTitle: true,
         backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -253,7 +255,7 @@ class InternshipDetailsPage extends StatelessWidget {
             backgroundColor: AppColors.green.withValues(alpha: 0.1),
             child: Text(
               '${student.firstName[0]}${student.lastName[0]}',
-              style: const TextStyle(color: AppColors.green, fontWeight: FontWeight.bold),
+              style: const TextStyle(color: AppColors.green, fontWeight: FontWeight.bold,letterSpacing: 2),
             ),
           ),
           const SizedBox(width: 16),
