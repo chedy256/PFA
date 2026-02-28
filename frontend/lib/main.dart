@@ -72,7 +72,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       ),
       debugShowCheckedModeBanner: false,
       title: 'ISIMM Internship Management',
-      initialRoute: '/teacher',
+      initialRoute: '/login',
       routes: {
         '/login': (context) => const AuthPage(),
         '/resetpass': (context) => const ForgotPassScreen(),

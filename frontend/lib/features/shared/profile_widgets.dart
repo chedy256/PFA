@@ -48,7 +48,7 @@ final class LogoutButton extends ConsumerWidget {
             title: const Text('Déconnexion'),
             content: const Text(
               'Êtes-vous sûr de vouloir vous déconnecter ?',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 16),
             ),
             actions: [
               TextButton(
@@ -72,6 +72,10 @@ final class LogoutButton extends ConsumerWidget {
                     Navigator.pushReplacementNamed(context, '/login');
                   }
                 },
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.redAccent,
+                  textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
                 child: const Text(
                   'Déconnexion',
                   style: TextStyle(
@@ -86,6 +90,7 @@ final class LogoutButton extends ConsumerWidget {
         );
       },
       style: TextButton.styleFrom(
+        backgroundColor: Color.fromARGB(255, 255, 240, 240),
         foregroundColor: Colors.redAccent,
         textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
       ),

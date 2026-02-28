@@ -15,7 +15,7 @@ class TeacherHomePage extends ConsumerStatefulWidget {
 }
 
 class _TeacherHomePageState extends ConsumerState<TeacherHomePage> {
-  int _currentIndex = 1;
+  int _currentIndex = 0;
 
   Widget _buildHomePage() {
     return Scaffold(
