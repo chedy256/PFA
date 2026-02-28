@@ -23,6 +23,8 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -52,7 +54,7 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text(
+                        child: Text(
                           "Vous avez déjà un compte?",
                           style: TextStyle(
                             fontFamily: AppFonts.outfit,
@@ -105,8 +107,13 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text(message),
-                                  backgroundColor: Colors.red,
+                                  content: Text(
+                                    message,
+                                    style: TextStyle(
+                                      color: theme.colorScheme.onError,
+                                    ),
+                                  ),
+                                  backgroundColor: theme.colorScheme.error,
                                 ),
                               );
                             }

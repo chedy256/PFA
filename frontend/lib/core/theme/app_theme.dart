@@ -20,7 +20,7 @@ class AppTheme {
         brightness: Brightness.light,
       ),
       scaffoldBackgroundColor: AppColors.background,
-      
+
       // AppBar Theme
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.background,
@@ -47,9 +47,7 @@ class AppTheme {
         color: AppColors.cardBackground,
         elevation: 2,
         shadowColor: Colors.black.withValues(alpha: 0.05),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         margin: const EdgeInsets.symmetric(vertical: 8),
       ),
 
@@ -57,14 +55,21 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.surface,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: AppColors.textGrey.withValues(alpha: 0.3)),
+          borderSide: BorderSide(
+            color: AppColors.textGrey.withValues(alpha: 0.3),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: AppColors.textGrey.withValues(alpha: 0.3)),
+          borderSide: BorderSide(
+            color: AppColors.textGrey.withValues(alpha: 0.3),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -109,7 +114,7 @@ class AppTheme {
           ),
         ),
       ),
-      
+
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.primary,
@@ -129,9 +134,7 @@ class AppTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColors.primary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           textStyle: const TextStyle(
             fontFamily: AppFonts.outfit,
             fontSize: 14,
@@ -195,11 +198,8 @@ class AppTheme {
         thickness: 1,
         space: 24,
       ),
-      
-      iconTheme: const IconThemeData(
-        color: AppColors.textPrimary,
-        size: 24,
-      ),
+
+      iconTheme: const IconThemeData(color: AppColors.textPrimary, size: 24),
 
       listTileTheme: ListTileThemeData(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

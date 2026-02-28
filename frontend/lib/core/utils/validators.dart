@@ -56,7 +56,7 @@ class Validators {
   }
 
   /// Requires: non-empty and letters only [a-zA-Z]
-  static String? validateName(String? value,String label) {
+  static String? validateName(String? value, String label) {
     final normalizedValue = value?.trim() ?? '';
     if (normalizedValue.isEmpty) {
       return '$label est requis';

@@ -21,9 +21,7 @@ class _TeacherInternshipPageState extends State<TeacherInternshipPage> {
       ),
       body: SafeArea(
         child: Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 24) +
-              const EdgeInsets.only(top: 8),
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
           child: Column(
             spacing: 24,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +46,7 @@ class _TeacherInternshipPageState extends State<TeacherInternshipPage> {
               Expanded(
                 child: Container(
                   clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12),
                       topRight: Radius.circular(12),

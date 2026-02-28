@@ -67,8 +67,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '266737849674',
     projectId: 'isimm-intern',
     storageBucket: 'isimm-intern.firebasestorage.app',
-    androidClientId: '266737849674-6r322emcom0bf9mfrjq0nthl02cb6svq.apps.googleusercontent.com',
-    iosClientId: '266737849674-edeukpvc5crgj0rb9or29llkbrmmsli9.apps.googleusercontent.com',
+    androidClientId:
+        '266737849674-6r322emcom0bf9mfrjq0nthl02cb6svq.apps.googleusercontent.com',
+    iosClientId:
+        '266737849674-edeukpvc5crgj0rb9or29llkbrmmsli9.apps.googleusercontent.com',
     iosBundleId: 'tech.chedy.projects.isimm',
   );
 
@@ -81,5 +83,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'isimm-intern.firebasestorage.app',
     measurementId: 'G-4ESVF9J0PM',
   );
-
 }

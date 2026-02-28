@@ -54,7 +54,7 @@ class AuthService {
         // Native: Use google_sign_in package
         //initialize the GoogleSignIn instance before calling authenticate
         await _googleSignIn.initialize();
-        
+
         final GoogleSignInAccount googleUser = await _googleSignIn
             .authenticate();
 

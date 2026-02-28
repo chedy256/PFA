@@ -53,7 +53,9 @@ class _RoleSelectorState extends State<RoleSelector> {
                   decoration: isSelected
                       ? BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(6),
+                          ),
                         )
                       : null,
                   child: Text(
@@ -135,9 +137,9 @@ class EmailInputField extends StatelessWidget {
     return TextFormField(
       cursorColor: Colors.grey,
       controller: controller,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         labelText: 'Email',
-        prefixIcon: const Icon(Icons.email_outlined),
+        prefixIcon: Icon(Icons.email_outlined),
       ),
       keyboardType: TextInputType.emailAddress,
       validator: Validators.validateEmail,
@@ -149,11 +151,7 @@ class NameInputField extends StatelessWidget {
   final TextEditingController? controller;
   final String? label;
 
-  const NameInputField({
-    super.key,
-    this.controller,
-    this.label,
-  });
+  const NameInputField({super.key, this.controller, this.label});
 
   @override
   Widget build(BuildContext context) {

@@ -10,6 +10,6 @@ final class AppTextStyles {
     fontSize: 20,
     color: Colors.white,
     fontWeight: FontWeight.bold,
-    letterSpacing: 1.2
+    letterSpacing: 1.2,
   );
 }

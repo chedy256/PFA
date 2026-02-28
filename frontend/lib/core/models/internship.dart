@@ -74,5 +74,3 @@ class Internship {
     return tags.map((tag) => tag.name).toList();
   }
 }
-
-

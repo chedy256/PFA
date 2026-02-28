@@ -10,5 +10,4 @@ class Teacher extends User {
     required super.email,
     required super.department,
   });
-  
 }

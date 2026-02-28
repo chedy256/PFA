@@ -45,7 +45,11 @@ class _AuthPageState extends ConsumerState<AuthPage> {
       if (_isLogin) {
         ref
             .read(authProvider.notifier)
-            .login(_emailController.text, _passwordController.text);
+            .login(
+              _emailController.text,
+              _passwordController.text,
+              _selectedRole,
+            );
       } else {
         ref
             .read(authProvider.notifier)
@@ -188,10 +192,14 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                     if (_isLogin)
                       QuickLoginOptions(
                         onGoogleTap: () {
-                          ref.read(authProvider.notifier).loginWithGoogle();
+                          ref
+                              .read(authProvider.notifier)
+                              .loginWithGoogle(_selectedRole);
                         },
                         onMicrosoftTap: () {
-                          ref.read(authProvider.notifier).loginWithMicrosoft();
+                          ref
+                              .read(authProvider.notifier)
+                              .loginWithMicrosoft(_selectedRole);
                         },
                       ),
                     TextButton(
