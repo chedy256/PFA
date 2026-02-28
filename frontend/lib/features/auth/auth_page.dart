@@ -71,6 +71,8 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     // Listen for Authentication State Changes
     ref.listen(authProvider, (previous, next) {
       if (next.hasError) {
@@ -80,7 +82,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(next.error?.toString() ?? 'An error occurred'),
-            backgroundColor: Colors.red,
+            backgroundColor: theme.colorScheme.error,
           ),
         );
       } else if (next.value != null && !next.isLoading) {
@@ -113,7 +115,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     final authState = ref.watch(authProvider);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -174,12 +176,13 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                                 onPressed: () {
                                   Navigator.pushNamed(context, '/resetpass');
                                 },
-                                child: const Text(
+                                child: Text(
                                   'Mot de passe oubliée?',
                                   style: TextStyle(
                                     fontFamily: AppFonts.outfit,
                                     decoration: TextDecoration.underline,
-                                    color: Colors.black54,
+                                    color: theme.textTheme.bodyMedium?.color
+                                        ?.withValues(alpha: 0.6),
                                   ),
                                 ),
                               ),
@@ -208,11 +211,13 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         _isLogin
                             ? "Vous n'avez pas de compte?"
                             : "Vous avez déjà un compte?",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: AppFonts.outfit,
                           fontSize: 16,
                           decoration: TextDecoration.underline,
-                          color: Color.fromARGB(255, 100, 100, 100),
+                          color: theme.textTheme.bodyMedium?.color?.withValues(
+                            alpha: 0.6,
+                          ),
                         ),
                       ),
                     ),

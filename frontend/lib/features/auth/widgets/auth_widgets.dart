@@ -21,11 +21,14 @@ class _RoleSelectorState extends State<RoleSelector> {
 
   @override
   Container build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.all(6),
-      decoration: const BoxDecoration(
-        color: AppColors.cardBackground,
-        borderRadius: BorderRadius.all(Radius.circular(8)),
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.darkCardBackground : AppColors.cardBackground,
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
       ),
       child: Row(
         spacing: 6,
@@ -52,10 +55,18 @@ class _RoleSelectorState extends State<RoleSelector> {
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   decoration: isSelected
                       ? BoxDecoration(
-                          color: Colors.white,
+                          color: theme.scaffoldBackgroundColor,
                           borderRadius: const BorderRadius.all(
                             Radius.circular(6),
                           ),
+                          boxShadow: [
+                            if (!isDark)
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.1),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                          ],
                         )
                       : null,
                   child: Text(
@@ -65,7 +76,11 @@ class _RoleSelectorState extends State<RoleSelector> {
                       fontWeight: isSelected
                           ? FontWeight.bold
                           : FontWeight.w500,
-                      color: isSelected ? Colors.black87 : Colors.grey,
+                      color: isSelected
+                          ? theme.textTheme.bodyLarge?.color
+                          : theme.textTheme.bodyMedium?.color?.withValues(
+                              alpha: 0.6,
+                            ),
                     ),
                   ),
                 ),
@@ -100,7 +115,7 @@ class _PasswordInputFieldState extends State<PasswordInputField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      cursorColor: Colors.grey,
+      cursorColor: Theme.of(context).colorScheme.primary,
       controller: widget.controller,
       decoration: InputDecoration(
         labelText: widget.label,
@@ -135,7 +150,7 @@ class EmailInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      cursorColor: Colors.grey,
+      cursorColor: Theme.of(context).colorScheme.primary,
       controller: controller,
       decoration: const InputDecoration(
         labelText: 'Email',
@@ -156,7 +171,7 @@ class NameInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      cursorColor: Colors.grey,
+      cursorColor: Theme.of(context).colorScheme.primary,
       controller: controller,
       decoration: InputDecoration(
         labelText: label ?? 'Nom',
@@ -180,13 +195,14 @@ class QuickLoginOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       children: [
-        const Text(
+        Text(
           'Ou connectez-vous avec',
           style: TextStyle(
             fontSize: 16,
-            color: Colors.black87,
+            color: theme.textTheme.bodyMedium?.color,
           ),
         ),
         const SizedBox(height: 12),
@@ -224,7 +240,10 @@ class SocialLoginButton extends StatelessWidget {
   });
 
   @override
-  InkWell build(BuildContext context) {
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return InkWell(
       onTap: onTap,
       borderRadius: const BorderRadius.all(Radius.circular(16)),
@@ -233,14 +252,15 @@ class SocialLoginButton extends StatelessWidget {
         width: 100,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.cardTheme.color,
           borderRadius: const BorderRadius.all(Radius.circular(16)),
           boxShadow: [
-            const BoxShadow(
-              color: Colors.grey,
-              blurRadius: 8,
-              offset: Offset(0, 4),
-            ),
+            if (!isDark)
+              const BoxShadow(
+                color: Colors.grey,
+                blurRadius: 8,
+                offset: Offset(0, 4),
+              ),
           ],
         ),
         child: FaIcon(icon, size: 32, color: color),
@@ -263,6 +283,7 @@ class CallToActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final double targetWidth = (MediaQuery.of(context).size.width * 0.8).clamp(
       250.0,
       450.0,
@@ -272,21 +293,27 @@ class CallToActionButton extends StatelessWidget {
       onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
         fixedSize: Size(targetWidth, 60),
-        backgroundColor: Colors.black87,
+        backgroundColor: theme.colorScheme.primary,
+        foregroundColor: theme.colorScheme.onPrimary,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(8)),
         ),
       ),
       child: isLoading
-          ? const SizedBox(
+          ? SizedBox(
               height: 20,
               width: 20,
               child: CircularProgressIndicator(
-                color: Colors.white,
+                color: theme.colorScheme.onPrimary,
                 strokeWidth: 2,
               ),
             )
-          : Text(text, style: AppTextStyles.callToActionButton),
+          : Text(
+              text,
+              style: AppTextStyles.callToActionButton.copyWith(
+                color: theme.colorScheme.onPrimary,
+              ),
+            ),
     );
   }
 }

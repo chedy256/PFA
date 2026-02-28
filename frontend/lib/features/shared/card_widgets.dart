@@ -7,68 +7,83 @@ import 'package:pfa/features/shared/profile_page.dart';
 import 'package:pfa/features/shared/internship_details_page.dart';
 
 Row welcomeWidget(BuildContext context, WidgetRef ref, User user) {
+  final theme = Theme.of(context);
+
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Bienvenue,',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.w800,
-              color: AppColors.textPrimary,
+      Expanded(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Bienvenue,',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.w800,
+                color: theme.textTheme.displayMedium?.color,
+              ),
             ),
-          ),
-          Text(
-            '${user.firstName} ${user.lastName} !',
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: AppColors.textSecondary,
-              letterSpacing: 0.2,
+            Text(
+              '${user.firstName} ${user.lastName} !',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: theme.textTheme.bodyMedium?.color,
+                letterSpacing: 0.2,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          InkWell(
+            borderRadius: BorderRadius.circular(30),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(user: user),
+                ),
+              );
+            },
+            child: CircleAvatar(
+              radius: 26,
+              backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
+              child: Text(
+                user.firstName[0] + user.lastName[0],
+                style: TextStyle(
+                  color: theme.colorScheme.primary,
+                  fontFamily: 'Outfit',
+                  letterSpacing: 2,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ),
           ),
         ],
-      ),
-
-      InkWell(
-        borderRadius: BorderRadius.circular(30),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ProfilePage(user: user)),
-          );
-        },
-        child: CircleAvatar(
-          radius: 26,
-          backgroundColor: AppColors.primary.withValues(alpha: 0.1),
-          child: Text(
-            user.firstName[0] + user.lastName[0],
-            style: const TextStyle(
-              color: AppColors.primary,
-              fontFamily: 'Outfit',
-              letterSpacing: 2,
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
       ),
     ],
   );
 }
 
 Material intershipCard(BuildContext context, Internship? internship) {
+  final theme = Theme.of(context);
+  final isDark = theme.brightness == Brightness.dark;
+
   return Material(
-    color: AppColors.surface,
-    shadowColor: AppColors.shadow,
-    elevation: 4,
+    color: theme.cardTheme.color,
+    shadowColor: isDark ? Colors.transparent : AppColors.shadow,
+    elevation: isDark ? 0 : 4,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20),
-      side: const BorderSide(color: AppColors.border),
+      side: BorderSide(color: isDark ? AppColors.darkBorder : AppColors.border),
     ),
     child: InkWell(
       borderRadius: BorderRadius.circular(20),
@@ -93,19 +108,19 @@ Material intershipCard(BuildContext context, Internship? internship) {
                 spacing: 8,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     'Stage en cours',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
+                      color: theme.textTheme.titleLarge?.color,
                     ),
                   ),
-                  const Text(
+                  Text(
                     'Aucun stage en cours',
                     style: TextStyle(
                       fontSize: 15,
-                      color: AppColors.textSecondary,
+                      color: theme.textTheme.bodyMedium?.color,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -113,7 +128,7 @@ Material intershipCard(BuildContext context, Internship? internship) {
                     child: TextButton(
                       style: ButtonStyle(
                         backgroundColor: WidgetStatePropertyAll(
-                          AppColors.primary.withValues(alpha: 0.1),
+                          theme.colorScheme.primary.withValues(alpha: 0.1),
                         ),
                         alignment: Alignment.center,
                         padding: const WidgetStatePropertyAll(
@@ -126,11 +141,11 @@ Material intershipCard(BuildContext context, Internship? internship) {
                         ),
                       ),
                       onPressed: () {},
-                      child: const Text(
+                      child: Text(
                         'Postuler votre stage',
                         style: TextStyle(
                           fontSize: 16,
-                          color: AppColors.primary,
+                          color: theme.colorScheme.primary,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -148,10 +163,10 @@ Material intershipCard(BuildContext context, Internship? internship) {
                       Expanded(
                         child: Text(
                           internship.position,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary,
+                            color: theme.textTheme.titleMedium?.color,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -180,17 +195,17 @@ Material intershipCard(BuildContext context, Internship? internship) {
                   ),
                   Text(
                     internship.companyName,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
-                      color: AppColors.primary,
+                      color: theme.colorScheme.primary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   Text(
                     internship.description,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
-                      color: AppColors.textSecondary,
+                      color: theme.textTheme.bodyMedium?.color,
                       height: 1.4,
                     ),
                     maxLines: 2,
@@ -203,7 +218,7 @@ Material intershipCard(BuildContext context, Internship? internship) {
                     ),
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: AppColors.background,
+                      color: theme.scaffoldBackgroundColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -212,20 +227,24 @@ Material intershipCard(BuildContext context, Internship? internship) {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'Encadré par:',
                               style: TextStyle(
                                 fontSize: 13,
-                                color: AppColors.textTertiary,
+                                color:
+                                    theme.textTheme.bodySmall?.color ??
+                                    (isDark
+                                        ? AppColors.darkTextTertiary
+                                        : AppColors.textTertiary),
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                             const SizedBox(height: 2),
                             Text(
                               '${internship.supervisorTeacher?.firstName ?? 'Pas encore assigné'} ${internship.supervisorTeacher?.lastName ?? ''}',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 15,
-                                color: AppColors.textPrimary,
+                                color: theme.textTheme.bodyLarge?.color,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -234,13 +253,15 @@ Material intershipCard(BuildContext context, Internship? internship) {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: AppColors.primary.withValues(alpha: 0.1),
+                            color: theme.colorScheme.primary.withValues(
+                              alpha: 0.1,
+                            ),
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.arrow_forward_ios,
                             size: 14,
-                            color: AppColors.primary,
+                            color: theme.colorScheme.primary,
                           ),
                         ),
                       ],

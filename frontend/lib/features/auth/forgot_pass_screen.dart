@@ -26,7 +26,7 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Stack(
           children: [
@@ -60,7 +60,8 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                             fontFamily: AppFonts.outfit,
                             fontSize: 16,
                             decoration: TextDecoration.underline,
-                            color: Color.fromARGB(255, 100, 100, 100),
+                            color: theme.textTheme.bodyMedium?.color
+                                ?.withValues(alpha: 0.6),
                           ),
                         ),
                       ),

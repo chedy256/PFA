@@ -25,8 +25,10 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -76,12 +78,12 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
                 child: Column(
                   crossAxisAlignment: .start,
                   children: [
-                    const Text(
+                    Text(
                       "Actions Rapides",
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
+                        color: theme.textTheme.titleLarge!.color,
                         letterSpacing: -0.5,
                       ),
                     ),
@@ -89,7 +91,7 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
                     Expanded(
                       child: Container(
                         clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(12),
                             topRight: Radius.circular(12),
@@ -103,24 +105,28 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
                             crossAxisAlignment: .start,
                             children: [
                               _quickActionCard(
+                                context,
                                 Icons.download,
                                 'Documents officiels',
                                 'Télécharger vos documents de stage',
                                 () {},
                               ),
                               _quickActionCard(
+                                context,
                                 Icons.document_scanner,
                                 'Demander des Documents',
                                 'Demander des documents de stage',
                                 () {},
                               ),
                               _quickActionCard(
+                                context,
                                 Icons.upload_file,
                                 'Rapport de Stage',
                                 'Envoyer votre rapport de stage',
                                 () {},
                               ),
                               _quickActionCard(
+                                context,
                                 Icons.access_time_outlined,
                                 'Journal de Stage',
                                 'Consulter votre journal de stage',
@@ -143,23 +149,30 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
 }
 
 Container _quickActionCard(
+  BuildContext context,
   IconData icon,
   String title,
   String subtitle,
   VoidCallback onTap,
 ) {
+  final theme = Theme.of(context);
+  final isDark = theme.brightness == Brightness.dark;
+
   return Container(
     margin: const EdgeInsets.only(bottom: 8),
     decoration: BoxDecoration(
-      color: AppColors.surface,
+      color: theme.cardTheme.color,
       borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: AppColors.border),
+      border: Border.all(
+        color: isDark ? AppColors.darkBorder : AppColors.border,
+      ),
       boxShadow: [
-        BoxShadow(
-          color: AppColors.shadow,
-          blurRadius: 10,
-          offset: const Offset(0, 4),
-        ),
+        if (!isDark)
+          BoxShadow(
+            color: AppColors.shadow,
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
       ],
     ),
     child: InkWell(
@@ -171,28 +184,31 @@ Container _quickActionCard(
           leading: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.blue.withValues(alpha: 0.1),
+              color: theme.colorScheme.primary.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: AppColors.blue, size: 24),
+            child: Icon(icon, color: theme.colorScheme.primary, size: 24),
           ),
           title: Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary,
+              color: theme.textTheme.titleMedium?.color,
             ),
           ),
           subtitle: Text(
             subtitle,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 13,
-              color: AppColors.textTertiary,
+              color: theme.textTheme.bodyMedium?.color,
               height: 1.4,
             ),
           ),
-          trailing: const Icon(Icons.chevron_right, color: AppColors.textGrey),
+          trailing: Icon(
+            Icons.chevron_right,
+            color: theme.iconTheme.color?.withValues(alpha: 0.5),
+          ),
         ),
       ),
     ),

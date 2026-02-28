@@ -9,46 +9,68 @@ class InternshipDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
-      backgroundColor: AppColors.background,
+    return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         title: const Text('Détails du Stage'),
         centerTitle: true,
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
-        elevation: 0,
+        backgroundColor: theme.cardTheme.color,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildHeader(),
+            _buildHeader(theme, isDark),
             Padding(
               padding: const EdgeInsets.all(24.0),
               child: Column(
+                spacing: 24, // Main spacing between sections
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildSectionTitle('Description'),
-                  const SizedBox(height: 12),
-                  _buildDescriptionCard(),
-                  const SizedBox(height: 24),
-                  _buildSectionTitle('Informations'),
-                  const SizedBox(height: 12),
-                  _buildInfoGrid(),
-                  const SizedBox(height: 24),
-                  _buildSectionTitle('Compétences & Tags'),
-                  const SizedBox(height: 12),
-                  _buildTagsCloud(),
-                  const SizedBox(height: 24),
-                  _buildSectionTitle('Stagiaire'),
-                  const SizedBox(height: 12),
-                  _buildStudentCard(),
-                  const SizedBox(height: 24),
-                  if (internship.supervisorTeacher != null) ...[
-                    _buildSectionTitle('Encadrement'),
-                    const SizedBox(height: 12),
-                    _buildSupervisorCard(),
-                  ],
+                  // Group Title + Content with tighter spacing
+                  Column(
+                    spacing: 12,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildSectionTitle('Description', theme),
+                      _buildDescriptionCard(theme, isDark),
+                    ],
+                  ),
+                  Column(
+                    spacing: 12,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildSectionTitle('Informations', theme),
+                      _buildInfoGrid(theme, isDark),
+                    ],
+                  ),
+                  Column(
+                    spacing: 12,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildSectionTitle('Compétences & Tags', theme),
+                      _buildTagsCloud(theme, isDark),
+                    ],
+                  ),
+                  Column(
+                    spacing: 12,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildSectionTitle('Stagiaire', theme),
+                      _buildStudentCard(theme, isDark),
+                    ],
+                  ),
+                  if (internship.supervisorTeacher != null)
+                    Column(
+                      spacing: 12,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildSectionTitle('Encadrement', theme),
+                        _buildSupervisorCard(theme, isDark),
+                      ],
+                    ),
                 ],
               ),
             ),
@@ -58,13 +80,13 @@ class InternshipDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(ThemeData theme, bool isDark) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: theme.cardTheme.color,
+        borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(32),
           bottomRight: Radius.circular(32),
         ),
@@ -74,27 +96,31 @@ class InternshipDetailsPage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.blue.withValues(alpha: 0.1),
+              color: theme.colorScheme.primary.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.work_outline, size: 40, color: AppColors.blue),
+            child: Icon(
+              Icons.work_outline,
+              size: 40,
+              color: theme.colorScheme.primary,
+            ),
           ),
           const SizedBox(height: 16),
           Text(
             internship.position,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
+              color: theme.textTheme.displaySmall?.color,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             internship.companyName,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18,
-              color: AppColors.blue,
+              color: theme.colorScheme.primary,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -111,7 +137,9 @@ class InternshipDetailsPage extends StatelessWidget {
       decoration: BoxDecoration(
         color: internship.status.color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: internship.status.color.withValues(alpha: 0.3)),
+        border: Border.all(
+          color: internship.status.color.withValues(alpha: 0.3),
+        ),
       ),
       child: Text(
         internship.status.displayName,
@@ -124,44 +152,50 @@ class InternshipDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionTitle(String title) {
+  Widget _buildSectionTitle(String title, ThemeData theme) {
     return Text(
       title,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
-        color: AppColors.textPrimary,
+        color: theme.textTheme.titleLarge?.color,
       ),
     );
   }
 
-  Widget _buildDescriptionCard() {
+  Widget _buildDescriptionCard(ThemeData theme, bool isDark) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : AppColors.border,
+        ),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
+          if (!isDark)
+            BoxShadow(
+              color: AppColors.shadow,
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
         ],
       ),
       child: Text(
-        internship.description.isEmpty ? 'Aucune description fournie.' : internship.description,
-        style: const TextStyle(
+        internship.description.isEmpty
+            ? 'Aucune description fournie.'
+            : internship.description,
+        style: TextStyle(
           fontSize: 15,
-          color: AppColors.textSecondary,
+          color: theme.textTheme.bodyMedium?.color,
           height: 1.5,
         ),
       ),
     );
   }
 
-  Widget _buildInfoGrid() {
+  Widget _buildInfoGrid(ThemeData theme, bool isDark) {
     final dateFormat = DateFormat('dd MMM yyyy');
     return GridView.count(
       shrinkWrap: true,
@@ -171,22 +205,43 @@ class InternshipDetailsPage extends StatelessWidget {
       crossAxisSpacing: 12,
       childAspectRatio: 2.5,
       children: [
-        _buildInfoTile(Icons.calendar_today, 'Début', dateFormat.format(internship.startDate)),
-        _buildInfoTile(Icons.calendar_today, 'Fin', dateFormat.format(internship.endDate)),
+        _buildInfoTile(
+          theme,
+          isDark,
+          Icons.calendar_today,
+          'Début',
+          dateFormat.format(internship.startDate),
+        ),
+        _buildInfoTile(
+          theme,
+          isDark,
+          Icons.calendar_today,
+          'Fin',
+          dateFormat.format(internship.endDate),
+        ),
       ],
     );
   }
 
-  Widget _buildInfoTile(IconData icon, String label, String value) {
+  Widget _buildInfoTile(
+    ThemeData theme,
+    bool isDark,
+    IconData icon,
+    String label,
+    String value,
+  ) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : AppColors.border,
+        ),
       ),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: AppColors.blue),
+          Icon(icon, size: 20, color: theme.colorScheme.primary),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -195,14 +250,21 @@ class InternshipDetailsPage extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(fontSize: 12, color: AppColors.textTertiary),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color:
+                        theme.textTheme.bodySmall?.color ??
+                        (isDark
+                            ? AppColors.darkTextTertiary
+                            : AppColors.textTertiary),
+                  ),
                 ),
                 Text(
                   value,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                    color: theme.textTheme.bodyLarge?.color,
                   ),
                 ),
               ],
@@ -213,40 +275,47 @@ class InternshipDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTagsCloud() {
+  Widget _buildTagsCloud(ThemeData theme, bool isDark) {
     return Wrap(
       spacing: 8,
       runSpacing: 8,
-      children: internship.tags.map((tag) => _buildTag(tag.name)).toList(),
+      children: internship.tags
+          .map((tag) => _buildTag(theme, isDark, tag.name))
+          .toList(),
     );
   }
 
-  Widget _buildTag(String name) {
+  Widget _buildTag(ThemeData theme, bool isDark, String name) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade200),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : AppColors.border,
+        ),
       ),
       child: Text(
         '#$name',
         style: TextStyle(
           fontSize: 13,
-          color: Colors.grey.shade700,
+          color: theme.textTheme.bodyMedium?.color,
           fontWeight: FontWeight.w500,
         ),
       ),
     );
   }
 
-  Widget _buildStudentCard() {
+  Widget _buildStudentCard(ThemeData theme, bool isDark) {
     final student = internship.internStudent;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : AppColors.border,
+        ),
       ),
       child: Row(
         children: [
@@ -255,7 +324,11 @@ class InternshipDetailsPage extends StatelessWidget {
             backgroundColor: AppColors.green.withValues(alpha: 0.1),
             child: Text(
               '${student.firstName[0]}${student.lastName[0]}',
-              style: const TextStyle(color: AppColors.green, fontWeight: FontWeight.bold,letterSpacing: 2),
+              style: const TextStyle(
+                color: AppColors.green,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 2,
+              ),
             ),
           ),
           const SizedBox(width: 16),
@@ -265,15 +338,18 @@ class InternshipDetailsPage extends StatelessWidget {
               children: [
                 Text(
                   '${student.firstName} ${student.lastName}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
+                    color: theme.textTheme.titleMedium?.color,
                   ),
                 ),
                 Text(
                   '${student.department} - L${student.level}',
-                  style: const TextStyle(fontSize: 14, color: AppColors.textSecondary),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: theme.textTheme.bodyMedium?.color,
+                  ),
                 ),
               ],
             ),
@@ -287,22 +363,29 @@ class InternshipDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSupervisorCard() {
+  Widget _buildSupervisorCard(ThemeData theme, bool isDark) {
     final supervisor = internship.supervisorTeacher!;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : AppColors.border,
+        ),
       ),
       child: Row(
         children: [
           CircleAvatar(
             radius: 24,
-            backgroundColor: AppColors.blue.withValues(alpha: 0.1),
+            backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
             child: Text(
               '${supervisor.firstName[0]}${supervisor.lastName[0]}',
-              style: const TextStyle(color: AppColors.blue, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 2,
+              ),
             ),
           ),
           const SizedBox(width: 16),
@@ -312,22 +395,25 @@ class InternshipDetailsPage extends StatelessWidget {
               children: [
                 Text(
                   '${supervisor.firstName} ${supervisor.lastName}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
+                    color: theme.textTheme.titleMedium?.color,
                   ),
                 ),
                 Text(
                   supervisor.department,
-                  style: const TextStyle(fontSize: 14, color: AppColors.textSecondary),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: theme.textTheme.bodyMedium?.color,
+                  ),
                 ),
               ],
             ),
           ),
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.email_outlined, color: AppColors.blue),
+            icon: Icon(Icons.email_outlined, color: theme.colorScheme.primary),
           ),
         ],
       ),
