@@ -61,6 +61,7 @@ class _TeacherInternshipPageState extends State<TeacherInternshipPage> {
                       children: [
                         intershipCard(
                           context,
+                          viewType: InternshipCardViewType.teacherMyInternships,
                           Internship(
                               companyName: 'Tech Solutions Inc.',
                               description:
@@ -93,6 +94,7 @@ class _TeacherInternshipPageState extends State<TeacherInternshipPage> {
                         ),
                         intershipCard(
                           context,
+                          viewType: InternshipCardViewType.teacherMyInternships,
                           Internship(
                               companyName: 'Tech Solutions Inc.',
                               description:
@@ -125,6 +127,7 @@ class _TeacherInternshipPageState extends State<TeacherInternshipPage> {
                         ),
                         intershipCard(
                           context,
+                          viewType: InternshipCardViewType.teacherMyInternships,
                           Internship(
                             companyName: 'Tech Solutions Inc.',
                             description:

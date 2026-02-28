@@ -68,6 +68,8 @@ class _TeacherHomePageState extends ConsumerState<TeacherHomePage> {
                       children: [
                         intershipCard(
                           context,
+                          viewType:
+                              InternshipCardViewType.teacherAllInternships,
                           Internship(
                               companyName: 'Tech Solutions Inc.',
                               description:
@@ -100,6 +102,8 @@ class _TeacherHomePageState extends ConsumerState<TeacherHomePage> {
                         ),
                         intershipCard(
                           context,
+                          viewType:
+                              InternshipCardViewType.teacherAllInternships,
                           Internship(
                               companyName: 'Tech Solutions Inc.',
                               description:
@@ -132,6 +136,8 @@ class _TeacherHomePageState extends ConsumerState<TeacherHomePage> {
                         ),
                         intershipCard(
                           context,
+                          viewType:
+                              InternshipCardViewType.teacherAllInternships,
                           Internship(
                             companyName: 'Tech Solutions Inc.',
                             description:

@@ -14,15 +14,6 @@ class StudentHomePage extends ConsumerStatefulWidget {
 }
 
 class _StudentHomePageState extends ConsumerState<StudentHomePage> {
-  //dump data for testing only
-  Teacher supervisor = Teacher(
-    id: 'T002',
-    firstName: 'Dr. Sarah',
-    lastName: 'Johnson',
-    email: 'sarah.johnson@university.edu',
-    department: 'Informatique',
-  );
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -52,27 +43,34 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
               intershipCard(
                 context,
                 Internship(
-                  companyName: 'Tech Solutions Inc.',
-                  description:
-                      'Développement d\'une application mobile pour la gestion des tâches.',
-                  position: 'Développeur Flutter',
-                  startDate: DateTime(2026, 6, 1),
-                  endDate: DateTime(2026, 8, 31),
-                  status: InternshipStatus.enCours,
-                  internStudent: Student(
-                    id: 'S001',
-                    firstName: 'Chedy Amine',
-                    lastName: 'El Haj',
-                    email: 'elhaj.chedyamine@isimm.me',
+                    companyName: 'Tech Solutions Inc.',
+                    description:
+                        'Développement d\'une application mobile pour la gestion des tâches.',
+                    position: 'Développeur Flutter',
+                    startDate: DateTime(2026, 6, 1),
+                    endDate: DateTime(2026, 8, 31),
+                    status: InternshipStatus.enCours,
+                    internStudent: Student(
+                      id: 'S001',
+                      firstName: 'Chedy Amine',
+                      lastName: 'El Haj',
+                      email: 'elhaj.chedyamine@isimm.me',
+                      department: 'Informatique',
+                      level: 3,
+                    ),
+                    tags: [
+                      InternshipTag.softwareDevelopment,
+                      InternshipTag.flutter,
+                      InternshipTag.mobileApp,
+                    ],
+                  )
+                  ..supervisorTeacher = Teacher(
+                    id: 'T002',
+                    firstName: 'Sarah',
+                    lastName: 'Johnson',
+                    email: 'sarah.johnson@university.edu',
                     department: 'Informatique',
-                    level: 3,
                   ),
-                  tags: [
-                    InternshipTag.softwareDevelopment,
-                    InternshipTag.flutter,
-                    InternshipTag.mobileApp,
-                  ],
-                )..supervisorTeacher = supervisor,
               ),
               Expanded(
                 child: Column(
@@ -101,7 +99,7 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
                           padding: const EdgeInsets.only(bottom: 24),
                           scrollDirection: Axis.vertical,
                           child: Column(
-                            spacing: 8,
+                            spacing: 12,
                             crossAxisAlignment: .start,
                             children: [
                               _quickActionCard(
@@ -148,7 +146,7 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
   }
 }
 
-Container _quickActionCard(
+Material _quickActionCard(
   BuildContext context,
   IconData icon,
   String title,
@@ -158,31 +156,31 @@ Container _quickActionCard(
   final theme = Theme.of(context);
   final isDark = theme.brightness == Brightness.dark;
 
-  return Container(
-    margin: const EdgeInsets.only(bottom: 8),
-    decoration: BoxDecoration(
-      color: theme.cardTheme.color,
-      borderRadius: BorderRadius.circular(16),
-      border: Border.all(
-        color: isDark ? AppColors.darkBorder : AppColors.border,
+  return Material(
+    color: theme.cardTheme.color,
+    borderRadius: BorderRadius.circular(16),
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          width: 2,
+          color: isDark ? AppColors.darkBorder : AppColors.border,
+        ),
+        boxShadow: [
+          if (!isDark)
+            BoxShadow(
+              color: AppColors.shadow,
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+        ],
       ),
-      boxShadow: [
-        if (!isDark)
-          BoxShadow(
-            color: AppColors.shadow,
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-      ],
-    ),
-    child: InkWell(
-      borderRadius: BorderRadius.circular(16),
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: onTap,
         child: ListTile(
           leading: Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: theme.colorScheme.primary.withValues(alpha: 0.1),
               shape: BoxShape.circle,
