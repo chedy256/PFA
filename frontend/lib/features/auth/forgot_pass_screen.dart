@@ -14,6 +14,7 @@ class ForgotPassScreen extends StatefulWidget {
 class _ForgotPassScreenState extends State<ForgotPassScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -68,6 +69,10 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                       const SizedBox(height: 16),
                       CallToActionButton('Envoyer', () async {
                         if (_formKey.currentState!.validate()) {
+                          FocusScope.of(context).unfocus();
+                          setState(() {
+                            _isLoading = true;
+                          });
                           try {
                             await FirebaseAuth.instance.sendPasswordResetEmail(
                               email: _emailController.text.trim(),
@@ -83,10 +88,10 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                                   actions: [
                                     TextButton(
                                       onPressed: () {
-                                        Navigator.pop(context); // Close dialog
-                                        Navigator.pop(
+                                        Navigator.pushReplacementNamed(
                                           context,
-                                        ); // Go back to previous screen
+                                          '/login',
+                                        ); // Go back to login screen
                                       },
                                       child: const Text('OK'),
                                     ),
@@ -118,9 +123,15 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                                 ),
                               );
                             }
+                          } finally {
+                            if (mounted) {
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            }
                           }
                         }
-                      }),
+                      }, isLoading: _isLoading),
                     ],
                   ),
                 ),
