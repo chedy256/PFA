@@ -80,7 +80,29 @@ class _AuthPageState extends ConsumerState<AuthPage> {
           ),
         );
       } else if (next.value != null && !next.isLoading) {
-        Navigator.pushReplacementNamed(context, '/student');
+        // Temporary routing based on the selected role
+        switch (_selectedRole) {
+          case 'Etudiant':
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              '/student',
+              (Route<dynamic> route) => false, // Clears the entire stack
+            );
+            break;
+          case 'Enseignant':
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              '/teacher',
+              (Route<dynamic> route) => false, // Clears the entire stack
+            );
+            break;
+          default:
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              '/unknown',
+              (Route<dynamic> route) => false, // Clears the entire stack
+            );
+        }
       }
     });
 
