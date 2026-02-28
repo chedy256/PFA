@@ -23,17 +23,19 @@ class ProfilePage extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              size: 26,
-              color: theme.iconTheme.color,
-            ),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ),
+        leading: (user is Student)
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    size: 26,
+                    color: theme.iconTheme.color,
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              )
+            : null,
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
