@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pfa/features/teacher/home_page.dart';
 import 'core/theme/app_fonts.dart';
 import 'firebase_options.dart';
 import 'package:pfa/features/auth/auth_page.dart';
@@ -27,6 +28,18 @@ class _MyAppState extends ConsumerState<MyApp> {
       theme: ThemeData(
         useMaterial3: true,
         fontFamily: AppFonts.outfit,
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          elevation: 0,
+          titleTextStyle: TextStyle(
+            fontFamily: AppFonts.outfit,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+        ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
             foregroundColor: Colors.grey,
@@ -48,7 +61,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           errorStyle: const TextStyle(
             fontFamily: AppFonts.outfit,
             fontSize: 14,
-            color: Colors.red,
+            color: Colors.redAccent,
           ),
           suffixIconColor: Colors.black87,
           focusedBorder: OutlineInputBorder(
@@ -59,11 +72,12 @@ class _MyAppState extends ConsumerState<MyApp> {
       ),
       debugShowCheckedModeBanner: false,
       title: 'ISIMM Internship Management',
-      initialRoute: '/login',
+      initialRoute: '/teacher',
       routes: {
         '/login': (context) => const AuthPage(),
         '/resetpass': (context) => const ForgotPassScreen(),
         '/student': (context) => const StudentHomePage(),
+        '/teacher': (context) => const TeacherHomePage(),
       },
     );
   }

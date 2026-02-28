@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   const AppColors._();
-  static const Color background = Color(0xFFDDDDDD);
-  static const Color cardBackground = Color(0xFF2C2C2E);
-  static const Color textPrimary = Colors.white;
-  static const Color textSecondary = Color(0xFF8E8E93);
+  //
+  static const Color background = Color(0xFFE8E8E8);
+  static const Color cardBackground = Color.fromARGB(255, 240, 240, 240);
+  static const Color textPrimary = Colors.black87;
+  static const Color textSecondary = Colors.black54;
+  static const Color textTertiary = Colors.black38;
+  static const Color textGrey = Colors.grey;
+
+  static const Color darkBackground = Color(0xFFE8E8E8);
+
 
 
   static const Color yellow = Color.fromARGB(255, 217, 174, 0);

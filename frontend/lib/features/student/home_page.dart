@@ -26,7 +26,7 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -138,7 +138,7 @@ Card quickActionCard(
   VoidCallback onTap,
 ) {
   return Card(
-    color: AppColors.background,
+    color: Colors.white70,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     child: ListTile(
       leading: Icon(icon, color: Colors.black87),

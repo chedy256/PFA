@@ -46,7 +46,7 @@ InkWell intershipCard(Internship? internship) {
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: AppColors.cardBackground,
         borderRadius: BorderRadius.circular(12),
       ),
       child: (internship == null)
@@ -63,15 +63,17 @@ InkWell intershipCard(Internship? internship) {
                   'Aucun stage en cours',
                   style: TextStyle(fontSize: 14, color: Colors.black54),
                 ),
-                TextButton(
-                  style: const ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Colors.white),
-                    alignment: Alignment.center,
-                  ),
-                  onPressed: () {},
-                  child: const Text(
-                    'Postuler votre stage',
-                    style: TextStyle(fontSize: 18, color: Colors.black87),
+                Center(
+                  child: TextButton(
+                    style: const ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(Colors.white),
+                      alignment: Alignment.center,
+                    ),
+                    onPressed: () {},
+                    child: const Text(
+                      'Postuler votre stage',
+                      style: TextStyle(fontSize: 18, color: Colors.black87),
+                    ),
                   ),
                 ),
               ],

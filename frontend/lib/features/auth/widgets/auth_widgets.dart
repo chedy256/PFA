@@ -24,7 +24,7 @@ class _RoleSelectorState extends State<RoleSelector> {
     return Container(
       padding: const EdgeInsets.all(6),
       decoration: const BoxDecoration(
-        color: AppColors.background, // Light grey background for the container
+        color: AppColors.cardBackground,
         borderRadius: BorderRadius.all(Radius.circular(8)),
       ),
       child: Row(
@@ -63,7 +63,7 @@ class _RoleSelectorState extends State<RoleSelector> {
                       fontWeight: isSelected
                           ? FontWeight.bold
                           : FontWeight.w500,
-                      color: isSelected ? Colors.black : Colors.grey.shade700,
+                      color: isSelected ? Colors.black87 : Colors.grey,
                     ),
                   ),
                 ),
