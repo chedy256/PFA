@@ -38,5 +38,15 @@ class AppColors {
   static const Color purple = secondary;
   static const Color red = error;
 
-  static const Color darkBackground = Color(0xFF1A1C1E);
+  // Dark Theme Colors
+  static const Color darkBackground = Color(0xFF141414);
+  static const Color darkSurface = Color(0xFF1E1E1E);
+  static const Color darkCardBackground = Color(0xFF252525);
+  static const Color darkBorder = Color(0xFF333333);
+  static const Color darkBorderLight = Color(0xFF2A2A2A);
+
+  static const Color darkTextPrimary = Color(0xFFE3E3E3);
+  static const Color darkTextSecondary = Color(0xFFA0A0A0);
+  static const Color darkTextTertiary = Color(0xFF707070);
+  static const Color darkTextGrey = Color(0xFF555555);
 }

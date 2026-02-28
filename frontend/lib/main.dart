@@ -7,6 +7,7 @@ import 'firebase_options.dart';
 import 'package:pfa/features/auth/auth_page.dart';
 import 'package:pfa/features/auth/forgot_pass_screen.dart';
 import 'package:pfa/features/student/home_page.dart';
+import 'package:pfa/core/providers/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,8 +25,12 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
+    final themeMode = ref.watch(themeModeProvider);
+
     return MaterialApp(
       theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: themeMode,
       debugShowCheckedModeBanner: false,
       title: 'ISIMM Internship Management',
       initialRoute: '/login',

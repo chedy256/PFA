@@ -28,9 +28,7 @@ class _TeacherHomePageState extends ConsumerState<TeacherHomePage> {
       ),
       body: SafeArea(
         child: Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 24) +
-              const EdgeInsets.only(top: 8),
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
           child: Column(
             spacing: 24,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +53,7 @@ class _TeacherHomePageState extends ConsumerState<TeacherHomePage> {
               Expanded(
                 child: Container(
                   clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12),
                       topRight: Radius.circular(12),
@@ -186,33 +184,57 @@ class _TeacherHomePageState extends ConsumerState<TeacherHomePage> {
       // Profile
     ];
 
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: pages[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        selectedItemColor: AppColors.blue,
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded),
-            label: 'Accueil',
+      backgroundColor: theme.scaffoldBackgroundColor,
+      body: IndexedStack(index: _currentIndex, children: pages),
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24),
+            topRight: Radius.circular(24),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.assignment_rounded),
-            label: 'Mes stages',
+          boxShadow: [
+            BoxShadow(color: Colors.black12, spreadRadius: 0, blurRadius: 10),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(12),
+            topRight: Radius.circular(12),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_3_rounded),
-            label: 'Profil',
+          child: BottomNavigationBar(
+            elevation: 4,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: theme.cardTheme.color,
+            selectedItemColor: theme.colorScheme.primary,
+            unselectedItemColor: isDark
+                ? AppColors.darkTextSecondary
+                : AppColors.textSecondary,
+            currentIndex: _currentIndex,
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home_rounded),
+                label: 'Accueil',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.assignment_rounded),
+                label: 'Mes stages',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person_3_rounded),
+                label: 'Profil',
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
