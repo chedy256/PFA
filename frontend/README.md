@@ -9,11 +9,10 @@ Elle prend en charge **les étudiants**, **les enseignants** et **les administra
 
 ## Objectif
 
-Cette application permet aux:
+Cette application permet aux :
 
 - **Étudiants** de soumettre leurs stages, déposer leurs rapports et télécharger des documents officiels
 - **Enseignants** de suivre les étudiants et de soumettre des évaluations
-- **Administrateurs** de valider les stages, gérer les utilisateurs et générer des documents officiels
 
 Toute la logique métier, les permissions et la génération de documents sont gérées par le backend.
 
@@ -30,11 +29,10 @@ Toute la logique métier, les permissions et la génération de documents sont g
 
 ## Rôles supportés
 
-| Rôle        | Plateforme cible     | Capacités principales |
-|------------|----------------------|-----------------------|
-| Étudiant   | Android Mobile       | Soumission de stages, dépôt de rapports, suivi d’état |
-| Enseignant | Android Mobile       | Suivi des stages assignés, dépôt d’évaluations |
-| Admin      | Desktop / Web        | Validation des stages, gestion des utilisateurs, génération de documents |
+| Rôle       | Plateforme cible | Capacités principales                                 |
+|------------|------------------|-------------------------------------------------------|
+| Étudiant   | Android Mobile   | Soumission de stages, dépôt de rapports, suivi d’état |
+| Enseignant | Android Mobile   | Suivi des stages assignés, dépôt d’évaluations        |
 
 Le rôle de l’utilisateur est déterminé **après connexion**, côté backend.
 
@@ -63,6 +61,7 @@ Riverpod est utilisé **uniquement** pour :
 - l’état d’authentification
 - les informations de l’utilisateur courant
 - le client API
+- le theme de l'application
 
 Tous les états liés aux formulaires et à l’interface sont gérés localement.
 
@@ -82,16 +81,42 @@ Tous les états liés aux formulaires et à l’interface sont gérés localemen
 
 La navigation est basée sur les rôles et **contrôlée côté serveur**.
 
+### Flux plus détaillé :
+#### Étudiant
+- Soumission de stage → Backend valide et stocke :
+    - L'étudiant remplit un formulaire avec les détails du stage :
+      - Poste occupé
+      - Description du stage
+      - Nom de l’entreprise
+      - Dates de début et de fin
+      - Optionnellement un document illustrant de stage
+      - Jusqu'à 3 professeurs encadrants qui seront notifiés qui l'un d'eux choisira d'etre son encadrant principal
+- Téléchargement de documents → Backend génère et sert les fichiers :
+  - Documents officiels liés au stage (demade de stage, conventions, etc.)
+- Suivi d’état grace au journal du stage → Backend fournit les mises à jour en temps réel
+- Dépôt de rapport → Backend valide et stocke
+- Notifications → Backend envoie des notifications pour les échéances et les mises à jour
+- Gestion de profil → Étudiant peut mettre à jour ses informations personnelles
+#### Enseignant
+- Consultation les demandes d'encadrement → Backend fournit la liste des étudiants et leurs stages
+- Suivi des stages assignés → Backend fournit la liste des stages et leur statut
+- Dépôt d’évaluations → Backend valide et stocke les évaluations
+- Notifications → Backend envoie des notifications pour les échéances et les mises à jour
+- Gestion de profil → Enseignant peut mettre à jour ses informations personnelles
+
 ---
 ## Roadmap
 
-- [ ] App Theming 
+- [x] App Theming 
 - [ ] Pages:
-    - [ ] Login / Inscription
-    - [ ] Accueil Étudiant
-    - [ ] Accueil Enseignant
-    - [ ] Tableau de bord Admin (on hold)
-- [ ] Intégration avec Firebase Authentication
+    - [x] Login / Inscription
+    - [x] Accueil Étudiant
+    - [x] Accueil Enseignant
+    - [ ] Page des Stages:
+       - [x] Page Stage Détailée
+       - [ ] Page du Document
+       - [_] Page Profile / Paramètres
+- [x] Intégration avec Firebase Authentication
 - [ ] Intégration complète avec le backend
 - [ ] Tests unitaires et d’intégration
 ---
