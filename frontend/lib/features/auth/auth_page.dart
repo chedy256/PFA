@@ -33,12 +33,6 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    precacheImage(const AssetImage('assets/images/logo.png'), context);
-  }
-
-  @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
