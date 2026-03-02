@@ -63,70 +63,58 @@ class _TeacherInternshipPageState extends State<TeacherInternshipPage> {
                         intershipCard(
                           context,
                           viewType: InternshipCardViewType.teacher,
-                          internship:
-                              Internship(
-                                  companyName: 'Tech Solutions Inc.',
-                                  description:
-                                      'Développement d\'une application mobile pour la gestion des tâches.',
-                                  position: 'Développeur Flutter',
-                                  startDate: DateTime(2026, 6, 1),
-                                  endDate: DateTime(2026, 8, 31),
-                                  status: InternshipStatus.pasCommance,
-                                  internStudent: Student(
-                                    id: "S001",
-                                    firstName: "Chedy Amine",
-                                    lastName: "El Haj",
-                                    email: "elhaj@isimm.me",
-                                    department: "Informatique",
-                                    level: 3,
-                                  ),
-                                  tags: [
-                                    InternshipTag.softwareDevelopment,
-                                    InternshipTag.flutter,
-                                    InternshipTag.mobileApp,
-                                  ],
-                                )
-                                ..supervisorTeacher = Teacher(
-                                  id: 'TI001',
-                                  firstName: 'NAFFAA',
-                                  lastName: 'HAFFAR',
-                                  email: 'naffaa.haffar@isimm-rnu.tn',
-                                  department: 'Informatique',
-                                ),
+                          internship: Internship(
+                            companyName: 'Tech Solutions Inc.',
+                            description:
+                                'Développement d\'une application mobile pour la gestion des tâches.',
+                            position: 'Développeur Flutter',
+                            startDate: DateTime(2026, 6, 1),
+                            endDate: DateTime(2026, 8, 31),
+                            status: InternshipStatus.pasCommance,
+                            internStudent: Student(
+                              id: "S001",
+                              firstName: "Chedy Amine",
+                              lastName: "El Haj",
+                              email: "elhaj@isimm.me",
+                              department: "Informatique",
+                              level: 3,
+                            ),
+                            supervisorTeacher: Teacher(
+                              id: 'TI001',
+                              firstName: 'NAFFAA',
+                              lastName: 'HAFFAR',
+                              email: 'naffaa.haffar@isimm-rnu.tn',
+                              department: 'Informatique',
+                            ),
+                          ),
                         ),
                         intershipCard(
                           context,
                           viewType: InternshipCardViewType.teacher,
-                          internship:
-                              Internship(
-                                  companyName: 'Tech Solutions Inc.',
-                                  description:
-                                      'Développement d\'une application mobile pour la gestion des tâches.',
-                                  position: 'Développeur Flutter',
-                                  startDate: DateTime(2026, 6, 1),
-                                  endDate: DateTime(2026, 8, 31),
-                                  status: InternshipStatus.pasCommance,
-                                  internStudent: Student(
-                                    id: "S002",
-                                    firstName: "Zied",
-                                    lastName: "Mabrouk",
-                                    email: "zied.mabrouk@isimm.me",
-                                    department: "Informatique",
-                                    level: 3,
-                                  ),
-                                  tags: [
-                                    InternshipTag.softwareDevelopment,
-                                    InternshipTag.flutter,
-                                    InternshipTag.mobileApp,
-                                  ],
-                                )
-                                ..supervisorTeacher = Teacher(
-                                  id: 'TI001',
-                                  firstName: 'NAFFAA',
-                                  lastName: 'HAFFAR',
-                                  email: 'naffaa.haffar@isimm-rnu.tn',
-                                  department: 'Informatique',
-                                ),
+                          internship: Internship(
+                            companyName: 'Tech Solutions Inc.',
+                            description:
+                                'Développement d\'une application mobile pour la gestion des tâches.',
+                            position: 'Développeur Flutter',
+                            startDate: DateTime(2026, 6, 1),
+                            endDate: DateTime(2026, 8, 31),
+                            status: InternshipStatus.pasCommance,
+                            internStudent: Student(
+                              id: "S002",
+                              firstName: "Zied",
+                              lastName: "Mabrouk",
+                              email: "zied.mabrouk@isimm.me",
+                              department: "Informatique",
+                              level: 3,
+                            ),
+                            supervisorTeacher: Teacher(
+                              id: 'TI001',
+                              firstName: 'NAFFAA',
+                              lastName: 'HAFFAR',
+                              email: 'naffaa.haffar@isimm-rnu.tn',
+                              department: 'Informatique',
+                            ),
+                          ),
                         ),
                         intershipCard(
                           context,
@@ -147,11 +135,6 @@ class _TeacherInternshipPageState extends State<TeacherInternshipPage> {
                               department: "Informatique",
                               level: 3,
                             ),
-                            tags: [
-                              InternshipTag.softwareDevelopment,
-                              InternshipTag.flutter,
-                              InternshipTag.mobileApp,
-                            ],
                           ),
                         ),
                       ],

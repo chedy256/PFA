@@ -36,18 +36,8 @@ enum InternshipStatus {
   }
 }
 
-enum InternshipTag {
-  softwareDevelopment,
-  flutter,
-  mobileApp,
-  backend,
-  frontend,
-  devOps,
-  ciCd,
-  database,
-}
-
 class Internship {
+  List<Teacher>? pendingTeachers = [];
   Teacher? supervisorTeacher;
   final Student internStudent;
   final String companyName;
@@ -56,7 +46,6 @@ class Internship {
   final DateTime endDate;
   final String description;
   final InternshipStatus status;
-  final List<InternshipTag> tags;
 
   Internship({
     required this.companyName,
@@ -65,12 +54,8 @@ class Internship {
     required this.endDate,
     required this.description,
     required this.status,
-    required this.tags,
     required this.internStudent,
+    this.pendingTeachers,
     this.supervisorTeacher,
   });
-
-  List<String> getTagNames() {
-    return tags.map((tag) => tag.name).toList();
-  }
 }

@@ -91,7 +91,7 @@ Material intershipCard(
       borderRadius: BorderRadius.circular(20),
       side: BorderSide(color: isDark ? AppColors.darkBorder : AppColors.border),
     ),
-    child: (internship == null)
+    child: (internship == null && viewType == InternshipCardViewType.student)
         ? emptyIntershipCard(context, theme)
         : InkWell(
             borderRadius: BorderRadius.circular(20),
@@ -115,7 +115,7 @@ Material intershipCard(
                     children: [
                       Expanded(
                         child: Text(
-                          internship.position,
+                          internship!.position,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,

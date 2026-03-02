@@ -50,14 +50,6 @@ class InternshipDetailsPage extends StatelessWidget {
                     spacing: 12,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildSectionTitle('Compétences & Tags', theme),
-                      _buildTagsCloud(theme, isDark),
-                    ],
-                  ),
-                  Column(
-                    spacing: 12,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
                       _buildSectionTitle('Stagiaire', theme),
                       _buildStudentCard(theme, isDark),
                     ],
@@ -275,36 +267,6 @@ class InternshipDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTagsCloud(ThemeData theme, bool isDark) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: internship.tags
-          .map((tag) => _buildTag(theme, isDark, tag.name))
-          .toList(),
-    );
-  }
-
-  Widget _buildTag(ThemeData theme, bool isDark, String name) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: theme.cardTheme.color,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: isDark ? AppColors.darkBorder : AppColors.border,
-        ),
-      ),
-      child: Text(
-        '#$name',
-        style: TextStyle(
-          fontSize: 13,
-          color: theme.textTheme.bodyMedium?.color,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
-  }
 
   Widget _buildStudentCard(ThemeData theme, bool isDark) {
     final student = internship.internStudent;

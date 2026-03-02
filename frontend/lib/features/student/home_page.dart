@@ -43,36 +43,51 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
               intershipCard(
                 viewType: InternshipCardViewType.student,
                 context,
-                internship:
-                    Internship(
-                        companyName: 'Tech Solutions Inc.',
-                        description:
-                            'Développement d\'une application mobile pour la gestion des tâches.',
-                        position: 'Développeur Flutter',
-                        startDate: DateTime(2026, 6, 1),
-                        endDate: DateTime(2026, 8, 31),
-                        status: InternshipStatus.enCours,
-                        internStudent: Student(
-                          id: 'S001',
-                          firstName: 'Chedy Amine',
-                          lastName: 'El Haj',
-                          email: 'elhaj.chedyamine@isimm.me',
-                          department: 'Informatique',
-                          level: 3,
-                        ),
-                        tags: [
-                          InternshipTag.softwareDevelopment,
-                          InternshipTag.flutter,
-                          InternshipTag.mobileApp,
-                        ],
-                      )
-                      ..supervisorTeacher = Teacher(
-                        id: 'T002',
-                        firstName: 'Sarah',
-                        lastName: 'Johnson',
-                        email: 'sarah.johnson@university.edu',
-                        department: 'Informatique',
-                      ),
+                internship: Internship(
+                  companyName: 'Tech Solutions Inc.',
+                  description:
+                      'Développement d\'une application mobile pour la gestion des tâches.',
+                  position: 'Développeur Flutter',
+                  startDate: DateTime(2026, 6, 1),
+                  endDate: DateTime(2026, 8, 31),
+                  status: InternshipStatus.enCours,
+                  internStudent: Student(
+                    id: 'S001',
+                    firstName: 'Chedy Amine',
+                    lastName: 'El Haj',
+                    email: 'elhaj.chedyamine@isimm.me',
+                    department: 'Informatique',
+                    level: 3,
+                  ),
+                ),
+              ),
+              intershipCard(
+                viewType: InternshipCardViewType.student,
+                context,
+                internship: Internship(
+                  companyName: 'Tech Solutions Inc.',
+                  description:
+                      'Développement d\'une application mobile pour la gestion des tâches.',
+                  position: 'Développeur Flutter',
+                  startDate: DateTime(2026, 6, 1),
+                  endDate: DateTime(2026, 8, 31),
+                  status: InternshipStatus.enCours,
+                  internStudent: Student(
+                    id: 'S001',
+                    firstName: 'Chedy Amine',
+                    lastName: 'El Haj',
+                    email: 'elhaj.chedyamine@isimm.me',
+                    department: 'Informatique',
+                    level: 3,
+                  ),
+                  supervisorTeacher: Teacher(
+                    id: 'T002',
+                    firstName: 'Sarah',
+                    lastName: 'Johnson',
+                    email: 'sarah.johnson@university.edu',
+                    department: 'Informatique',
+                  ),
+                ),
               ),
               Expanded(
                 child: Column(
