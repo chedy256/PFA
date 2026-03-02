@@ -114,6 +114,7 @@ La navigation est basée sur les rôles et **contrôlée côté serveur**.
     - [x] Accueil Enseignant
     - [ ] Page des Stages:
        - [x] Page Stage Détailée
+       - [x] Page de Soumission de Stage
        - [ ] Page du Document
        - [_] Page Profile / Paramètres
 - [x] Intégration avec Firebase Authentication

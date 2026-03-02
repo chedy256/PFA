@@ -5,6 +5,7 @@ import 'package:pfa/core/models/user.dart';
 import 'package:pfa/core/theme/app_colors.dart';
 import 'package:pfa/features/shared/profile_page.dart';
 import 'package:pfa/features/shared/internship_details_page.dart';
+import 'package:pfa/features/student/submit_internship_page.dart';
 
 Row welcomeWidget(BuildContext context, WidgetRef ref, User user) {
   final theme = Theme.of(context);
@@ -304,7 +305,9 @@ Container emptyIntershipCard(BuildContext context, ThemeData theme) {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const SubmitInternshipPage()));
+            },
             child: Text(
               'Postuler votre stage',
               style: TextStyle(
