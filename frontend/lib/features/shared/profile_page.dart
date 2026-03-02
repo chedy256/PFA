@@ -53,14 +53,17 @@ class ProfilePage extends StatelessWidget {
           children: [
             Center(child: infosSection(context, user)),
             const SizedBox(height: 48),
-            if (user is Student) ...[
+            if (user is Student)
               const ProfileMenuTile(
                 title: 'Changer le sujet',
                 subtitle: 'Ceci est limité à une durée limitée',
                 icon: Icons.edit_outlined,
               ),
-              const SizedBox(height: 32),
-            ],
+            const ProfileMenuTile(
+              title: 'Modifier vos contactes',
+              icon: Icons.contacts_outlined,
+            ),
+            const SizedBox(height: 32),
 
             Text(
               'Preferences',

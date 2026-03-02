@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pfa/core/models/internship.dart';
 import 'package:pfa/core/theme/app_colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InternshipDetailsPage extends StatelessWidget {
   final Internship internship;
@@ -267,6 +269,27 @@ class InternshipDetailsPage extends StatelessWidget {
     );
   }
 
+  Future<void> _launchPhone(String phone) async {
+    final uri = Uri(scheme: 'tel', path: phone);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  Future<void> _launchWhatsApp(String phone) async {
+    final digits = phone.replaceAll(RegExp(r'[^\d]'), '');
+    final uri = Uri.parse('https://wa.me/$digits');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  Future<void> _launchEmail(String email) async {
+    final uri = Uri(scheme: 'mailto', path: email);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
 
   Widget _buildStudentCard(ThemeData theme, bool isDark) {
     final student = internship.internStudent;
@@ -281,19 +304,7 @@ class InternshipDetailsPage extends StatelessWidget {
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 24,
-            backgroundColor: AppColors.green.withValues(alpha: 0.1),
-            child: Text(
-              '${student.firstName[0]}${student.lastName[0]}',
-              style: const TextStyle(
-                color: AppColors.green,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2,
-              ),
-            ),
-          ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -316,9 +327,19 @@ class InternshipDetailsPage extends StatelessWidget {
               ],
             ),
           ),
+          //if(student.phone != null)
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.email_outlined, color: AppColors.green),
+            onPressed: () =>
+                _launchPhone('52000000'), //TODO: replace with supervisor.phone
+            icon: Icon(Icons.phone_outlined, color: AppColors.green),
+          ),
+          IconButton(
+            onPressed: () => _launchWhatsApp('52000000'),
+            icon: FaIcon(FontAwesomeIcons.whatsapp, color: AppColors.green),
+          ),
+          IconButton(
+            onPressed: () => _launchEmail(student.email),
+            icon: Icon(Icons.email_outlined, color: AppColors.green),
           ),
         ],
       ),
@@ -338,19 +359,7 @@ class InternshipDetailsPage extends StatelessWidget {
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 24,
-            backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
-            child: Text(
-              '${supervisor.firstName[0]}${supervisor.lastName[0]}',
-              style: TextStyle(
-                color: theme.colorScheme.primary,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2,
-              ),
-            ),
-          ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -373,8 +382,28 @@ class InternshipDetailsPage extends StatelessWidget {
               ],
             ),
           ),
+          if (internship.status !=
+              InternshipStatus
+                  .enAttente) //will add verification for phone availability for each if
+            IconButton(
+              onPressed: () => _launchPhone(
+                '52000000',
+              ), //TODO: replace with supervisor.phone
+              icon: Icon(
+                Icons.phone_outlined,
+                color: theme.colorScheme.primary,
+              ),
+            ),
+          if (internship.status != InternshipStatus.enAttente)
+            IconButton(
+              onPressed: () => _launchWhatsApp('52000000'),
+              icon: FaIcon(
+                FontAwesomeIcons.whatsapp,
+                color: theme.colorScheme.primary,
+              ),
+            ),
           IconButton(
-            onPressed: () {},
+            onPressed: () => _launchEmail(supervisor.email),
             icon: Icon(Icons.email_outlined, color: theme.colorScheme.primary),
           ),
         ],
