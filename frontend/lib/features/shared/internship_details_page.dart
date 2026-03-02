@@ -231,7 +231,7 @@ class InternshipDetailsPage extends StatelessWidget {
     String value,
   ) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 8),
       decoration: BoxDecoration(
         color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(12),
@@ -242,7 +242,7 @@ class InternshipDetailsPage extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, size: 20, color: theme.colorScheme.primary),
-          const SizedBox(width: 12),
+          const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
