@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pfa/core/models/student.dart';
-import 'package:pfa/core/models/teacher.dart';
 import 'package:pfa/core/theme/app_colors.dart';
-import 'package:pfa/core/models/internship.dart';
 import 'package:pfa/features/shared/card_widgets.dart';
 
 class StudentHomePage extends ConsumerStatefulWidget {
@@ -40,54 +38,11 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
                   level: 3,
                 ),
               ),
+              // Placeholder for the internship card - replace with actual data when available Initial State.
               intershipCard(
                 viewType: InternshipCardViewType.student,
                 context,
-                internship: Internship(
-                  companyName: 'Tech Solutions Inc.',
-                  description:
-                      'Développement d\'une application mobile pour la gestion des tâches.',
-                  position: 'Développeur Flutter',
-                  startDate: DateTime(2026, 6, 1),
-                  endDate: DateTime(2026, 8, 31),
-                  status: InternshipStatus.enCours,
-                  internStudent: Student(
-                    id: 'S001',
-                    firstName: 'Chedy Amine',
-                    lastName: 'El Haj',
-                    email: 'elhaj.chedyamine@isimm.me',
-                    department: 'Informatique',
-                    level: 3,
-                  ),
-                ),
-              ),
-              intershipCard(
-                viewType: InternshipCardViewType.student,
-                context,
-                internship: Internship(
-                  companyName: 'Tech Solutions Inc.',
-                  description:
-                      'Développement d\'une application mobile pour la gestion des tâches.',
-                  position: 'Développeur Flutter',
-                  startDate: DateTime(2026, 6, 1),
-                  endDate: DateTime(2026, 8, 31),
-                  status: InternshipStatus.enCours,
-                  internStudent: Student(
-                    id: 'S001',
-                    firstName: 'Chedy Amine',
-                    lastName: 'El Haj',
-                    email: 'elhaj.chedyamine@isimm.me',
-                    department: 'Informatique',
-                    level: 3,
-                  ),
-                  supervisorTeacher: Teacher(
-                    id: 'T002',
-                    firstName: 'Sarah',
-                    lastName: 'Johnson',
-                    email: 'sarah.johnson@university.edu',
-                    department: 'Informatique',
-                  ),
-                ),
+                internship: null,
               ),
               Expanded(
                 child: Column(
