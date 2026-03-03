@@ -117,6 +117,7 @@ class _PasswordInputFieldState extends State<PasswordInputField> {
     return TextFormField(
       cursorColor: Theme.of(context).colorScheme.primary,
       controller: widget.controller,
+      autofillHints: const [AutofillHints.password],
       decoration: InputDecoration(
         labelText: widget.label,
         prefixIcon: const Icon(Icons.lock_outline_rounded),
@@ -152,6 +153,7 @@ class EmailInputField extends StatelessWidget {
     return TextFormField(
       cursorColor: Theme.of(context).colorScheme.primary,
       controller: controller,
+      autofillHints: const [AutofillHints.username],
       decoration: const InputDecoration(
         labelText: 'Email',
         prefixIcon: Icon(Icons.email_outlined),
@@ -165,20 +167,26 @@ class EmailInputField extends StatelessWidget {
 class NameInputField extends StatelessWidget {
   final TextEditingController? controller;
   final String? label;
+  final Iterable<String>? autofillHints;
 
-  const NameInputField({super.key, this.controller, this.label});
+  const NameInputField({
+    super.key,
+    this.controller,
+    this.label,
+    this.autofillHints,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       cursorColor: Theme.of(context).colorScheme.primary,
       controller: controller,
+      autofillHints: autofillHints,
       decoration: InputDecoration(
         labelText: label ?? 'Nom',
         prefixIcon: const Icon(Icons.person_outline_rounded),
       ),
       textInputAction: TextInputAction.next,
-      validator: (value) => Validators.validateName(value, label ?? 'Nom'),
     );
   }
 }
