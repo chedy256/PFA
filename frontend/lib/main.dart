@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pfa/features/splash_screen.dart';
 import 'package:pfa/features/teacher/home_page.dart';
 import 'core/theme/app_theme.dart';
 import 'firebase_options.dart';
@@ -38,8 +40,9 @@ class _MyAppState extends ConsumerState<MyApp> {
       themeMode: themeMode,
       debugShowCheckedModeBanner: false,
       title: 'ISIMM Internship Management',
-      initialRoute: '/login',
+      initialRoute: kIsWeb ? '/login' : '/',
       routes: {
+        '/': (context) => const SplashScreen(),
         '/login': (context) => const AuthPage(),
         '/resetpass': (context) => const ForgotPassScreen(),
         '/student': (context) => const StudentHomePage(),

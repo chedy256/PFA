@@ -306,7 +306,12 @@ Container emptyIntershipCard(BuildContext context, ThemeData theme) {
               ),
             ),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const SubmitInternshipPage()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SubmitInternshipPage(),
+                ),
+              );
             },
             child: Text(
               'Postuler votre stage',
