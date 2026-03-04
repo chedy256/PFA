@@ -46,5 +46,5 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# Ignore frontend directory in backend branch
-frontend/
+# Ignore credentials and environment variables
+.env

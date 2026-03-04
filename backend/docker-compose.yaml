@@ -1,29 +1,68 @@
-version: "3.9"
-
 services:
-  backend:
-    build: .
-    container_name: internship-backend
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./storage:/app/storage
-      - ./firebase.json:/app/firebase.json:ro
-    environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/internships
-      DOCUMENTS_PATH: /app/storage/internships
-    depends_on:
-      - db
+  postgres:
+    image: postgres:16
+    container_name: dev-postgres
+    restart: unless-stopped
 
-  db:
-    image: postgres:15
-    container_name: internship-db
+    env_file:
+      - .env
+
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: internships
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    ports:
+      - "${POSTGRES_PORT}:5432"
+
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # ------------------------
+  # LOCALXPOSE TUNNEL (OPTIONAL DEV TUNNEL)
+  # ------------------------
+
+  # localxpose:
+  #   image: alpine:3.20
+  #   container_name: localxpose-tunnel
+  #   restart: unless-stopped
+  #
+  #   env_file:
+  #     - .env
+  #
+  #   command: >
+  #     sh -c "
+  #     apk add --no-cache curl &&
+  #     curl -fsSL https://api.localxpose.io/install.sh | sh &&
+  #     lx auth ${LX_TOKEN} &&
+  #     lx tunnel http --to host.docker.internal:${BACKEND_PORT}
+  #     "
+
+  # ------------------------
+  # LOCAL TUNNEL (ALTERNATIVE DEV TUNNEL)
+  # ------------------------
+  localtunnel:
+    image: node:20
+    container_name: localtunnel
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    command: >
+      sh -c "
+      npm install -g localtunnel &&
+      lt --port ${BACKEND_PORT} --local-host host.docker.internal --subdomain pfa-backend-isimm
+      "
+
+  # ------------------------
+  # CLOUDFLARED TUNNEL (PRODUCTION)
+  # ------------------------
 volumes:
   pgdata:
