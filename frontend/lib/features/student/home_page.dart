@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pfa/core/models/student.dart';
 import 'package:pfa/core/theme/app_colors.dart';
 import 'package:pfa/features/shared/card_widgets.dart';
+import 'package:pfa/features/student/documents/documents_page.dart';
+import 'package:pfa/features/student/documents/request_document_page.dart';
 
 class StudentHomePage extends ConsumerStatefulWidget {
   const StudentHomePage({super.key});
@@ -79,14 +81,25 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
                                 Icons.download,
                                 'Documents officiels',
                                 'Télécharger vos documents de stage',
-                                () {},
+                                () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const DocumentsPage(),
+                                  ),
+                                ),
                               ),
                               _quickActionCard(
                                 context,
                                 Icons.document_scanner,
                                 'Demander des Documents',
                                 'Demander des documents de stage',
-                                () {},
+                                () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const RequestDocumentPage(),
+                                  ),
+                                ),
                               ),
                               _quickActionCard(
                                 context,
