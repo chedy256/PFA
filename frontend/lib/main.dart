@@ -11,15 +11,29 @@ import 'package:pfa/features/auth/auth_page.dart';
 import 'package:pfa/features/auth/forgot_pass_screen.dart';
 import 'package:pfa/features/student/home_page.dart';
 import 'package:pfa/core/providers/theme_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  final prefs = await SharedPreferences.getInstance();
+  final savedTheme = prefs.getString('theme_mode');
+  final initialTheme = ThemeMode.values.firstWhere(
+    (e) => e.name == savedTheme,
+    orElse: () => ThemeMode.system,
+  );
+
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(
+    ProviderScope(
+      overrides: [initialThemeModeProvider.overrideWithValue(initialTheme)],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends ConsumerStatefulWidget {
