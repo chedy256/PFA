@@ -17,13 +17,13 @@ publish_to: 'none'
 version: 0.0.2+1
 
 environment:
-  sdk: ^3.12.0-100.0.dev
+  sdk: ^3.11.1
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  font_awesome_flutter: ^10.12.0
+  font_awesome_flutter: ^11.0.0
   flutter_riverpod: ^3.2.1
   riverpod_annotation: ^4.0.2
   firebase_core: ^4.4.0

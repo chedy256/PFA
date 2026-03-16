@@ -218,13 +218,20 @@ class QuickLoginOptions extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             SocialLoginButton(
-              icon: FontAwesomeIcons.google,
-              color: Colors.red,
+              icon: const FaIcon(
+                FontAwesomeIcons.google,
+                size: 32,
+                color: Colors.red,
+              ),
+
               onTap: onGoogleTap,
             ),
             SocialLoginButton(
-              icon: FontAwesomeIcons.microsoft,
-              color: const Color(0xFF0072C6),
+              icon: const FaIcon(
+                FontAwesomeIcons.microsoft,
+                size: 32,
+                color: Color(0xFF0072C6),
+              ),
               onTap: onMicrosoftTap,
             ),
           ],
@@ -236,16 +243,10 @@ class QuickLoginOptions extends StatelessWidget {
 }
 
 class SocialLoginButton extends StatelessWidget {
-  final IconData icon;
-  final Color? color;
+  final FaIcon icon;
   final VoidCallback onTap;
 
-  const SocialLoginButton({
-    super.key,
-    required this.icon,
-    this.color,
-    required this.onTap,
-  });
+  const SocialLoginButton({super.key, required this.icon, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -271,7 +272,7 @@ class SocialLoginButton extends StatelessWidget {
               ),
           ],
         ),
-        child: FaIcon(icon, size: 32, color: color),
+        child: icon,
       ),
     );
   }
