@@ -1,24 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pfa/core/providers/auth_provider.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
-  void _navigate(BuildContext context) async {
-    // Simulate some future initialization work (e.g., loading resources, checking auth status, connectivity ,etc.)
+  @override
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends ConsumerState<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _navigate();
+  }
+
+  void _navigate() async {
+    // Simulate some future initialization work
     await Future.delayed(const Duration(seconds: 3));
 
-    if (context.mounted) {
+    if (!mounted) return;
+
+    final authState = ref.read(authProvider);
+
+    // Fallback if loading, wait for it
+    if (authState.isLoading) {
+      // Just let the auth guard in routes do the work if we pushed login?
+      // Actually ref.watch in build is better, but since it's a future delayed:
       Navigator.pushReplacementNamed(context, '/login');
+      return;
     }
+
+    authState.whenData((user) {
+      if (user != null) {
+        if (user.role == 'Etudiant') {
+          Navigator.pushReplacementNamed(context, '/student');
+        } else if (user.role == 'Enseignant') {
+          Navigator.pushReplacementNamed(context, '/teacher');
+        } else {
+          Navigator.pushReplacementNamed(context, '/login');
+        }
+      } else {
+        Navigator.pushReplacementNamed(context, '/login');
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _navigate(context);
-    });
-
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(

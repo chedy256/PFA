@@ -12,6 +12,7 @@ import 'package:pfa/features/auth/forgot_pass_screen.dart';
 import 'package:pfa/features/student/home_page.dart';
 import 'package:pfa/core/providers/theme_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pfa/core/auth/auth_guard.dart'; // Added AuthGuard
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,8 +60,12 @@ class _MyAppState extends ConsumerState<MyApp> {
         '/': (context) => const SplashScreen(),
         '/login': (context) => const AuthPage(),
         '/resetpass': (context) => const ForgotPassScreen(),
-        '/student': (context) => const StudentHomePage(),
-        '/teacher': (context) => const TeacherHomePage(),
+        '/student': (context) =>
+            const AuthGuard(allowedRole: 'Etudiant', child: StudentHomePage()),
+        '/teacher': (context) => const AuthGuard(
+          allowedRole: 'Enseignant',
+          child: TeacherHomePage(),
+        ),
       },
     );
   }

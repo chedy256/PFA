@@ -31,7 +31,11 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
     _confirmPasswordController = TextEditingController();
-    _authSubscription = ref.listenManual(authProvider, _onAuthStateChanged);
+    _authSubscription = ref.listenManual(
+      authProvider,
+      _onAuthStateChanged,
+      fireImmediately: true,
+    );
   }
 
   void _onAuthStateChanged(
@@ -59,7 +63,8 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     }
 
     if (next.value != null && !next.isLoading) {
-      switch (_selectedRole) {
+      final userRole = next.value!.role;
+      switch (userRole) {
         case 'Etudiant':
           Navigator.pushNamedAndRemoveUntil(
             context,
@@ -77,7 +82,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
         default:
           Navigator.pushNamedAndRemoveUntil(
             context,
-            '/unknown',
+            '/login',
             (Route<dynamic> route) => false,
           );
       }
