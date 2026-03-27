@@ -153,7 +153,7 @@ final class LogoutButton extends ConsumerWidget {
                   Navigator.of(context).pop();
                   ref.read(authProvider.notifier).logout();
                   if (context.mounted) {
-                    Navigator.pushReplacementNamed(context, '/login');
+                    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
                   }
                 },
                 style: TextButton.styleFrom(
