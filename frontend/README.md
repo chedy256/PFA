@@ -108,15 +108,16 @@ La navigation est basée sur les rôles et **contrôlée côté serveur**.
 ## Roadmap
 
 - [x] App Theming 
-- [ ] Pages:
+- [_] Pages:
     - [x] Login / Inscription
     - [x] Accueil Étudiant
     - [x] Accueil Enseignant
     - [ ] Page des Stages:
        - [x] Page Stage Détailée
        - [x] Page de Soumission de Stage
-       - [ ] Page du Document
+       - [_] Page du Document
        - [_] Page Profile / Paramètres
+       - [ ] Page de Suivi d’état (Journal du stage)
 - [x] Intégration avec Firebase Authentication
 - [ ] Intégration complète avec le backend
 - [ ] Tests unitaires et d’intégration
