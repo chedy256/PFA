@@ -119,7 +119,7 @@ final class LogoutButton extends ConsumerWidget {
 
     return TextButton.icon(
       onPressed: () async {
-        await showDialog(
+        final shouldLogout = await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
             backgroundColor: theme.scaffoldBackgroundColor,
@@ -137,7 +137,7 @@ final class LogoutButton extends ConsumerWidget {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(false);
                 },
                 child: Text(
                   'Annuler',
@@ -150,11 +150,7 @@ final class LogoutButton extends ConsumerWidget {
               ),
               TextButton(
                 onPressed: () async {
-                  Navigator.of(context).pop();
-                  ref.read(authProvider.notifier).logout();
-                  if (context.mounted) {
-                    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
-                  }
+                  Navigator.of(context).pop(true);
                 },
                 style: TextButton.styleFrom(
                   foregroundColor: theme.colorScheme.error,
@@ -175,6 +171,9 @@ final class LogoutButton extends ConsumerWidget {
             ],
           ),
         );
+        if (shouldLogout!) {
+          await ref.read(authProvider.notifier).logout();
+        }
       },
       style: OutlinedButton.styleFrom(
         foregroundColor: theme.colorScheme.error,
