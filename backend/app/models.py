@@ -16,7 +16,6 @@ class User(Base):
     fcm_token = Column(String, nullable=True)
     department = Column(String, nullable=True)
 
-
 class Internship(Base):
     _tablename_ = "internships"
 
@@ -30,13 +29,12 @@ class Internship(Base):
     student = relationship("User", foreign_keys=[student_id])
     teacher = relationship("User", foreign_keys=[teacher_id])
 
-
 class Message(Base):
     _tablename_ = "messages"
 
     id = Column(String, primary_key=True)
-    sender_id = Column(String, ForeignKey("users.id"), nullable=False)
-    receiver_id = Column(String, ForeignKey("users.id"), nullable=False)
+    sender_id = Column(String, ForeignKey("users.id"))
+    receiver_id = Column(String, ForeignKey("users.id"))
     content = Column(Text, nullable=False)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 

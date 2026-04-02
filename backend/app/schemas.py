@@ -2,7 +2,6 @@ from pydantic import BaseModel
 from typing import Optional
 import datetime
 
-# USER
 class UserOut(BaseModel):
     id: str
     email: str
@@ -14,7 +13,6 @@ class UserOut(BaseModel):
     class Config:
         from_attributes = True
 
-# AUTH
 class BootstrapRequest(BaseModel):
     requested_role: str
     first_name: Optional[str] = None
@@ -24,7 +22,6 @@ class BootstrapRequest(BaseModel):
 class FCMTokenUpdate(BaseModel):
     fcm_token: str
 
-# INTERNSHIP
 class InternshipCreate(BaseModel):
     title: str
     description: str
@@ -38,7 +35,6 @@ class InternshipOut(BaseModel):
     class Config:
         from_attributes = True
 
-# ✅ MESSAGING
 class MessageCreate(BaseModel):
     receiver_id: str
     content: str
