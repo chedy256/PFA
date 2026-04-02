@@ -35,8 +35,8 @@ class Message(Base):
     _tablename_ = "messages"
 
     id = Column(String, primary_key=True)
-    sender_id = Column(String, ForeignKey("users.id"))
-    receiver_id = Column(String, ForeignKey("users.id"))
+    sender_id = Column(String, ForeignKey("users.id"), nullable=False)
+    receiver_id = Column(String, ForeignKey("users.id"), nullable=False)
     content = Column(Text, nullable=False)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
