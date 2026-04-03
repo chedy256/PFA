@@ -1,8 +1,9 @@
-from fastapi import Depends, Header
+from fastapi import Depends, Header, HTTPException
 from sqlalchemy.orm import Session
-from database import SessionLocal
-from auth import verify_firebase_token
-from models import User
+from app.database import SessionLocal
+from app.auth import verify_firebase_token
+from app.models import User
+
 
 def get_db():
     db = SessionLocal()
@@ -11,10 +12,8 @@ def get_db():
     finally:
         db.close()
 
-def get_current_user(
-    authorization: str = Header(...),
-    db: Session = Depends(get_db)
-):
+
+def get_current_user(authorization: str = Header(...), db: Session = Depends(get_db)):
     if not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing Bearer token")
 

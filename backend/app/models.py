@@ -1,10 +1,11 @@
 from sqlalchemy import Column, String, ForeignKey, DateTime, Text
 from sqlalchemy.orm import relationship
-from database import Base
+from app.database import Base
 import datetime
 
+
 class User(Base):
-    _tablename_ = "users"
+    __tablename__ = "users"
 
     id = Column(String, primary_key=True)
     email = Column(String, unique=True, nullable=False)
@@ -16,8 +17,9 @@ class User(Base):
     fcm_token = Column(String, nullable=True)
     department = Column(String, nullable=True)
 
+
 class Internship(Base):
-    _tablename_ = "internships"
+    __tablename__ = "internships"
 
     id = Column(String, primary_key=True)
     student_id = Column(String, ForeignKey("users.id"))
@@ -29,8 +31,9 @@ class Internship(Base):
     student = relationship("User", foreign_keys=[student_id])
     teacher = relationship("User", foreign_keys=[teacher_id])
 
+
 class Message(Base):
-    _tablename_ = "messages"
+    __tablename__ = "messages"
 
     id = Column(String, primary_key=True)
     sender_id = Column(String, ForeignKey("users.id"))

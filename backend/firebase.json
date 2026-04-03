@@ -1,12 +1,14 @@
 {
   "type": "service_account",
-  "project_id": "your-project-id",
-  "private_key_id": "your-private-key-id",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nYOUR_PRIVATE_KEY\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-xxxxx@your-project-id.iam.gserviceaccount.com",
-  "client_id": "your-client-id",
+  "project_id": "isimm-intern",
+  "private_key_id": "8a845045cfb03c53518647c5dd2adb73db6aa6c0",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDCwjG9EZijjtGN\nCzeYFgHYbm0LLnWOP0qMip7NY3E0BKWp4xdSuzvuJGt+dBix90t9CIwPpecR0B8O\n3ZrBhNB86Dcvtc8Bhk1JW8iuuBPhwqpWMtnTTN/2VhdgxAfVEaeHd8D7RPhFE49g\n8q+qGFbsF2oMpbIMGSqGE7hfZ6AeWIWILOzSp9z1lpAg8nzJNrPoY1vmAp/lAtLZ\nB/DxN7Jy+C7suPftpGtFefVv5KcrzZUljU1L1G11/izHF+WpHRgH8EFlCp9XopzN\nNefMiFCMw+RO1O/SSuLAoZVg5oHiRDBGrl0ignDiZmvQkhMMtmGC+IRcgSS9eGc8\n3X1QusiRAgMBAAECggEAECW9AqRbLRxh6rlxB46zjSKYBI2lONZYiPnT8XV65PQ0\nWWHhr3357w8H9o5g9HMWHYIVkr/k6POCJQph6ATqAEvZ3350cPeV9YIYS8bT/IDW\nUe/vYsyEjnj+1oq07N6E2aonzu1zTs7bXA9jBHhLefxK/Pdz9qV+LWr50LctGGGG\nJR+IeEvUHnhQvUR+LPY+U05SrWd/W6JU6c6GetkJb40Zr8TbCOidYE6rzleNJaHf\nztXu0yD3LY1RaU4QaX3SqRoU/LDDHsuYhouq9lR1ec3WZcv6+b87tuQLlWHMF6qg\nmHIxevJ33wak9QfZoxTlf8Z9wBUFRARbs4q1luUpkQKBgQDkIajDjZRvosQcD13t\nSQ4qlwToNtPc7WTFgCXsF7s/IPMAQNqVlelRVjkwEtAQY2MaOxtcXhWWcrnv4G/r\ne3xKHQwayQKVY6q21x2Xu5jCtFMuPShaqBCg+bEWD8yZUv/0cu90r+Tm97txBSdw\nAQRVOITs+HF57U0agTJENOAnPQKBgQDajN3CWaaHHK8Hne/MgdGpNCC/3UBotPtb\nyPIWP5KkswCFxmZI8Z7h64tkx6qHXjiA0ZTON/2kx+lPazIox2VnDmVJA2ETsemj\nnlw2BzHeLXc4Fq6Kb5Wy1BBnAHC7dzhpWedt4fqUws0XPDM3KJkhAUDHLynQjKhC\nKyrlG6lb5QKBgQCIX5qsM9F9HrbO81y5wUdHrHmRe10RH5RzABUrWlBj/4VkLGC+\ntRwBtGKBW22nrlIK1zSW9eM/yZtfSzJ8eZgmEdEvneP+e9MMc/HLx6gdFID5DjQ2\nZWtzX3A9+Pnc2iIJ9j8w6QkUDRmvCV629NSrQRstMaNcOMAzzPHIljc9HQKBgQDT\njPPEAx/NPZi3mMvce/VFAi6JSlPkhvug1xxvKM58GsFwvKGaDjirm2NtBFEvg6bS\nGw0dqNkfPlu7ApqlGo4veaHVUS4Q8HCmbs33hnNhC0WRx3Lgki6n0dqmuahl7ntu\njxYUKWBzyzTXPvCcffHsHthjdmXVd7IPitWUvHfteQKBgQCUI8kuDJOztNRPMs6o\ni+mk+QaTILXmQ4d/fsVdxBTkZMsq0OBuH8kNrTFmntMFLRaejnLw6qb7EZHfOGzF\nDgKeyPYvBzLTQ1ysRA1RFbsbAbIsetoi7rHCHqZxBEWY0yze7ELR9fu1rBh37mLF\nzpirBH4wr3XVhMEth7nRlpBfcg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@isimm-intern.iam.gserviceaccount.com",
+  "client_id": "109467810704823359809",
   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
   "token_uri": "https://oauth2.googleapis.com/token",
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-xxxxx%40your-project-id.iam.gserviceaccount.com"
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40isimm-intern.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
 }
+

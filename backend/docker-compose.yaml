@@ -44,6 +44,30 @@ services:
   #     lx tunnel http --to host.docker.internal:${BACKEND_PORT}
   #     "
 
+  backend:
+    build: .
+    container_name: backend
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    ports:
+      - "${BACKEND_PORT}:8000"
+
+    volumes:
+      - .:/app
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    command: >
+      sh -c "
+      pip install -r requirements.txt &&
+      uvicorn app.main:app --host 0.0.0.0 --port 8000
+      "
+
   # ------------------------
   # LOCAL TUNNEL (ALTERNATIVE DEV TUNNEL)
   # ------------------------
