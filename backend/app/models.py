@@ -3,23 +3,21 @@ from sqlalchemy.orm import relationship
 from database import Base
 import datetime
 
-
 class User(Base):
-    __tablename__ = "users"
+    _tablename_ = "users"
 
-    id = Column(String, primary_key=True)  # Firebase UID
+    id = Column(String, primary_key=True)
     email = Column(String, unique=True, nullable=False)
     first_name = Column(String, nullable=True)
     last_name = Column(String, nullable=True)
     role = Column(String, default="none")
-    status = Column(String, default="pending")  # ✅ ajouté
-    requested_role = Column(String, nullable=True)  # ✅ ajouté
-    fcm_token = Column(String, nullable=True)  # ✅ ajouté
+    status = Column(String, default="pending")
+    requested_role = Column(String, nullable=True)
+    fcm_token = Column(String, nullable=True)
     department = Column(String, nullable=True)
 
-
 class Internship(Base):
-    __tablename__ = "internships"
+    _tablename_ = "internships"
 
     id = Column(String, primary_key=True)
     student_id = Column(String, ForeignKey("users.id"))
@@ -30,3 +28,15 @@ class Internship(Base):
 
     student = relationship("User", foreign_keys=[student_id])
     teacher = relationship("User", foreign_keys=[teacher_id])
+
+class Message(Base):
+    _tablename_ = "messages"
+
+    id = Column(String, primary_key=True)
+    sender_id = Column(String, ForeignKey("users.id"))
+    receiver_id = Column(String, ForeignKey("users.id"))
+    content = Column(Text, nullable=False)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    sender = relationship("User", foreign_keys=[sender_id])
+    receiver = relationship("User", foreign_keys=[receiver_id])
