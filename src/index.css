@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── LIGHT MODE (default) ───────────────────────────────────────── */
+:root {
+  /* Backgrounds */
+  --bg-primary:    #F8F9FD;
+  --bg-secondary:  #FFFFFF;
+  --bg-card:       #F0F0F0;
+  --bg-hover:      #E8EFF8;
+  --bg-surface:    #FFFFFF;
+
+  /* Borders */
+  --border:        #E0E6ED;
+  --border-light:  #F1F5F9;
+
+  /* Accents */
+  --accent:        #0066CC;
+  --accent-light:  #4D94DB;
+  --accent-dark:   #004C99;
+  --accent-second: #6C63FF;
+  --accent-yellow: #FFD700;
+
+  /* Semantic */
+  --success:  #2E8B57;
+  --warning:  #F59E0B;
+  --error:    #DC2626;
+  --info:     #3B82F6;
+
+  /* Text */
+  --text-primary:   #1A1C1E;
+  --text-secondary: #42474E;
+  --text-tertiary:  #72777F;
+  --text-muted:     #9EA4AA;
+  --text-inverse:   #FFFFFF;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.07);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.10);
+
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color-scheme: light;
+}
+
+/* ── DARK MODE ──────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  /* Backgrounds */
+  --bg-primary:    #141414;
+  --bg-secondary:  #1E1E1E;
+  --bg-card:       #252525;
+  --bg-hover:      #2A2A2A;
+  --bg-surface:    #1E1E1E;
+
+  /* Borders */
+  --border:        #333333;
+  --border-light:  #2A2A2A;
+
+  /* Accents stay the same */
+  --accent:        #0066CC;
+  --accent-light:  #4D94DB;
+  --accent-dark:   #004C99;
+  --accent-second: #6C63FF;
+  --accent-yellow: #FFD700;
+
+  /* Semantic stay the same */
+  --success:  #2E8B57;
+  --warning:  #F59E0B;
+  --error:    #DC2626;
+  --info:     #3B82F6;
+
+  /* Text */
+  --text-primary:   #E3E3E3;
+  --text-secondary: #A0A0A0;
+  --text-tertiary:  #707070;
+  --text-muted:     #555555;
+  --text-inverse:   #FFFFFF;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.30);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.40);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.55);
+
+  color-scheme: dark;
+}
+
+/* ── BASE ───────────────────────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  transition: background 0.25s, color 0.25s;
+}
+
+h1, h2, h3, h4, h5 { font-family: 'Syne', sans-serif; }
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+input, select, textarea {
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border);
+  color: var(--text-primary);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0,102,204,0.12);
+}
+select option { background: var(--bg-secondary); color: var(--text-primary); }
+button { cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+
+/* ── ANIMATIONS ─────────────────────────────────────────────────── */
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.animate-slideInRight { animation: slideInRight 0.25s ease; }
+.animate-fadeIn       { animation: fadeIn 0.22s ease; }
+.animate-scaleIn      { animation: scaleIn 0.18s ease; }
+
+/* ── THEME TOGGLE ───────────────────────────────────────────────── */
+.theme-toggle {
+  width: 44px; height: 24px; border-radius: 12px;
+  background: var(--border); border: none;
+  position: relative; cursor: pointer; transition: background 0.25s; flex-shrink: 0;
+}
+.theme-toggle.dark { background: var(--accent); }
+.theme-toggle::after {
+  content: ''; position: absolute;
+  width: 18px; height: 18px; border-radius: 50%; background: #fff;
+  top: 3px; left: 3px; transition: transform 0.25s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.theme-toggle.dark::after { transform: translateX(20px); }
