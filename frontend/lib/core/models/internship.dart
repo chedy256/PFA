@@ -39,6 +39,8 @@ enum InternshipStatus {
 class Internship {
   List<Teacher>? pendingTeachers = [];
   Teacher? supervisorTeacher;
+  Student? secondStudent;
+  String? studentId;
   final Student internStudent;
   final String companyName;
   final String position;
@@ -57,5 +59,7 @@ class Internship {
     required this.internStudent,
     this.pendingTeachers,
     this.supervisorTeacher,
+    this.secondStudent,
+    this.studentId,
   });
 }

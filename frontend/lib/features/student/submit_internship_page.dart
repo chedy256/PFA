@@ -12,7 +12,7 @@ class SubmitInternshipPage extends ConsumerStatefulWidget {
 
 class _SubmitInternshipPageState extends ConsumerState<SubmitInternshipPage> {
   final _formKey = GlobalKey<FormState>();
-
+  final _secondStudentIdController = TextEditingController();
   final _companyController = TextEditingController();
   final _positionController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -56,6 +56,7 @@ class _SubmitInternshipPageState extends ConsumerState<SubmitInternshipPage> {
     _companyController.dispose();
     _positionController.dispose();
     _descriptionController.dispose();
+    _secondStudentIdController.dispose();
     super.dispose();
   }
 
@@ -149,6 +150,14 @@ class _SubmitInternshipPageState extends ConsumerState<SubmitInternshipPage> {
                 ),
                 validator: (value) =>
                     value!.isEmpty ? 'Ce champ est requis' : null,
+              ),
+              TextFormField(
+                controller: _secondStudentIdController,
+                decoration: const InputDecoration(
+                  labelText: 'Num° carte étudiant du binôme (optionnel)',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
               ),
               Row(
                 spacing: 16,
