@@ -64,28 +64,31 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
     if (next.value != null && !next.isLoading) {
       final userRole = next.value!.role;
-      switch (userRole) {
-        case 'Etudiant':
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/student',
-            (Route<dynamic> route) => false,
-          );
-          break;
-        case 'Enseignant':
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/teacher',
-            (Route<dynamic> route) => false,
-          );
-          break;
-        default:
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/login',
-            (Route<dynamic> route) => false,
-          );
-      }
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        switch (userRole) {
+          case 'Etudiant':
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              '/student',
+              (Route<dynamic> route) => false,
+            );
+            break;
+          case 'Enseignant':
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              '/teacher',
+              (Route<dynamic> route) => false,
+            );
+            break;
+          default:
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              '/login',
+              (Route<dynamic> route) => false,
+            );
+        }
+      });
     }
   }
 
