@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche d'Informations SFE/PFE</title>
+    <style>
+        :root {
+            --page-w: 210mm;
+            --page-h: 297mm;
+            --border: #222;
+            --border-w: 1px;
+            --muted: #333;
+            --dots-offset: 5px;
+            --label-w: 40mm;
+            --label-w-narrow: 22mm;
+            --field-gap: 2px;
+            --dot-r: 0.7px;
+            --dot-step-x: 4px;
+            --dot-step-y: 2px;
+            --row-gap: 6px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: #fff;
+            font-family: "Times New Roman", Times, serif;
+            color: #111;
+        }
+
+        .page {
+            width: var(--page-w);
+            min-height: var(--page-h);
+            margin: 0 auto;
+            padding: 10mm 12mm 9mm;
+        }
+
+        .header {
+            display: grid;
+            grid-template-columns: 20mm 1fr 30mm;
+            align-items: start;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .logo-left {
+            width: 20mm;
+            height: 16mm;
+            display: grid;
+            place-items: center;
+            color: #777;
+            font-size: 11px;
+        }
+
+        .logo-left img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .header-center {
+            text-align: center;
+            font-size: 11.5px;
+            line-height: 1.25;
+        }
+
+        .header-right {
+            text-align: right;
+        }
+
+        .logo-right {
+            width: 30mm;
+            height: 14mm;
+            display: grid;
+            place-items: center;
+        }
+
+        .logo-left img,
+        .logo-right img {
+            display: block;
+        }
+
+        .logo-right img {
+            max-width: 85%;
+            max-height: 85%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .code {
+            margin-top: 2px;
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        h1 {
+            margin: 10px 0 8px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .intro {
+            font-size: 12px;
+            line-height: 1.25;
+            margin: 0 0 8px;
+            text-align: left;
+        }
+
+        .section-title {
+            font-size: 14.5px;
+            font-weight: 700;
+            margin: 9px 0 5px;
+            text-decoration: none !important;
+        }
+
+        .section-title .title {
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            text-decoration-thickness: 1.5px;
+        }
+
+        .section-title .note {
+            font-weight: 400;
+            color: var(--muted);
+            text-decoration: none !important;
+        }
+
+        .box {
+            border: var(--border-w) solid var(--border);
+            padding: 5mm 6mm;
+        }
+
+        .box--split {
+            padding: 0;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1.35fr 0.65fr;
+            gap: 0;
+        }
+
+        .grid-encadrant {
+            display: grid;
+            grid-template-columns: 1.6fr 0.8fr;
+            gap: 0;
+            align-items: start;
+        }
+
+        .box--split .grid-2 > .rows,
+        .box--split .grid-encadrant > .rows {
+            padding: 5mm 6mm;
+        }
+
+        .box--split .grid-2 > .rows + .rows,
+        .box--split .grid-encadrant > .rows + .rows {
+            border-left: var(--border-w) solid var(--border);
+        }
+
+        .rows {
+            display: grid;
+            gap: var(--row-gap);
+        }
+
+        .rows--narrow {
+            --label-w: var(--label-w-narrow);
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: max-content 1fr;
+            gap: var(--field-gap);
+            align-items: end;
+        }
+
+        .row--labelonly {
+            grid-template-columns: 1fr;
+            gap: 0;
+            align-items: start;
+            margin-top: 2mm;
+        }
+
+        .label {
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .line {
+            min-height: 6.5mm;
+            display: flex;
+            align-items: end;
+            padding-bottom: 1px;
+            padding-right: 16mm;
+        }
+
+        .line--plain {
+            background-image: none;
+            padding-right: 0;
+            overflow: visible;
+        }
+
+        .line input {
+            width: 100%;
+            border: 0;
+            outline: none;
+            font: inherit;
+            font-size: 14px;
+            line-height: 1.1;
+            padding: 0;
+            background: transparent;
+        }
+
+        /* Dot leaders */
+        .line,
+        .datebox,
+        .dotfill {
+            background-image: radial-gradient(#111 var(--dot-r), transparent var(--dot-r));
+            background-size: var(--dot-step-x) var(--dot-step-y);
+            background-repeat: repeat-x;
+            background-position: left calc(100% - var(--dots-offset));
+            background-origin: content-box;
+            background-clip: content-box;
+        }
+
+        .dotfill {
+            width: 100%;
+            height: 1em;
+        }
+
+        .filled {
+            background-image: none !important;
+        }
+
+        .split-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 55mm 1fr;
+            gap: 0;
+            align-items: stretch;
+        }
+
+        .detail-note {
+            border-right: var(--border-w) solid var(--border);
+            padding: 5mm 4mm;
+            font-size: 12px;
+            line-height: 1.2;
+            display: grid;
+            place-items: center;
+            text-align: center;
+        }
+
+        .multi {
+            display: grid;
+            gap: var(--row-gap);
+            padding: 5mm 6mm;
+        }
+
+        .detail-footer {
+            display: grid;
+            grid-template-columns: 55mm 1fr;
+            border-top: var(--border-w) solid var(--border);
+        }
+
+        .detail-footer-label {
+            padding: 3mm 4mm;
+            border-right: var(--border-w) solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .detail-footer-content {
+            padding: 3mm 5mm;
+            display: flex;
+            align-items: center;
+        }
+
+        .period-row {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 6px;
+            align-items: end;
+        }
+
+        .period-inline {
+            display: flex;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+            gap: 3px;
+            align-items: flex-end;
+        }
+
+        .period-inline .datebox {
+            width: 18mm;
+            flex: 0 0 18mm;
+        }
+
+        .datebox {
+            min-height: 6.5mm;
+            display: flex;
+            align-items: end;
+            padding: 0 1mm;
+        }
+
+        .datebox input {
+            width: 100%;
+            border: 0;
+            outline: none;
+            font: inherit;
+            font-size: 14px;
+            background: transparent;
+            padding: 0;
+            text-align: center;
+        }
+
+        .signature {
+            margin-top: 8px;
+        }
+
+        .signature-pad {
+            height: 18mm;
+        }
+
+        .sig-title {
+            text-align: right;
+            font-size: 14px;
+            font-weight: 700;
+            margin: 0 0 4px;
+        }
+
+        .signature .label {
+            font-weight: 400;
+        }
+
+        .sig-block {
+            margin-left: auto;
+            width: 132mm;
+        }
+
+        .sig-row {
+            display: grid;
+            grid-template-columns: auto 52mm auto 1fr;
+            gap: 5mm;
+            align-items: end;
+        }
+
+        .sig-row .line { padding-right: 10mm; }
+
+        .sig-date {
+            display: grid;
+            grid-template-columns: 14mm auto 14mm auto 22mm;
+            gap: 4px;
+            align-items: end;
+        }
+
+        .footer {
+            margin-top: 10px;
+            border-top: 2px solid #000;
+            padding-top: 6px;
+            font-size: 11px;
+            text-align: center;
+            line-height: 1.25;
+        }
+
+        @page {
+            size: A4;
+            margin: 12mm;
+        }
+
+        @media print {
+            body { background: #fff; }
+            .page {
+                margin: 0;
+                width: auto;
+                min-height: auto;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page" role="document" aria-label="Fiche d'informations SFE/PFE">
+        <header class="header">
+            <div class="logo-left">
+                <img src="images.png" alt="Université de Monastir" onerror="this.style.display='none'" />
+            </div>
+
+            <div class="header-center">
+                <div><strong>République Tunisienne</strong></div>
+                <div>Ministère de l'Enseignement Supérieur et de la Recherche Scientifique</div>
+                <div>Université de Monastir</div>
+                <div>Institut Supérieur d'Informatique et de Mathématiques de Monastir</div>
+            </div>
+
+            <div class="header-right">
+                <div class="logo-right">
+                    <img src="ISIM_LOGO_ar.png" alt="ISIMM" />
+                </div>
+            </div>
+        </header>
+
+        <h1>Fiche d'Informations SF E/PFE</h1>
+        <p class="intro"><em>
+            Pour pouvoir retirer la Lettre d'Affectation, les informations se trouvant sur cette fiche doivent être
+            obligatoirement saisies par l'étudiant dans le formulaire Fiche d'Informations avant sa transmission au
+            service des stages.
+        </em></p>
+
+        <div class="section-title"><span class="title">Identification Etudiant :</span> <span class="note">(à remplir par l'étudiant avant de présenter la demande à l'entreprise)</span></div>
+        <section class="box box--split" aria-label="Identification étudiant">
+            <div class="grid-2">
+                <div class="rows">
+                    <div class="row">
+                        <div class="label">Nom et prénom :</div>
+                        <div class="line"><input type="text" aria-label="Nom et prénom" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Filière :</div>
+                        <div class="line"><input type="text" aria-label="Filière" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Email :</div>
+                        <div class="line"><input type="text" aria-label="Email" /></div>
+                    </div>
+                </div>
+
+                <div class="rows rows--narrow">
+                    <div class="row">
+                        <div class="label">N° CIN :</div>
+                        <div class="line"><input type="text" aria-label="Numéro CIN" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Tél :</div>
+                        <div class="line"><input type="text" aria-label="Téléphone" /></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-title"><span class="title">Encadrant Pédagogique :</span> <span class="note">(à remplir par l'enseignant encadrant de l'ISIMM)</span></div>
+        <section class="box box--split" aria-label="Encadrant pédagogique">
+            <div class="grid-encadrant">
+                <div class="rows">
+                    <div class="row">
+                        <div class="label">Nom et prénom :</div>
+                        <div class="line"><input type="text" aria-label="Encadrant pédagogique - Nom et prénom" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Email :</div>
+                        <div class="line"><input type="text" aria-label="Encadrant pédagogique - Email" /></div>
+                    </div>
+                </div>
+                <div class="rows rows--narrow">
+                    <div class="row">
+                        <div class="label">Signature :</div>
+                        <div class="line"><input type="text" aria-label="Signature" /></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-title"><span class="title">Entreprise d'accueil :</span> <span class="note">(à remplir par le responsable ou l'encadrant industriel)</span></div>
+        <section class="box" aria-label="Entreprise d'accueil">
+            <div class="rows">
+                <div class="row">
+                    <div class="label">Nom entreprise :</div>
+                    <div class="line"><input type="text" aria-label="Nom entreprise" /></div>
+                </div>
+                <div class="row">
+                    <div class="label">Domaine d'activité :</div>
+                    <div class="line"><input type="text" aria-label="Domaine d'activité" /></div>
+                </div>
+                <div class="row">
+                    <div class="label">Adresse :</div>
+                    <div class="line"><input type="text" aria-label="Adresse" /></div>
+                </div>
+
+                <div class="split-2">
+                    <div class="row">
+                        <div class="label">Tél :</div>
+                        <div class="line"><input type="text" aria-label="Téléphone" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Fax :</div>
+                        <div class="line"><input type="text" aria-label="Fax" /></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="label">Site Web :</div>
+                    <div class="line"><input type="text" aria-label="Site web" /></div>
+                </div>
+
+                <div class="row row--labelonly">
+                    <div class="label">Encadrant Industriel :</div>
+                </div>
+
+                <div class="split-2">
+                    <div class="row">
+                        <div class="label">Nom et Prénom :</div>
+                        <div class="line"><input type="text" aria-label="Encadrant industriel - Nom et prénom" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="label">Service :</div>
+                        <div class="line"><input type="text" aria-label="Service" /></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="label">Fonction :</div>
+                    <div class="line"><input type="text" aria-label="Fonction" /></div>
+                </div>
+
+                <div class="row">
+                    <div class="label">Email :</div>
+                    <div class="line"><input type="text" aria-label="Email entreprise" /></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-title"><span class="title">Détail du travail :</span> <span class="note">(à remplir par le responsable ou l'encadrant industriel)</span></div>
+        <section class="box box--split" aria-label="Détail du travail" style="padding:0;">
+            <div class="detail-grid">
+                <div class="detail-note">
+                    <div><strong>Titre proposé :</strong></div>
+                    <div style="margin-top:4px;">(joindre une description</div>
+                    <div>Détaillée à la page suivante)</div>
+                </div>
+                <div class="multi" aria-label="Titre proposé">
+                    <div class="line"><input type="text" aria-label="Titre proposé ligne 1" /></div>
+                    <div class="line"><input type="text" aria-label="Titre proposé ligne 2" /></div>
+                    <div class="line"><input type="text" aria-label="Titre proposé ligne 3" /></div>
+                </div>
+            </div>
+
+            <div class="detail-footer" aria-label="Période du stage">
+                <div class="detail-footer-label"><span class="label">Période du Stage :</span></div>
+                <div class="detail-footer-content">
+                    <div class="period-inline">
+                        <span><strong>Du</strong></span>
+                        <span class="datebox"><input type="text" aria-label="Jour (début)" /></span>
+                        <span>/</span>
+                        <span class="datebox"><input type="text" aria-label="Mois (début)" /></span>
+                        <span>/</span>
+                        <span><strong>2025</strong></span>
+                        <span><strong>au</strong></span>
+                        <span class="datebox"><input type="text" aria-label="Jour (fin)" /></span>
+                        <span>/</span>
+                        <span class="datebox"><input type="text" aria-label="Mois (fin)" /></span>
+                        <span>/</span>
+                        <span><strong>2025</strong></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="signature" aria-label="Signature entreprise">
+            <div class="sig-title">Date, signature, et cachet de l'entreprise</div>
+            <div class="sig-block">
+                <div class="sig-row">
+                    <div class="label">Fait à :</div>
+                    <div class="line"><input type="text" aria-label="Fait à" /></div>
+                    <div class="label">le :</div>
+                    <div class="line line--plain" style="border-bottom:none; padding-bottom:0; display:block;">
+                        <div class="sig-date" aria-label="Date">
+                            <span class="datebox"><input type="text" aria-label="Jour" /></span>
+                            <span>/</span>
+                            <span class="datebox"><input type="text" aria-label="Mois" /></span>
+                            <span>/</span>
+                            <span class="datebox"><input type="text" aria-label="Année" /></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="signature-pad" aria-hidden="true"></div>
+        </section>
+
+        <footer class="footer">
+            <div>Institut Supérieur d'Informatique et de Mathématiques de Monastir, BP 223, Avenue de la Corniche, Monastir 5000, Tunisie</div>
+            <div>Tél: +216 70 011 920 — Fax: +216 76 011 959 — Email: isimm.directionstage@gmail.com</div>
+            <div>www.isimm.rnu.tn</div>
+        </footer>
+    </main>
+
+    <script>
+        (function () {
+            function hasValue(input) {
+                return input.value.trim().length > 0;
+            }
+
+            function updateContainerStates(input) {
+                const line = input.closest('.line');
+                if (line) {
+                    const anyFilled = Array.from(line.querySelectorAll('input[type="text"]')).some(hasValue);
+                    line.classList.toggle('filled', anyFilled);
+                }
+
+                const datebox = input.closest('.datebox');
+                if (datebox) {
+                    datebox.classList.toggle('filled', hasValue(input));
+                }
+            }
+
+            window.addEventListener('DOMContentLoaded', function () {
+                const inputs = document.querySelectorAll('input[type="text"]');
+                inputs.forEach(function (input) {
+                    updateContainerStates(input);
+                    input.addEventListener('input', function () { updateContainerStates(input); });
+                    input.addEventListener('change', function () { updateContainerStates(input); });
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

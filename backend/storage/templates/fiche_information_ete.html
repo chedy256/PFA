@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche d'Informations Stage d'été</title>
+    <style>
+        :root {
+            --page-w: 210mm;
+            --page-h: 297mm;
+            --border: #222;
+            --muted: #444;
+            --dots-offset: 5px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: #fff;
+            font-family: "Times New Roman", Times, serif;
+            color: #111;
+        }
+
+        .page {
+            width: var(--page-w);
+            min-height: var(--page-h);
+            margin: 0 auto;
+            background: #fff;
+            border: none;
+            padding: 12mm 12mm 10mm;
+        }
+
+        .header {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: start;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .header .block {
+            font-size: 12px;
+            line-height: 1.25;
+        }
+
+        .header .block.small {
+            font-size: 11px;
+        }
+
+        .header .block.right {
+            text-align: right;
+            direction: rtl;
+            font-family: "Times New Roman", Times, serif;
+        }
+
+        .logo {
+            width: 70mm;
+            min-height: 24mm;
+            border: none;
+            display: grid;
+            place-items: center;
+            font-size: 11px;
+            color: #666;
+        }
+
+        .logo img {
+            max-width: 100%;
+            max-height: 24mm;
+            object-fit: contain;
+            display: block;
+        }
+
+        .code {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 2px 6px;
+            border: 1px solid #444;
+            font-size: 11px;
+            direction: ltr;
+        }
+
+        h1 {
+            margin: 6px 0 12px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 10px 0 6px;
+            text-decoration: none !important;
+        }
+
+        .section-title .title {
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .section-title .note {
+            font-weight: 400;
+            color: var(--muted);
+            text-decoration: none !important;
+        }
+
+        .box {
+            border: 1px solid var(--border);
+            padding: 10px 12px;
+        }
+
+        .rows {
+            display: grid;
+            gap: 8px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            align-items: end;
+            gap: 6px;
+        }
+
+        .label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #111;
+            white-space: nowrap;
+        }
+
+        .line {
+            min-height: 7mm;
+            display: flex;
+            align-items: end;
+            padding-bottom: 1px;
+            padding-right: 16mm;
+            overflow: hidden;
+        }
+
+        .line input {
+            width: 100%;
+            border: 0;
+            outline: none;
+            font: inherit;
+            font-size: 14px;
+            line-height: 1.1;
+            padding: 0;
+            background: transparent;
+        }
+
+        .line input::placeholder {
+            color: #888;
+        }
+
+        /* Dots to fill in (no underline) */
+        .line,
+        .date-inline .datebox,
+        .dotfill {
+            background-image: radial-gradient(#111 0.7px, transparent 0.7px);
+            background-size: 4px 2px;
+            background-repeat: repeat-x;
+            background-position: left calc(100% - var(--dots-offset));
+            background-origin: content-box;
+            background-clip: content-box;
+        }
+
+        .filled {
+            background-image: none !important;
+        }
+
+        .line--plain {
+            background-image: none;
+            padding-right: 0;
+            overflow: visible;
+        }
+
+        .dotfill {
+            width: 100%;
+            height: 1em;
+        }
+
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .period {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .date-inline {
+            display: grid;
+            grid-template-columns: auto 18mm auto 18mm auto 26mm;
+            gap: 5px;
+            align-items: end;
+        }
+
+        .date-inline--only {
+            grid-template-columns: 18mm auto 18mm auto 26mm;
+        }
+
+        .date-inline .datebox {
+            min-height: 7mm;
+            display: flex;
+            align-items: end;
+        }
+
+        .date-inline input {
+            width: 100%;
+            border: 0;
+            outline: none;
+            font: inherit;
+            font-size: 14px;
+            background: transparent;
+            padding: 0;
+            text-align: center;
+        }
+
+        .signature {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .signature-pad {
+            height: 18mm;
+        }
+
+        .signature-block {
+            margin-left: auto;
+            width: 120mm;
+        }
+
+        .sig-row {
+            display: grid;
+            grid-template-columns: auto 45mm auto 1fr;
+            gap: 6px;
+            align-items: end;
+        }
+
+        .sig-row .line {
+            padding-right: 8mm;
+        }
+
+        .signature .center {
+            text-align: right;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .footer {
+            margin-top: 12px;
+            border-top: 1px solid #000;
+            padding-top: 6px;
+            font-size: 11px;
+            color: #111;
+            text-align: center;
+            line-height: 1.25;
+        }
+
+        @page {
+            size: A4;
+            margin: 12mm;
+        }
+
+        @media print {
+            body { background: #fff; }
+            .page {
+                margin: 0;
+                border: none;
+                width: auto;
+                min-height: auto;
+                padding: 0;
+            }
+            .logo { color: #000; }
+        }
+    </style>
+</head>
+<body>
+    <main class="page" role="document" aria-label="Fiche d'informations stage d'été">
+        <header class="header">
+            <div class="block small">
+                <div><strong>République Tunisienne</strong></div>
+                <div>Ministère de l'Enseignement Supérieur et de la Recherche Scientifique</div>
+                <div>Université de Monastir</div>
+                <div>Institut Supérieur d'Informatique et de Mathématiques de Monastir</div>
+            </div>
+
+            <div>
+                <div class="logo">
+                    <img src="ISIM_LOGO_ar.png" alt="ISIMM" />
+                </div>
+            </div>
+
+            <div class="block right small">
+                <div><strong>الجمهورية التونسية</strong></div>
+                <div>وزارة التعليم العالي والبحث العلمي</div>
+                <div>جامعة المنستير</div>
+                <div>المعهد العالي للإعلامية والرياضيات بالمنستير</div>
+                <div><span class="code">GSP FOR Q4 V1</span></div>
+            </div>
+        </header>
+
+        <h1>Fiche d'Informations Stage d'été</h1>
+
+        <div class="section-title"><span class="title">Identification Étudiant :</span> <span class="note">(à remplir par l'étudiant)</span></div>
+        <section class="box" aria-label="Identification étudiant">
+            <div class="rows">
+                <div class="row">
+                    <div class="label">Nom et prénom :</div>
+                    <div class="line"><input type="text" aria-label="Nom et prénom" /></div>
+                </div>
+                <div class="row">
+                    <div class="label">Numéro CIN :</div>
+                    <div class="line"><input type="text" aria-label="Numéro CIN" /></div>
+                </div>
+                <div class="row">
+                    <div class="label">Filière/ Groupe :</div>
+                    <div class="line"><input type="text" aria-label="Filière / Groupe" /></div>
+                </div>
+                <div class="row">
+                    <div class="label">Tél/ Email :</div>
+                    <div class="line">
+                        <div class="split" style="width:100%;">
+                            <input type="text" aria-label="Téléphone" />
+                            <input type="text" aria-label="Email" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-title"><span class="title">Entreprise d'accueil :</span> <span class="note">(à remplir par le responsable de l'entreprise)</span></div>
+        <section class="box" aria-label="Entreprise d'accueil">
+            <div class="rows">
+                <div class="row">
+                    <div class="label">Nom entreprise :</div>
+                    <div class="line"><input type="text" aria-label="Nom entreprise" /></div>
+                </div>
+                <div class="row">
+                    <div class="label">Domaine d'activité :</div>
+                    <div class="line"><input type="text" aria-label="Domaine d'activité" /></div>
+                </div>
+                <div class="row">
+                    <div class="label">Adresse :</div>
+                    <div class="line"><input type="text" aria-label="Adresse" /></div>
+                </div>
+                <div class="row">
+                    <div class="label">Tél/ Fax :</div>
+                    <div class="line">
+                        <div class="split" style="width:100%;">
+                            <input type="text" aria-label="Téléphone" />
+                            <input type="text" aria-label="Fax" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="label">Site Web :</div>
+                    <div class="line"><input type="text" aria-label="Site web" /></div>
+                </div>
+
+                <div class="row" style="margin-top:4px;">
+                    <div class="label">Responsable :</div>
+                    <div class="line"><div class="dotfill" aria-hidden="true"></div></div>
+                </div>
+                <div class="row">
+                    <div class="label">Nom et Prénom :</div>
+                    <div class="line"><input type="text" aria-label="Responsable - Nom et Prénom" /></div>
+                </div>
+                <div class="row">
+                    <div class="label">Fonction :</div>
+                    <div class="line"><input type="text" aria-label="Responsable - Fonction" /></div>
+                </div>
+
+                <div class="row" style="margin-top:4px;">
+                    <div class="label">Encadreur Entreprise :</div>
+                    <div class="line"><div class="dotfill" aria-hidden="true"></div></div>
+                </div>
+                <div class="row">
+                    <div class="label">Nom et Prénom :</div>
+                    <div class="line"><input type="text" aria-label="Encadreur - Nom et Prénom" /></div>
+                </div>
+                <div class="row">
+                    <div class="label">Fonction :</div>
+                    <div class="line"><input type="text" aria-label="Encadreur - Fonction" /></div>
+                </div>
+                <div class="row">
+                    <div class="label">Nom du service :</div>
+                    <div class="line"><input type="text" aria-label="Nom du service" /></div>
+                </div>
+                <div class="row">
+                    <div class="label">Email :</div>
+                    <div class="line"><input type="text" aria-label="Email" /></div>
+                </div>
+
+                <div class="row">
+                    <div class="label">Période du Stage :</div>
+                    <div class="line line--plain" style="border-bottom: none; padding-bottom: 0; display:block;">
+                        <div class="period">
+                            <div class="date-inline" aria-label="Date de début">
+                                <span><strong>Du</strong></span>
+                                <span class="datebox"><input type="text" aria-label="Jour (début)" /></span>
+                                <span>/</span>
+                                <span class="datebox"><input type="text" aria-label="Mois (début)" /></span>
+                                <span>/</span>
+                                <span class="datebox"><input type="text" aria-label="Année (début)" /></span>
+                            </div>
+                            <div class="date-inline" aria-label="Date de fin">
+                                <span><strong>au</strong></span>
+                                <span class="datebox"><input type="text" aria-label="Jour (fin)" /></span>
+                                <span>/</span>
+                                <span class="datebox"><input type="text" aria-label="Mois (fin)" /></span>
+                                <span>/</span>
+                                <span class="datebox"><input type="text" aria-label="Année (fin)" /></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="signature" aria-label="Signature">
+            <div class="center">Date, signature, et cachet de l'entreprise</div>
+            <div class="signature-block">
+                <div class="sig-row">
+                    <div class="label">Fait à :</div>
+                    <div class="line"><input type="text" aria-label="Fait à" /></div>
+                    <div class="label">le :</div>
+                    <div class="line line--plain" style="border-bottom: none; padding-bottom: 0; display:block;">
+                        <div class="date-inline date-inline--only" aria-label="Date">
+                            <span class="datebox"><input type="text" aria-label="Jour" /></span>
+                            <span>/</span>
+                            <span class="datebox"><input type="text" aria-label="Mois" /></span>
+                            <span>/</span>
+                            <span class="datebox"><input type="text" aria-label="Année" /></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="signature-pad" aria-hidden="true"></div>
+        </section>
+
+        <footer class="footer">
+            <div>Institut Supérieur d'Informatique et de Mathématiques de Monastir BP 223, Avenue de la Corniche, Monastir 5000, Tunisie</div>
+            <div>Tél: +216 70 011 920 — Fax: +216 76 011 959 — Email: isimm.directionstage@gmail.com</div>
+            <div>www.isimm.rnu.tn</div>
+        </footer>
+    </main>
+</body>
+<script>
+    (function () {
+        function hasValue(input) {
+            return input.value.trim().length > 0;
+        }
+
+        function updateContainerStates(root) {
+            const line = root.closest('.line');
+            if (line) {
+                const anyFilled = Array.from(line.querySelectorAll('input[type="text"]')).some(hasValue);
+                line.classList.toggle('filled', anyFilled);
+            }
+
+            const datebox = root.closest('.datebox');
+            if (datebox) {
+                datebox.classList.toggle('filled', hasValue(root));
+            }
+
+            root.classList.toggle('filled', hasValue(root));
+        }
+
+        window.addEventListener('DOMContentLoaded', function () {
+            const inputs = document.querySelectorAll('input[type="text"]');
+            inputs.forEach(function (input) {
+                updateContainerStates(input);
+                input.addEventListener('input', function () { updateContainerStates(input); });
+                input.addEventListener('change', function () { updateContainerStates(input); });
+            });
+        });
+    })();
+</script>
+</html>
