@@ -59,9 +59,11 @@ class ProfilePage extends StatelessWidget {
                 subtitle: 'Ceci est limité à une durée limitée',
                 icon: Icons.edit_outlined,
               ),
-            const ProfileMenuTile(
+            ProfileMenuTile(
               title: 'Modifier vos contactes',
               icon: Icons.contacts_outlined,
+              onTap: () =>
+                  Navigator.pushNamed(context, '/profile/select-contacts'),
             ),
             const SizedBox(height: 32),
 

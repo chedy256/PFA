@@ -77,7 +77,7 @@ class ProfileMenuTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return ListTile(
-      contentPadding: EdgeInsets.zero,
+      contentPadding: EdgeInsets.symmetric(horizontal: 12),
       leading: Icon(icon, size: 26, color: theme.textTheme.bodyLarge?.color),
       title: Text(
         title,

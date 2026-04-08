@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pfa/features/shared/select_contacts.dart';
 import 'package:pfa/features/splash_screen.dart';
 import 'package:pfa/features/teacher/home_page.dart';
 import 'core/theme/app_theme.dart';
@@ -66,6 +67,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           allowedRole: 'Enseignant',
           child: TeacherHomePage(),
         ),
+        '/profile/select-contacts': (context) => const SelectContacts(),
       },
     );
   }

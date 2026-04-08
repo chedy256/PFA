@@ -5,6 +5,7 @@ abstract class User {
   final String email;
   final String department;
   final String? phone;
+  final String? wsPhone;
 
   User({
     required this.id,
@@ -13,5 +14,6 @@ abstract class User {
     required this.email,
     required this.department,
     this.phone,
+    this.wsPhone,
   });
 }
