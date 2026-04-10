@@ -51,7 +51,9 @@ class _SelectContactsState extends ConsumerState<SelectContacts> {
   @override
   Widget build(BuildContext context) {
     ref.listen(userDataProvider, (previous, next) {
-      if (next.hasValue && next.value != null && (previous == null || !previous.hasValue)) {
+      if (next.hasValue &&
+          next.value != null &&
+          (previous == null || !previous.hasValue)) {
         final userData = next.value!;
         _phoneController.text = userData.phone ?? '';
         _wsPhoneController.text = userData.wsPhone ?? '';
@@ -101,19 +103,16 @@ class _SelectContactsState extends ConsumerState<SelectContacts> {
               const SizedBox(height: 20),
               TextButton.icon(
                 onPressed: () async {
-                  await ref.read(userDataProvider.notifier).updateContacts(
+                  Navigator.pop(context);
+                  await ref
+                      .read(userDataProvider.notifier)
+                      .updateContacts(
                         phone: _phoneController.text,
                         wsPhone: _wsPhoneController.text,
                         phoneEnabled: _phoneEnabled,
                         wsPhoneEnabled: _wsPhoneEnabled,
                         emailEnabled: _emailEnabled,
                       );
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Contacts mis à jour !')),
-                    );
-                    Navigator.pop(context);
-                  }
                 },
                 label: const Text(
                   'Enregistrer',
