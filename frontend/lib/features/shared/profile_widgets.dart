@@ -173,7 +173,7 @@ final class LogoutButton extends ConsumerWidget {
         );
         if (shouldLogout!) {
           await ref.read(authProvider.notifier).logout();
-          if (context.mounted){
+          if (context.mounted) {
             Navigator.pushNamedAndRemoveUntil(
               context,
               '/login',
@@ -214,7 +214,9 @@ class ThemeToggleButton extends ConsumerWidget {
 
     return ProfileMenuTile(
       title: 'Mode Sombre',
-      icon: Icons.nightlight_outlined,
+      icon: theme.brightness == Brightness.dark
+          ? Icons.nightlight_outlined
+          : Icons.wb_sunny_outlined,
       trailing: Switch(
         value: theme.brightness == Brightness.dark,
         onChanged: (value) {

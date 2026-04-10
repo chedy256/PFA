@@ -27,13 +27,15 @@ class UserDataNotifier extends AsyncNotifier<model.User?> {
     final prefs = await SharedPreferences.getInstance();
     final localDataString = prefs.getString(_localUserKey);
     model.User? localUser;
-    
+
     if (localDataString != null) {
       try {
         final data = json.decode(localDataString);
         localUser = _mapToUser(appUser.uid, appUser.email, appUser.role, data);
-        debugPrint('UserDataNotifier: Loaded data from SharedPreferences for ${appUser.uid}.');
-        
+        debugPrint(
+          'UserDataNotifier: Loaded data from SharedPreferences for ${appUser.uid}.',
+        );
+
         // Return immediately to ensure the UI is snappy and works offline.
         // We will perform the backend sync in the background (non-blocking).
         _syncWithBackendInBackground(appUser, localUser, localDataString);
@@ -51,13 +53,15 @@ class UserDataNotifier extends AsyncNotifier<model.User?> {
       if (token == null) return null;
 
       final fetchUrl = '$_baseUrl/users/${appUser.uid}';
-      final response = await http.get(
-        Uri.parse(fetchUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      ).timeout(const Duration(seconds: 3));
+      final response = await http
+          .get(
+            Uri.parse(fetchUrl),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+          )
+          .timeout(const Duration(seconds: 3));
 
       if (response.statusCode == 200) {
         final data = json.decode(utf8.decode(response.bodyBytes));
@@ -83,33 +87,45 @@ class UserDataNotifier extends AsyncNotifier<model.User?> {
       if (token == null) return;
 
       final fetchUrl = '$_baseUrl/users/${appUser.uid}';
-      final response = await http.get(
-        Uri.parse(fetchUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      ).timeout(const Duration(seconds: 5));
+      final response = await http
+          .get(
+            Uri.parse(fetchUrl),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+          )
+          .timeout(const Duration(seconds: 5));
 
       if (response.statusCode == 200) {
         final data = json.decode(utf8.decode(response.bodyBytes));
         final localMap = json.decode(localDataString) as Map<String, dynamic>;
 
         if (!_areMapsEqual(localMap, data)) {
-          debugPrint('UserDataNotifier Sync: Local data differs. Syncing local -> backend.');
+          debugPrint(
+            'UserDataNotifier Sync: Local data differs. Syncing local -> backend.',
+          );
           await _updateBackend(appUser.uid, localMap);
         } else {
           debugPrint('UserDataNotifier Sync: Local and backend are in sync.');
         }
       }
     } catch (e) {
-      debugPrint('UserDataNotifier Sync: Backend unreachable, staying offline-only.');
+      debugPrint(
+        'UserDataNotifier Sync: Backend unreachable, staying offline-only.',
+      );
     }
   }
 
   bool _areMapsEqual(Map<String, dynamic> m1, Map<String, dynamic> m2) {
     // Check relevant contact fields for equality
-    final keys = ['phone', 'wsPhone', 'phoneEnabled', 'wsPhoneEnabled', 'emailEnabled'];
+    final keys = [
+      'phone',
+      'wsPhone',
+      'phoneEnabled',
+      'wsPhoneEnabled',
+      'emailEnabled',
+    ];
     for (final key in keys) {
       if (m1[key] != m2[key]) return false;
     }
@@ -138,7 +154,12 @@ class UserDataNotifier extends AsyncNotifier<model.User?> {
     }
   }
 
-  model.User _mapToUser(String uid, String email, String role, Map<String, dynamic> data) {
+  model.User _mapToUser(
+    String uid,
+    String email,
+    String role,
+    Map<String, dynamic> data,
+  ) {
     if (role == 'Etudiant') {
       return Student(
         id: uid,
@@ -201,7 +222,7 @@ class UserDataNotifier extends AsyncNotifier<model.User?> {
     }
     data.addAll(contactData);
     await prefs.setString(_localUserKey, json.encode(data));
-    
+
     // Invalidate state so UI shows local change immediately
     ref.invalidateSelf();
 
@@ -210,7 +231,7 @@ class UserDataNotifier extends AsyncNotifier<model.User?> {
       final token = await _storage.read(key: 'jwt');
       final patchUrl = '$_baseUrl/users/${appUser.uid}/contacts';
       debugPrint('updateContacts: Patching backend');
-      
+
       final response = await http.patch(
         Uri.parse(patchUrl),
         headers: {
@@ -219,13 +240,17 @@ class UserDataNotifier extends AsyncNotifier<model.User?> {
         },
         body: json.encode(contactData),
       );
-      debugPrint('updateContacts: Backend responded with ${response.statusCode}');
+      debugPrint(
+        'updateContacts: Backend responded with ${response.statusCode}',
+      );
     } catch (e) {
       debugPrint('updateContacts Error: Failed to update backend ($e)');
     }
   }
 }
 
-final userDataProvider = AsyncNotifierProvider<UserDataNotifier, model.User?>(() {
-  return UserDataNotifier();
-});
+final userDataProvider = AsyncNotifierProvider<UserDataNotifier, model.User?>(
+  () {
+    return UserDataNotifier();
+  },
+);
