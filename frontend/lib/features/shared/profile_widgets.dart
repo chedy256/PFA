@@ -173,6 +173,13 @@ final class LogoutButton extends ConsumerWidget {
         );
         if (shouldLogout!) {
           await ref.read(authProvider.notifier).logout();
+          if (context.mounted){
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              '/login',
+              (route) => false,
+            );
+          }
         }
       },
       style: OutlinedButton.styleFrom(
