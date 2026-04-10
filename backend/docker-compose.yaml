@@ -71,20 +71,20 @@ services:
   # ------------------------
   # LOCAL TUNNEL (ALTERNATIVE DEV TUNNEL)
   # ------------------------
-  localtunnel:
-    image: node:20
-    container_name: localtunnel
-    restart: unless-stopped
-
-    env_file:
-      - .env
-
-    command: >
-      sh -c "
-      npm install -g localtunnel &&
-      lt --port ${BACKEND_PORT} --local-host host.docker.internal --subdomain pfa-backend-isimm
-      "
-
+  #localtunnel:
+  #  image: node:20
+  #  container_name: localtunnel
+  #  restart: unless-stopped
+  #
+  #  env_file:
+  #    - .env
+  #
+  #  command: >
+  #    sh -c "
+  #    npm install -g localtunnel &&
+  #    lt --port ${BACKEND_PORT} --local-host host.docker.internal --subdomain pfa-backend-isimm
+  #    "
+  #
   # ------------------------
   # CLOUDFLARED TUNNEL (PRODUCTION)
   # ------------------------
