@@ -14,8 +14,8 @@ class _SelectContactsState extends ConsumerState<SelectContacts> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _wsPhoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  bool _phoneEnabled = true;
-  bool _wsPhoneEnabled = true;
+  bool _phoneEnabled = false;
+  bool _wsPhoneEnabled = false;
   bool _emailEnabled = true;
 
   @override
@@ -24,12 +24,18 @@ class _SelectContactsState extends ConsumerState<SelectContacts> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final userData = ref.read(userDataProvider).value;
       if (userData != null) {
+        debugPrint('Phone: ${userData.phone}');
+        debugPrint('WhatsApp: ${userData.wsPhone}');
+        debugPrint('Email: ${userData.email}');
+
         _phoneController.text = userData.phone ?? '';
         _wsPhoneController.text = userData.wsPhone ?? '';
         _emailController.text = userData.email;
         _phoneEnabled = userData.phoneEnabled;
         _wsPhoneEnabled = userData.wsPhoneEnabled;
         _emailEnabled = userData.emailEnabled;
+      } else {
+        debugPrint('User Data is NULL (initial load or error)');
       }
     });
   }
@@ -45,7 +51,7 @@ class _SelectContactsState extends ConsumerState<SelectContacts> {
   @override
   Widget build(BuildContext context) {
     ref.listen(userDataProvider, (previous, next) {
-      if (next.hasValue && next.value != null) {
+      if (next.hasValue && next.value != null && (previous == null || !previous.hasValue)) {
         final userData = next.value!;
         _phoneController.text = userData.phone ?? '';
         _wsPhoneController.text = userData.wsPhone ?? '';
