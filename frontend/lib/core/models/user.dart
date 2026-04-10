@@ -6,6 +6,9 @@ abstract class User {
   final String department;
   final String? phone;
   final String? wsPhone;
+  final bool phoneEnabled;
+  final bool wsPhoneEnabled;
+  final bool emailEnabled;
 
   User({
     required this.id,
@@ -15,5 +18,8 @@ abstract class User {
     required this.department,
     this.phone,
     this.wsPhone,
+    this.phoneEnabled = true,
+    this.wsPhoneEnabled = true,
+    this.emailEnabled = true,
   });
 }

@@ -12,5 +12,10 @@ class Student extends User {
     required super.department,
     required this.level,
     this.currentIntership,
+    super.phone,
+    super.wsPhone,
+    super.phoneEnabled,
+    super.wsPhoneEnabled,
+    super.emailEnabled,
   });
 }

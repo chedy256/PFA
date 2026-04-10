@@ -9,5 +9,10 @@ class Teacher extends User {
     required super.lastName,
     required super.email,
     required super.department,
+    super.phone,
+    super.wsPhone,
+    super.phoneEnabled,
+    super.wsPhoneEnabled,
+    super.emailEnabled,
   });
 }
