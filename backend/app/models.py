@@ -243,3 +243,15 @@ class Evaluation(Base):
         "User",
         back_populates="evaluations",
     )
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    sender_id = Column(UUID(as_uuid=True), ForeignKey("users.uuid"), nullable=False)
+    receiver_id = Column(UUID(as_uuid=True), ForeignKey("users.uuid"), nullable=False)
+    content = Column(Text, nullable=False)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+
+    sender = relationship("User", foreign_keys=[sender_id])
+    receiver = relationship("User", foreign_keys=[receiver_id])
