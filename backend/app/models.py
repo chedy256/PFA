@@ -62,11 +62,17 @@ class User(Base):
     department = Column(String, nullable=True)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
-    # Internships where the user is the student
+    # Internships where the user is the primary student
     student_internships = relationship(
         "Internship",
         back_populates="student",
         foreign_keys="[Internship.student_id]",
+    )
+    # Internships where the user is the secondary student
+    student_internships_2 = relationship(
+        "Internship",
+        back_populates="student_2",
+        foreign_keys="[Internship.student_id_2]",
     )
     # Internships where the user is the supervising teacher
     teacher_internships = relationship(
@@ -109,11 +115,18 @@ class Internship(Base):
     )
     start_date = Column(Date, nullable=True)
     end_date = Column(Date, nullable=True)
+
     student_id = Column(
         UUID(as_uuid=True),
         ForeignKey("users.uuid"),
-        nullable=False,
+        nullable=False,         # primary student — required
     )
+    student_id_2 = Column(
+        UUID(as_uuid=True),
+        ForeignKey("users.uuid"),
+        nullable=True,          # secondary student — optional
+    )
+
     teacher_id = Column(
         UUID(as_uuid=True),
         ForeignKey("users.uuid"),
@@ -133,6 +146,11 @@ class Internship(Base):
         "User",
         back_populates="student_internships",
         foreign_keys=[student_id],
+    )
+    student_2 = relationship(
+        "User",
+        back_populates="student_internships_2",
+        foreign_keys=[student_id_2],
     )
     teacher = relationship(
         "User",
@@ -211,7 +229,6 @@ class Evaluation(Base):
         onupdate=lambda: datetime.now(timezone.utc),
         nullable=False,
     )
-
 
     # ── relationships ──
     internship = relationship(
