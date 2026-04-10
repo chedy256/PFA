@@ -9,6 +9,7 @@ from sqlalchemy import (
     Text,
     Integer,
     Float,
+    Boolean,
     Date,
     DateTime,
     ForeignKey,
@@ -56,17 +57,26 @@ class User(Base):
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
+    email_enabled = Column(Boolean,default=True, nullable=False)
     ws_number = Column(Integer, nullable=True)
+    ws_number_enabled = Column(Boolean,default=False, nullable=False)
     phone_number = Column(Integer, nullable=True)
+    phone_number_enabled = Column(Boolean,default=False, nullable=False)
     role = Column(Enum(UserRole), nullable=False)
     department = Column(String, nullable=True)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
-    # Internships where the user is the student
+    # Internships where the user is the primary student
     student_internships = relationship(
         "Internship",
         back_populates="student",
         foreign_keys="[Internship.student_id]",
+    )
+    # Internships where the user is the secondary student
+    student_internships_2 = relationship(
+        "Internship",
+        back_populates="student_2",
+        foreign_keys="[Internship.student_id_2]",
     )
     # Internships where the user is the supervising teacher
     teacher_internships = relationship(
@@ -109,11 +119,18 @@ class Internship(Base):
     )
     start_date = Column(Date, nullable=True)
     end_date = Column(Date, nullable=True)
+
     student_id = Column(
         UUID(as_uuid=True),
         ForeignKey("users.uuid"),
-        nullable=False,
+        nullable=False,         # primary student — required
     )
+    student_id_2 = Column(
+        UUID(as_uuid=True),
+        ForeignKey("users.uuid"),
+        nullable=True,          # secondary student — optional
+    )
+
     teacher_id = Column(
         UUID(as_uuid=True),
         ForeignKey("users.uuid"),
@@ -133,6 +150,11 @@ class Internship(Base):
         "User",
         back_populates="student_internships",
         foreign_keys=[student_id],
+    )
+    student_2 = relationship(
+        "User",
+        back_populates="student_internships_2",
+        foreign_keys=[student_id_2],
     )
     teacher = relationship(
         "User",
@@ -212,7 +234,6 @@ class Evaluation(Base):
         nullable=False,
     )
 
-
     # ── relationships ──
     internship = relationship(
         "Internship",
@@ -222,3 +243,15 @@ class Evaluation(Base):
         "User",
         back_populates="evaluations",
     )
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    sender_id = Column(UUID(as_uuid=True), ForeignKey("users.uuid"), nullable=False)
+    receiver_id = Column(UUID(as_uuid=True), ForeignKey("users.uuid"), nullable=False)
+    content = Column(Text, nullable=False)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+
+    sender = relationship("User", foreign_keys=[sender_id])
+    receiver = relationship("User", foreign_keys=[receiver_id])

@@ -2,7 +2,7 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# System deps (WeasyPrint needs these)
+# System deps (WeasyPrint and Playwright need these)
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpango-1.0-0 \
@@ -11,6 +11,10 @@ RUN apt-get update && apt-get install -y \
     libcairo2 \
     libffi-dev \
     libssl-dev \
+    libpq-dev \
+    && pip install --no-cache-dir playwright \
+    && playwright install-deps chromium \
+    && playwright install chromium \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
