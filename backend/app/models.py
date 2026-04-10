@@ -9,6 +9,7 @@ from sqlalchemy import (
     Text,
     Integer,
     Float,
+    Boolean,
     Date,
     DateTime,
     ForeignKey,
@@ -56,11 +57,11 @@ class User(Base):
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
-    email_enabled = Column(bool,default=True, nullable=False)
+    email_enabled = Column(Boolean,default=True, nullable=False)
     ws_number = Column(Integer, nullable=True)
-    ws_number_enabled = Column(bool,default=False, nullable=False)
+    ws_number_enabled = Column(Boolean,default=False, nullable=False)
     phone_number = Column(Integer, nullable=True)
-    phone_number_enabled = Column(bool,default=False, nullable=False)
+    phone_number_enabled = Column(Boolean,default=False, nullable=False)
     role = Column(Enum(UserRole), nullable=False)
     department = Column(String, nullable=True)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
