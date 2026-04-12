@@ -5,9 +5,10 @@ import Sidebar from './Sidebar'
 import Navbar from './Navbar'
 
 export default function Layout() {
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
   const [collapsed, setCollapsed] = useState(false)
 
+  if (loading) return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'var(--bg-primary)' }} />
   if (!user) return <Navigate to="/login" replace />
 
   return (

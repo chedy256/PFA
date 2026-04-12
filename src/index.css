@@ -151,3 +151,223 @@ button { cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.
   box-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
 .theme-toggle.dark::after { transform: translateX(20px); }
+
+/* ── DATA TABLES & CRUD ────────────────────────────────────────── */
+.students-page {
+  padding: 32px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: fadeIn 0.22s ease;
+}
+
+.students-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.btn-primary {
+  padding: 10px 18px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-primary:hover { opacity: 0.9; }
+
+.btn-ghost {
+  padding: 10px 18px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 14px;
+}
+.btn-ghost:hover { background: var(--bg-hover); }
+
+.students-toolbar {
+  margin-bottom: 20px;
+  display: flex;
+}
+
+.search-input {
+  width: 320px;
+}
+
+.students-table-wrapper {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.students-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.students-table th {
+  padding: 16px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-card);
+}
+
+.students-table td {
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.students-table tr:last-child td { border-bottom: none; }
+.students-table tr:hover td { background: var(--bg-hover); }
+
+.students-table td:first-child { color: var(--text-primary); font-weight: 500; }
+
+.tag {
+  display: inline-block;
+  padding: 4px 10px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+}
+
+.text-right { text-align: right; }
+
+.actions-cell {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  padding: 6px;
+  border-radius: 6px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-btn:hover { background: var(--border); }
+.icon-btn.delete:hover { background: rgba(220, 38, 38, 0.1); color: var(--error); }
+
+.empty-cell {
+  text-align: center;
+  color: var(--text-tertiary);
+  padding: 60px !important;
+}
+
+/* ── MODALS ─────────────────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+  animation: fadeIn 0.15s ease;
+}
+
+.modal-panel {
+  background: var(--bg-secondary);
+  width: 100%;
+  max-width: 480px;
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  animation: scaleIn 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  color: var(--text-tertiary);
+  line-height: 1;
+  padding: 0 4px;
+  border-radius: 6px;
+}
+.modal-close:hover { color: var(--text-primary); background: var(--bg-hover); }
+
+.modal-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.field-row {
+  display: flex;
+  gap: 16px;
+}
+.field-row .field { flex: 1; }
+
+.modal-footer {
+  padding: 20px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  background: var(--bg-card);
+  border-radius: 0 0 16px 16px;
+}

@@ -8,6 +8,10 @@ import DashboardPage from './pages/DashboardPage'
 import StudentsPage  from './pages/StudentsPage'
 import TeachersPage  from './pages/TeachersPage'
 import CalendarPage  from './pages/CalendarPage'
+import ConfigPage    from './pages/CalendarPage/ConfigPage'
+import PlanningPage  from './pages/CalendarPage/PlanningPage'
+import JurysPage     from './pages/CalendarPage/JurysPage'
+import ValidationPage from './pages/CalendarPage/ValidationPage'
 
 export default function App() {
   return (
@@ -20,7 +24,13 @@ export default function App() {
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/students"  element={<StudentsPage />} />
               <Route path="/teachers"  element={<TeachersPage />} />
-              <Route path="/calendar"  element={<CalendarPage />} />
+              <Route path="/calendar"  element={<CalendarPage />}>
+                <Route index element={<Navigate to="config" replace />} />
+                <Route path="config"     element={<ConfigPage />} />
+                <Route path="planning"   element={<PlanningPage />} />
+                <Route path="jurys"      element={<JurysPage />} />
+                <Route path="validation" element={<ValidationPage />} />
+              </Route>
             </Route>
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>

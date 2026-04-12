@@ -7,6 +7,10 @@ const pageTitles = {
   '/students':  'Student Management',
   '/teachers':  'Teacher Management',
   '/calendar':  'Internship Calendar',
+  '/calendar/config':     'Calendar — Configuration',
+  '/calendar/planning':   'Calendar — Planning',
+  '/calendar/jurys':      'Calendar — Jurys',
+  '/calendar/validation': 'Calendar — Validation',
 }
 
 export default function Navbar() {
