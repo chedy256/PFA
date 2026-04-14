@@ -6,6 +6,11 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Internship Management System")
 
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(internships.router)
