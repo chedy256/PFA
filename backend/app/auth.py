@@ -4,7 +4,12 @@ from fastapi import HTTPException
 import os
 
 if not firebase_admin._apps:
-    firebase_cred_path = os.getenv("FIREBASE_CREDENTIALS_PATH", "firebase.json")
+    default_path = (
+        "/etc/secrets/firebase.json"
+        if os.path.exists("/etc/secrets/firebase.json")
+        else "firebase.json"
+    )
+    firebase_cred_path = os.getenv("FIREBASE_CREDENTIALS_PATH", default_path)
     cred = credentials.Certificate(firebase_cred_path)
     firebase_admin.initialize_app(cred)
 
