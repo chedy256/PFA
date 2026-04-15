@@ -25,6 +25,11 @@ from app.database import Base
 #  Enums
 
 
+class InternshipType(str, enum.Enum):
+    ete = "ete"
+    pfe = "pfe"
+
+
 class UserRole(str, enum.Enum):
     student = "student"
     teacher = "teacher"
@@ -56,6 +61,7 @@ class User(Base):
     )
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
+    cin_number = Column(String, nullable=True)
     email = Column(String, unique=True, nullable=False)
     email_enabled = Column(Boolean,default=True, nullable=False)
     ws_number = Column(Integer, nullable=True)
@@ -112,11 +118,25 @@ class Internship(Base):
     description = Column(Text, nullable=True)
     requirements = Column(Text, nullable=True)
     tags = Column(ARRAY(String), default=list)
+    type = Column(
+        Enum(InternshipType),
+        nullable=False,
+        default=InternshipType.ete,
+    )
     status = Column(
         Enum(InternshipStatus),
         nullable=False,
         default=InternshipStatus.open,
     )
+
+    company_name = Column(String, nullable=True)
+    company_address = Column(String, nullable=True)
+    company_sector = Column(String, nullable=True)
+    company_phone = Column(String, nullable=True)
+    supervisor_name = Column(String, nullable=True)
+    supervisor_email = Column(String, nullable=True)
+    supervisor_function = Column(String, nullable=True)
+
     start_date = Column(Date, nullable=True)
     end_date = Column(Date, nullable=True)
 

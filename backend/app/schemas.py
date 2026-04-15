@@ -7,11 +7,20 @@ class UserOut(BaseModel):
     email: str
     first_name: Optional[str]
     last_name: Optional[str]
+    cin_number: Optional[str] = None
     role: str
     status: str
 
     class Config:
         from_attributes = True
+
+
+class PaginatedUsersOut(BaseModel):
+    users: list[UserOut]
+    total_count: int
+    total_pages: int
+    current_page: int
+
 
 class BootstrapRequest(BaseModel):
     requested_role: str
@@ -25,12 +34,28 @@ class FCMTokenUpdate(BaseModel):
 class InternshipCreate(BaseModel):
     title: str
     description: str
+    type: Optional[str] = "ete"
+    company_name: Optional[str] = None
+    company_address: Optional[str] = None
+    company_sector: Optional[str] = None
+    company_phone: Optional[str] = None
+    supervisor_name: Optional[str] = None
+    supervisor_email: Optional[str] = None
+    supervisor_function: Optional[str] = None
 
 class InternshipOut(BaseModel):
     id: str
     title: str
     description: str
     status: str
+    type: Optional[str] = "ete"
+    company_name: Optional[str] = None
+    company_address: Optional[str] = None
+    company_sector: Optional[str] = None
+    company_phone: Optional[str] = None
+    supervisor_name: Optional[str] = None
+    supervisor_email: Optional[str] = None
+    supervisor_function: Optional[str] = None
 
     class Config:
         from_attributes = True

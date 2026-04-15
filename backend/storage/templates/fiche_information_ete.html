@@ -314,22 +314,22 @@
             <div class="rows">
                 <div class="row">
                     <div class="label">Nom et prénom :</div>
-                    <div class="line"><input type="text" aria-label="Nom et prénom" /></div>
+                    <div class="line"><input type="text" aria-label="Nom et prénom" value="{{ student_name }}" /></div>
                 </div>
                 <div class="row">
                     <div class="label">Numéro CIN :</div>
-                    <div class="line"><input type="text" aria-label="Numéro CIN" /></div>
+                    <div class="line"><input type="text" aria-label="Numéro CIN" value="{{ cin }}" /></div>
                 </div>
                 <div class="row">
                     <div class="label">Filière/ Groupe :</div>
-                    <div class="line"><input type="text" aria-label="Filière / Groupe" /></div>
+                    <div class="line"><input type="text" aria-label="Filière / Groupe" value="{{ filiere }}" /></div>
                 </div>
                 <div class="row">
                     <div class="label">Tél/ Email :</div>
                     <div class="line">
                         <div class="split" style="width:100%;">
-                            <input type="text" aria-label="Téléphone" />
-                            <input type="text" aria-label="Email" />
+                            <input type="text" aria-label="Téléphone" value="{{ phone }}" />
+                            <input type="text" aria-label="Email" value="{{ email }}" />
                         </div>
                     </div>
                 </div>
@@ -341,28 +341,28 @@
             <div class="rows">
                 <div class="row">
                     <div class="label">Nom entreprise :</div>
-                    <div class="line"><input type="text" aria-label="Nom entreprise" /></div>
+                    <div class="line"><input type="text" aria-label="Nom entreprise" value="{{ company_name }}" /></div>
                 </div>
                 <div class="row">
                     <div class="label">Domaine d'activité :</div>
-                    <div class="line"><input type="text" aria-label="Domaine d'activité" /></div>
+                    <div class="line"><input type="text" aria-label="Domaine d'activité" value="{{ company_sector }}" /></div>
                 </div>
                 <div class="row">
                     <div class="label">Adresse :</div>
-                    <div class="line"><input type="text" aria-label="Adresse" /></div>
+                    <div class="line"><input type="text" aria-label="Adresse" value="{{ company_address }}" /></div>
                 </div>
                 <div class="row">
                     <div class="label">Tél/ Fax :</div>
                     <div class="line">
                         <div class="split" style="width:100%;">
-                            <input type="text" aria-label="Téléphone" />
-                            <input type="text" aria-label="Fax" />
+                            <input type="text" aria-label="Téléphone" value="{{ company_phone }}" />
+                            <input type="text" aria-label="Fax" value="" />
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="label">Site Web :</div>
-                    <div class="line"><input type="text" aria-label="Site web" /></div>
+                    <div class="line"><input type="text" aria-label="Site web" value="" /></div>
                 </div>
 
                 <div class="row" style="margin-top:4px;">
@@ -371,11 +371,11 @@
                 </div>
                 <div class="row">
                     <div class="label">Nom et Prénom :</div>
-                    <div class="line"><input type="text" aria-label="Responsable - Nom et Prénom" /></div>
+                    <div class="line"><input type="text" aria-label="Responsable - Nom et Prénom" value="" /></div>
                 </div>
                 <div class="row">
                     <div class="label">Fonction :</div>
-                    <div class="line"><input type="text" aria-label="Responsable - Fonction" /></div>
+                    <div class="line"><input type="text" aria-label="Responsable - Fonction" value="" /></div>
                 </div>
 
                 <div class="row" style="margin-top:4px;">
@@ -384,19 +384,19 @@
                 </div>
                 <div class="row">
                     <div class="label">Nom et Prénom :</div>
-                    <div class="line"><input type="text" aria-label="Encadreur - Nom et Prénom" /></div>
+                    <div class="line"><input type="text" aria-label="Encadreur - Nom et Prénom" value="{{ supervisor_name }}" /></div>
                 </div>
                 <div class="row">
                     <div class="label">Fonction :</div>
-                    <div class="line"><input type="text" aria-label="Encadreur - Fonction" /></div>
+                    <div class="line"><input type="text" aria-label="Encadreur - Fonction" value="{{ supervisor_function }}" /></div>
                 </div>
                 <div class="row">
                     <div class="label">Nom du service :</div>
-                    <div class="line"><input type="text" aria-label="Nom du service" /></div>
+                    <div class="line"><input type="text" aria-label="Nom du service" value="" /></div>
                 </div>
                 <div class="row">
                     <div class="label">Email :</div>
-                    <div class="line"><input type="text" aria-label="Email" /></div>
+                    <div class="line"><input type="text" aria-label="Email" value="{{ supervisor_email }}" /></div>
                 </div>
 
                 <div class="row">
@@ -405,19 +405,19 @@
                         <div class="period">
                             <div class="date-inline" aria-label="Date de début">
                                 <span><strong>Du</strong></span>
-                                <span class="datebox"><input type="text" aria-label="Jour (début)" /></span>
+                                <span class="datebox"><input type="text" aria-label="Jour (début)" value="{{ start_day }}" /></span>
                                 <span>/</span>
-                                <span class="datebox"><input type="text" aria-label="Mois (début)" /></span>
+                                <span class="datebox"><input type="text" aria-label="Mois (début)" value="{{ start_month }}" /></span>
                                 <span>/</span>
-                                <span class="datebox"><input type="text" aria-label="Année (début)" /></span>
+                                <span class="datebox"><input type="text" aria-label="Année (début)" value="{{ start_year }}" /></span>
                             </div>
                             <div class="date-inline" aria-label="Date de fin">
                                 <span><strong>au</strong></span>
-                                <span class="datebox"><input type="text" aria-label="Jour (fin)" /></span>
+                                <span class="datebox"><input type="text" aria-label="Jour (fin)" value="{{ end_day }}" /></span>
                                 <span>/</span>
-                                <span class="datebox"><input type="text" aria-label="Mois (fin)" /></span>
+                                <span class="datebox"><input type="text" aria-label="Mois (fin)" value="{{ end_month }}" /></span>
                                 <span>/</span>
-                                <span class="datebox"><input type="text" aria-label="Année (fin)" /></span>
+                                <span class="datebox"><input type="text" aria-label="Année (fin)" value="{{ end_year }}" /></span>
                             </div>
                         </div>
                     </div>

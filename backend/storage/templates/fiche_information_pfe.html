@@ -423,26 +423,26 @@
                 <div class="rows">
                     <div class="row">
                         <div class="label">Nom et prénom :</div>
-                        <div class="line"><input type="text" aria-label="Nom et prénom" /></div>
+                        <div class="line"><input type="text" aria-label="Nom et prénom" value="{{ student_name }}" /></div>
                     </div>
                     <div class="row">
                         <div class="label">Filière :</div>
-                        <div class="line"><input type="text" aria-label="Filière" /></div>
+                        <div class="line"><input type="text" aria-label="Filière" value="{{ filiere }}" /></div>
                     </div>
                     <div class="row">
                         <div class="label">Email :</div>
-                        <div class="line"><input type="text" aria-label="Email" /></div>
+                        <div class="line"><input type="text" aria-label="Email" value="{{ email }}" /></div>
                     </div>
                 </div>
 
                 <div class="rows rows--narrow">
                     <div class="row">
                         <div class="label">N° CIN :</div>
-                        <div class="line"><input type="text" aria-label="Numéro CIN" /></div>
+                        <div class="line"><input type="text" aria-label="Numéro CIN" value="{{ cin }}" /></div>
                     </div>
                     <div class="row">
                         <div class="label">Tél :</div>
-                        <div class="line"><input type="text" aria-label="Téléphone" /></div>
+                        <div class="line"><input type="text" aria-label="Téléphone" value="{{ phone }}" /></div>
                     </div>
                 </div>
             </div>
@@ -475,31 +475,31 @@
             <div class="rows">
                 <div class="row">
                     <div class="label">Nom entreprise :</div>
-                    <div class="line"><input type="text" aria-label="Nom entreprise" /></div>
+                    <div class="line"><input type="text" aria-label="Nom entreprise" value="{{ company_name }}" /></div>
                 </div>
                 <div class="row">
                     <div class="label">Domaine d'activité :</div>
-                    <div class="line"><input type="text" aria-label="Domaine d'activité" /></div>
+                    <div class="line"><input type="text" aria-label="Domaine d'activité" value="{{ company_sector }}" /></div>
                 </div>
                 <div class="row">
                     <div class="label">Adresse :</div>
-                    <div class="line"><input type="text" aria-label="Adresse" /></div>
+                    <div class="line"><input type="text" aria-label="Adresse" value="{{ company_address }}" /></div>
                 </div>
 
                 <div class="split-2">
                     <div class="row">
                         <div class="label">Tél :</div>
-                        <div class="line"><input type="text" aria-label="Téléphone" /></div>
+                        <div class="line"><input type="text" aria-label="Téléphone" value="{{ company_phone }}" /></div>
                     </div>
                     <div class="row">
                         <div class="label">Fax :</div>
-                        <div class="line"><input type="text" aria-label="Fax" /></div>
+                        <div class="line"><input type="text" aria-label="Fax" value="" /></div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="label">Site Web :</div>
-                    <div class="line"><input type="text" aria-label="Site web" /></div>
+                    <div class="line"><input type="text" aria-label="Site web" value="" /></div>
                 </div>
 
                 <div class="row row--labelonly">
@@ -509,22 +509,22 @@
                 <div class="split-2">
                     <div class="row">
                         <div class="label">Nom et Prénom :</div>
-                        <div class="line"><input type="text" aria-label="Encadrant industriel - Nom et prénom" /></div>
+                        <div class="line"><input type="text" aria-label="Encadrant industriel - Nom et prénom" value="{{ supervisor_name }}" /></div>
                     </div>
                     <div class="row">
                         <div class="label">Service :</div>
-                        <div class="line"><input type="text" aria-label="Service" /></div>
+                        <div class="line"><input type="text" aria-label="Service" value="" /></div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="label">Fonction :</div>
-                    <div class="line"><input type="text" aria-label="Fonction" /></div>
+                    <div class="line"><input type="text" aria-label="Fonction" value="{{ supervisor_function }}" /></div>
                 </div>
 
                 <div class="row">
                     <div class="label">Email :</div>
-                    <div class="line"><input type="text" aria-label="Email entreprise" /></div>
+                    <div class="line"><input type="text" aria-label="Email entreprise" value="{{ supervisor_email }}" /></div>
                 </div>
             </div>
         </section>
@@ -538,7 +538,7 @@
                     <div>Détaillée à la page suivante)</div>
                 </div>
                 <div class="multi" aria-label="Titre proposé">
-                    <div class="line"><input type="text" aria-label="Titre proposé ligne 1" /></div>
+                    <div class="line"><input type="text" aria-label="Titre proposé ligne 1" value="{{ title }}" /></div>
                     <div class="line"><input type="text" aria-label="Titre proposé ligne 2" /></div>
                     <div class="line"><input type="text" aria-label="Titre proposé ligne 3" /></div>
                 </div>
@@ -549,17 +549,17 @@
                 <div class="detail-footer-content">
                     <div class="period-inline">
                         <span><strong>Du</strong></span>
-                        <span class="datebox"><input type="text" aria-label="Jour (début)" /></span>
+                        <span class="datebox"><input type="text" aria-label="Jour (début)" value="{{ start_day }}" /></span>
                         <span>/</span>
-                        <span class="datebox"><input type="text" aria-label="Mois (début)" /></span>
+                        <span class="datebox"><input type="text" aria-label="Mois (début)" value="{{ start_month }}" /></span>
                         <span>/</span>
-                        <span><strong>2025</strong></span>
+                        <span><strong>{{ start_year or 2025 }}</strong></span>
                         <span><strong>au</strong></span>
-                        <span class="datebox"><input type="text" aria-label="Jour (fin)" /></span>
+                        <span class="datebox"><input type="text" aria-label="Jour (fin)" value="{{ end_day }}" /></span>
                         <span>/</span>
-                        <span class="datebox"><input type="text" aria-label="Mois (fin)" /></span>
+                        <span class="datebox"><input type="text" aria-label="Mois (fin)" value="{{ end_month }}" /></span>
                         <span>/</span>
-                        <span><strong>2025</strong></span>
+                        <span><strong>{{ end_year or 2025 }}</strong></span>
                     </div>
                 </div>
             </div>

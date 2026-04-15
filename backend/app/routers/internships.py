@@ -22,6 +22,14 @@ def create_internship(
         student_id=user.id,
         title=data.title,
         description=data.description,
+        type=data.type,
+        company_name=data.company_name,
+        company_address=data.company_address,
+        company_sector=data.company_sector,
+        company_phone=data.company_phone,
+        supervisor_name=data.supervisor_name,
+        supervisor_email=data.supervisor_email,
+        supervisor_function=data.supervisor_function,
     )
     db.add(internship)
     db.commit()

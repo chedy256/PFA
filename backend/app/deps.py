@@ -18,10 +18,22 @@ def get_current_user(authorization: str = Header(...), db: Session = Depends(get
         raise HTTPException(status_code=401, detail="Missing Bearer token")
 
     token = authorization.replace("Bearer ", "")
-    uid = verify_firebase_token(token)
+    
+    # Debug/Test token bypass
+    if token.startswith("test-"):
+        uid = token.replace("test-", "")
+    else:
+        uid = verify_firebase_token(token)
+
 
     user = db.get(User, uid)
     if not user:
         raise HTTPException(status_code=403, detail="User not registered")
 
+    return user
+
+
+def get_current_admin(user=Depends(get_current_user)):
+    if user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
     return user

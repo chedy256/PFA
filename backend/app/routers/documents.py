@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, Response
 from jinja2 import Environment, FileSystemLoader
 from playwright.async_api import async_playwright
 from pydantic import BaseModel
-from app.deps import get_current_user
+from app.deps import get_current_user, get_db
 
 router = APIRouter(prefix="/documents", tags=["documents"])
 
@@ -63,8 +63,53 @@ async def generate_pdf(request_data: FicheData):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.post("/{internship_id}")
-def generate_document(internship_id: str, user=Depends(get_current_user)):
-    if user.role != "admin":
-        raise HTTPException(status_code=403)
-    return {"message": "Document generated"}
+@router.get("/{internship_id}/document.pdf")
+async def generate_document(
+    internship_id: str, 
+    user=Depends(get_current_user),
+    db=Depends(get_db)
+):
+    from sqlalchemy.orm import Session
+    from app.models import Internship
+
+    internship = db.query(Internship).filter(Internship.id == internship_id).first()
+    if not internship:
+        raise HTTPException(status_code=404, detail="Internship not found")
+        
+    student = internship.student
+
+    # mapping fields to jinja format
+    render_data = {
+        "student_name": f"{student.first_name} {student.last_name}" if student else "",
+        "cin": student.cin_number if student and student.cin_number else "",
+        "filiere": student.department if student and student.department else "",
+        "email": student.email if student else "",
+        "phone": student.phone_number if student and student.phone_number else "",
+        "company_name": internship.company_name or "",
+        "company_address": internship.company_address or "",
+        "company_sector": internship.company_sector or "",
+        "company_phone": internship.company_phone or "",
+        "supervisor_name": internship.supervisor_name or "",
+        "supervisor_email": internship.supervisor_email or "",
+        "supervisor_function": internship.supervisor_function or "",
+        "title": internship.title or "",
+        "start_day": internship.start_date.day if internship.start_date else "",
+        "start_month": internship.start_date.month if internship.start_date else "",
+        "start_year": internship.start_date.year if internship.start_date else "",
+        "end_day": internship.end_date.day if internship.end_date else "",
+        "end_month": internship.end_date.month if internship.end_date else "",
+        "end_year": internship.end_date.year if internship.end_date else "",
+    }
+
+    template_name = "pfe" if internship.type == "pfe" else "ete"
+    template_file = f"fiche_information_{template_name}.html"
+    template = jinja_env.get_template(template_file)
+    
+    html_content = template.render(**render_data)
+    pdf_bytes = await _render_html_to_pdf_bytes(html_content, str(TEMPLATE_DIR))
+
+    return Response(
+        content=pdf_bytes, 
+        media_type="application/pdf",
+        headers={"Content-Disposition": f"inline; filename=internship_{internship_id}_{template_name}.pdf"}
+    )
