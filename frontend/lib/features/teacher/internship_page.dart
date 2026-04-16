@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:pfa/core/models/student.dart';
-import 'package:pfa/core/models/teacher.dart';
-import 'package:pfa/core/models/internship.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pfa/features/shared/card_widgets.dart';
+import 'package:pfa/core/providers/internship_provider.dart';
 
-class TeacherInternshipPage extends StatefulWidget {
+class TeacherInternshipPage extends ConsumerStatefulWidget {
   const TeacherInternshipPage({super.key});
 
   @override
-  State<TeacherInternshipPage> createState() => _TeacherInternshipPageState();
+  ConsumerState<TeacherInternshipPage> createState() =>
+      _TeacherInternshipPageState();
 }
 
-class _TeacherInternshipPageState extends State<TeacherInternshipPage> {
+class _TeacherInternshipPageState extends ConsumerState<TeacherInternshipPage> {
   @override
   Widget build(BuildContext context) {
+    final internshipsAsync = ref.watch(internshipsProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mes Stages Supervisés'),
@@ -53,92 +55,30 @@ class _TeacherInternshipPageState extends State<TeacherInternshipPage> {
                       topRight: Radius.circular(12),
                     ),
                   ),
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.only(bottom: 24),
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      spacing: 16,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        intershipCard(
-                          context,
-                          viewType: InternshipCardViewType.teacher,
-                          internship: Internship(
-                            companyName: 'Tech Solutions Inc.',
-                            description:
-                                'Développement d\'une application mobile pour la gestion des tâches.',
-                            position: 'Développeur Flutter',
-                            startDate: DateTime(2026, 6, 1),
-                            endDate: DateTime(2026, 8, 31),
-                            status: InternshipStatus.pasCommance,
-                            internStudent: Student(
-                              id: "S001",
-                              firstName: "Chedy Amine",
-                              lastName: "El Haj",
-                              email: "elhaj@isimm.me",
-                              department: "Informatique",
-                              level: 3,
-                            ),
-                            supervisorTeacher: Teacher(
-                              id: 'TI001',
-                              firstName: 'NAFFAA',
-                              lastName: 'HAFFAR',
-                              email: 'naffaa.haffar@isimm-rnu.tn',
-                              department: 'Informatique',
-                            ),
-                          ),
-                        ),
-                        intershipCard(
-                          context,
-                          viewType: InternshipCardViewType.teacher,
-                          internship: Internship(
-                            companyName: 'Tech Solutions Inc.',
-                            description:
-                                'Développement d\'une application mobile pour la gestion des tâches.',
-                            position: 'Développeur Flutter',
-                            startDate: DateTime(2026, 6, 1),
-                            endDate: DateTime(2026, 8, 31),
-                            status: InternshipStatus.pasCommance,
-                            internStudent: Student(
-                              id: "S002",
-                              firstName: "Zied",
-                              lastName: "Mabrouk",
-                              email: "zied.mabrouk@isimm.me",
-                              department: "Informatique",
-                              level: 3,
-                            ),
-                            supervisorTeacher: Teacher(
-                              id: 'TI001',
-                              firstName: 'NAFFAA',
-                              lastName: 'HAFFAR',
-                              email: 'naffaa.haffar@isimm-rnu.tn',
-                              department: 'Informatique',
-                            ),
-                          ),
-                        ),
-                        intershipCard(
-                          context,
-                          viewType: InternshipCardViewType.teacher,
-                          internship: Internship(
-                            companyName: 'Tech Solutions Inc.',
-                            description:
-                                'Développement d\'une application mobile pour la gestion des tâches.',
-                            position: 'Développeur Flutter',
-                            startDate: DateTime(2026, 6, 1),
-                            endDate: DateTime(2026, 8, 31),
-                            status: InternshipStatus.pasCommance,
-                            internStudent: Student(
-                              id: "S003",
-                              firstName: "Ahmed",
-                              lastName: "Hafssi",
-                              email: "ahmed.hafssi@isimm.me",
-                              department: "Informatique",
-                              level: 3,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  child: internshipsAsync.when(
+                    data: (internships) {
+                      if (internships.isEmpty) {
+                        return const Center(
+                          child: Text("Aucun stage supervisé."),
+                        );
+                      }
+                      return ListView.separated(
+                        padding: const EdgeInsets.only(bottom: 24),
+                        itemCount: internships.length,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 16),
+                        itemBuilder: (context, index) {
+                          return intershipCard(
+                            context,
+                            viewType: InternshipCardViewType.teacher,
+                            internship: internships[index],
+                          );
+                        },
+                      );
+                    },
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
+                    error: (error, _) => Center(child: Text('Erreur: $error')),
                   ),
                 ),
               ),

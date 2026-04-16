@@ -3,18 +3,28 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pfa/core/auth/auth_service.dart';
 
+import 'package:pfa/core/services/backend_auth_service.dart';
+
 // Defines the application user model that combines Firebase Auth data and Role
 class AppUser {
   final String uid;
   final String email;
   final String role;
-  // Add other fields from backend if needed
+  final String? firstName;
+  final String? lastName;
 
-  AppUser({required this.uid, required this.email, required this.role});
+  AppUser({
+    required this.uid,
+    required this.email,
+    required this.role,
+    this.firstName,
+    this.lastName,
+  });
 }
 
 class AuthNotifier extends AsyncNotifier<AppUser?> {
   final _storage = const FlutterSecureStorage();
+  final _backendAuthService = BackendAuthService();
 
   @override
   Future<AppUser?> build() async {
@@ -32,15 +42,27 @@ class AuthNotifier extends AsyncNotifier<AppUser?> {
         if (token != null) {
           await _storage.write(key: 'jwt', value: token);
         }
-        // If firebase user exists, we might still need to fetch the role from Backend.
-        // For now, we restore state assuming they are logged in.
-        state = AsyncValue.data(
-          AppUser(
-            uid: firebaseUser.uid,
-            email: firebaseUser.email!,
-            role: 'Etudiant', // Default/Placeholder until backend sync
-          ),
-        );
+
+        try {
+          final userData = await _backendAuthService.getMe();
+          state = AsyncValue.data(
+            AppUser(
+              uid: firebaseUser.uid,
+              email: firebaseUser.email!,
+              role: userData['role'] ?? 'student',
+              firstName: userData['first_name'],
+              lastName: userData['last_name'],
+            ),
+          );
+        } catch (e) {
+          state = AsyncValue.data(
+            AppUser(
+              uid: firebaseUser.uid,
+              email: firebaseUser.email!,
+              role: 'student', // Fallback
+            ),
+          );
+        }
       }
     });
 
@@ -55,11 +77,22 @@ class AuthNotifier extends AsyncNotifier<AppUser?> {
       await _storage.write(key: 'jwt', value: token);
     }
 
-    return AppUser(
-      uid: currentUser.uid,
-      email: currentUser.email!,
-      role: 'Etudiant', // Default/Placeholder until backend sync
-    );
+    try {
+      final userData = await _backendAuthService.getMe();
+      return AppUser(
+        uid: currentUser.uid,
+        email: currentUser.email!,
+        role: userData['role'] ?? 'student',
+        firstName: userData['first_name'],
+        lastName: userData['last_name'],
+      );
+    } catch (e) {
+      return AppUser(
+        uid: currentUser.uid,
+        email: currentUser.email!,
+        role: 'student',
+      );
+    }
   }
 
   Future<void> login(String email, String password, String role) async {
@@ -74,12 +107,18 @@ class AuthNotifier extends AsyncNotifier<AppUser?> {
       if (token != null) {
         await _storage.write(key: 'jwt', value: token);
       }
-      //TODO:check the role of the user in the backend and sync data
+
+      final userData = await _backendAuthService.bootstrap(
+        role: role.toLowerCase() == 'enseignant' ? 'teacher' : 'student',
+      );
+
       state = AsyncValue.data(
         AppUser(
           uid: credential.user!.uid,
           email: credential.user!.email!,
-          role: role,
+          role: userData['role'] ?? role,
+          firstName: userData['first_name'],
+          lastName: userData['last_name'],
         ),
       );
     } catch (e, st) {
@@ -87,7 +126,13 @@ class AuthNotifier extends AsyncNotifier<AppUser?> {
     }
   }
 
-  Future<void> signup(String email, String password, String role) async {
+  Future<void> signup(
+    String email,
+    String password,
+    String firstName,
+    String lastName,
+    String role,
+  ) async {
     state = const AsyncValue.loading();
     try {
       final authService = ref.read(authServiceProvider);
@@ -100,12 +145,19 @@ class AuthNotifier extends AsyncNotifier<AppUser?> {
         await _storage.write(key: 'jwt', value: token);
       }
 
-      // TODO:  signup user in backend with role and sync data
+      final userData = await _backendAuthService.bootstrap(
+        role: role.toLowerCase() == 'enseignant' ? 'teacher' : 'student',
+        firstName: firstName,
+        lastName: lastName,
+      );
+
       state = AsyncValue.data(
         AppUser(
           uid: credential.user!.uid,
           email: credential.user!.email!,
-          role: role,
+          role: userData['role'] ?? role,
+          firstName: userData['first_name'],
+          lastName: userData['last_name'],
         ),
       );
     } catch (e, st) {
@@ -122,12 +174,31 @@ class AuthNotifier extends AsyncNotifier<AppUser?> {
       if (token != null) {
         await _storage.write(key: 'jwt', value: token);
       }
-      // TODO: Sync with backend
+
+      final user = credential.user;
+      String firstName = '';
+      String lastName = '';
+      if (user != null &&
+          user.displayName != null &&
+          user.displayName!.isNotEmpty) {
+        final nameParts = user.displayName!.split(' ');
+        firstName = nameParts.first;
+        lastName = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
+      }
+
+      final userData = await _backendAuthService.bootstrap(
+        role: role.toLowerCase() == 'enseignant' ? 'teacher' : 'student',
+        firstName: firstName,
+        lastName: lastName,
+      );
+
       state = AsyncValue.data(
         AppUser(
           uid: credential.user!.uid,
           email: credential.user!.email!,
-          role: role,
+          role: userData['role'] ?? role,
+          firstName: userData['first_name'],
+          lastName: userData['last_name'],
         ),
       );
     } catch (e, st) {
@@ -144,12 +215,31 @@ class AuthNotifier extends AsyncNotifier<AppUser?> {
       if (token != null) {
         await _storage.write(key: 'jwt', value: token);
       }
-      // TODO: Sync with backend
+
+      final user = credential.user;
+      String firstName = '';
+      String lastName = '';
+      if (user != null &&
+          user.displayName != null &&
+          user.displayName!.isNotEmpty) {
+        final nameParts = user.displayName!.split(' ');
+        firstName = nameParts.first;
+        lastName = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
+      }
+
+      final userData = await _backendAuthService.bootstrap(
+        role: role.toLowerCase() == 'enseignant' ? 'teacher' : 'student',
+        firstName: firstName,
+        lastName: lastName,
+      );
+
       state = AsyncValue.data(
         AppUser(
           uid: credential.user!.uid,
           email: credential.user!.email!,
-          role: role, // Default or prompt user?
+          role: userData['role'] ?? role,
+          firstName: userData['first_name'],
+          lastName: userData['last_name'],
         ),
       );
     } catch (e, st) {

@@ -16,6 +16,8 @@ class AuthPage extends ConsumerStatefulWidget {
 
 class _AuthPageState extends ConsumerState<AuthPage> {
   late final GlobalKey<FormState> _formKey;
+  late final TextEditingController _firstNameController;
+  late final TextEditingController _lastNameController;
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
   late final TextEditingController _confirmPasswordController;
@@ -28,6 +30,8 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   void initState() {
     super.initState();
     _formKey = GlobalKey<FormState>();
+    _firstNameController = TextEditingController();
+    _lastNameController = TextEditingController();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
     _confirmPasswordController = TextEditingController();
@@ -50,15 +54,18 @@ class _AuthPageState extends ConsumerState<AuthPage> {
       if (kDebugMode) {
         print('Authentication Error: ${next.error}');
       }
-      final theme = Theme.of(context);
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(
-            content: Text(next.error?.toString() ?? 'An error occurred'),
-            backgroundColor: theme.colorScheme.error,
-          ),
-        );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        final theme = Theme.of(context);
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(
+              content: Text(next.error?.toString() ?? 'An error occurred'),
+              backgroundColor: theme.colorScheme.error,
+            ),
+          );
+      });
       return;
     }
 
@@ -95,6 +102,8 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   @override
   void dispose() {
     _authSubscription.close();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
@@ -117,6 +126,8 @@ class _AuthPageState extends ConsumerState<AuthPage> {
             .signup(
               _emailController.text,
               _passwordController.text,
+              _firstNameController.text,
+              _lastNameController.text,
               _selectedRole,
             );
       }
@@ -160,6 +171,8 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               child: _AuthFormContent(
                 formKey: _formKey,
                 isLogin: _isLogin,
+                firstNameController: _firstNameController,
+                lastNameController: _lastNameController,
                 emailController: _emailController,
                 passwordController: _passwordController,
                 confirmPasswordController: _confirmPasswordController,
@@ -182,6 +195,8 @@ class _AuthFormContent extends StatelessWidget {
   const _AuthFormContent({
     required this.formKey,
     required this.isLogin,
+    required this.firstNameController,
+    required this.lastNameController,
     required this.emailController,
     required this.passwordController,
     required this.confirmPasswordController,
@@ -195,6 +210,8 @@ class _AuthFormContent extends StatelessWidget {
 
   final GlobalKey<FormState> formKey;
   final bool isLogin;
+  final TextEditingController firstNameController;
+  final TextEditingController lastNameController;
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
@@ -227,9 +244,13 @@ class _AuthFormContent extends StatelessWidget {
                     onMicrosoftTap: onMicrosoftTap,
                   )
                 : _SignupSection(
+                    firstNameController: firstNameController,
+                    lastNameController: lastNameController,
                     emailController: emailController,
                     passwordController: passwordController,
                     confirmPasswordController: confirmPasswordController,
+                    onGoogleTap: onGoogleTap,
+                    onMicrosoftTap: onMicrosoftTap,
                   ),
             _AuthModeToggleButton(
               isLogin: isLogin,
@@ -284,21 +305,32 @@ class _LoginSection extends StatelessWidget {
 
 class _SignupSection extends StatelessWidget {
   const _SignupSection({
+    required this.firstNameController,
+    required this.lastNameController,
     required this.emailController,
     required this.passwordController,
     required this.confirmPasswordController,
+    required this.onGoogleTap,
+    required this.onMicrosoftTap,
   });
 
+  final TextEditingController firstNameController;
+  final TextEditingController lastNameController;
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
+  final VoidCallback onGoogleTap;
+  final VoidCallback onMicrosoftTap;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const SizedBox(height: 16),
-        const _SignupNameRow(),
+        _SignupNameRow(
+          firstNameController: firstNameController,
+          lastNameController: lastNameController,
+        ),
         const SizedBox(height: 16),
         EmailInputField(controller: emailController),
         const SizedBox(height: 16),
@@ -313,7 +345,11 @@ class _SignupSection extends StatelessWidget {
           validator: (value) =>
               Validators.validatePasswordMatch(value, passwordController.text),
         ),
-        const SizedBox(height: 34),
+        const SizedBox(height: 12),
+        QuickLoginOptions(
+          onGoogleTap: onGoogleTap,
+          onMicrosoftTap: onMicrosoftTap,
+        ),
       ],
     );
   }
@@ -332,24 +368,32 @@ class _LogoSection extends StatelessWidget {
 }
 
 class _SignupNameRow extends StatelessWidget {
-  const _SignupNameRow();
+  const _SignupNameRow({
+    required this.firstNameController,
+    required this.lastNameController,
+  });
+
+  final TextEditingController firstNameController;
+  final TextEditingController lastNameController;
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
+    return Row(
       spacing: 16,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: NameInputField(
+            controller: firstNameController,
             label: 'Prénom',
-            autofillHints: [AutofillHints.givenName],
+            autofillHints: const [AutofillHints.givenName],
           ),
         ),
         Expanded(
           child: NameInputField(
+            controller: lastNameController,
             label: 'Nom',
-            autofillHints: [AutofillHints.familyName],
+            autofillHints: const [AutofillHints.familyName],
           ),
         ),
       ],

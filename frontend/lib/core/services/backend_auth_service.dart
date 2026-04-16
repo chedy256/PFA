@@ -9,14 +9,16 @@ class BackendAuthService {
   Future<Map<String, dynamic>> bootstrap({
     String? fcmToken,
     String? role,
+    String? firstName,
+    String? lastName,
   }) async {
-    final response = await _apiClient.post(
-      ApiEndpoints.bootstrap,
-      body: {
-        'fcm_token': ?fcmToken,
-        'role': ?role,
-      },
-    );
+    final Map<String, dynamic> body = {};
+    if (role != null) body['requested_role'] = role;
+    if (fcmToken != null) body['fcm_token'] = fcmToken;
+    if (firstName != null) body['first_name'] = firstName;
+    if (lastName != null) body['last_name'] = lastName;
+
+    final response = await _apiClient.post(ApiEndpoints.bootstrap, body: body);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       return jsonDecode(response.body);

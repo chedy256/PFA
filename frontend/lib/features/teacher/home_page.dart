@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pfa/core/models/student.dart';
-import 'package:pfa/core/models/teacher.dart';
 import 'package:pfa/core/theme/app_colors.dart';
-import 'package:pfa/core/models/internship.dart';
 import 'package:pfa/features/shared/card_widgets.dart';
 import 'package:pfa/features/shared/profile_page.dart';
 import 'package:pfa/features/teacher/internship_page.dart';
+import 'package:pfa/core/providers/internship_provider.dart';
+import 'package:pfa/core/providers/user_data_provider.dart';
 
 class TeacherHomePage extends ConsumerStatefulWidget {
   const TeacherHomePage({super.key});
@@ -19,11 +18,18 @@ class _TeacherHomePageState extends ConsumerState<TeacherHomePage> {
   int _currentIndex = 0;
 
   Widget _buildHomePage() {
+    final internshipsAsync = ref.watch(internshipsProvider);
+    final userAsync = ref.watch(userDataProvider);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Bienvenue, Mr. NAFFAA',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        title: userAsync.when(
+          data: (user) => Text(
+            'Bienvenue, Mr. ${user?.firstName ?? ''}',
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          loading: () => const Text('Bienvenue...'),
+          error: (err, _) => const Text('Bienvenue'),
         ),
       ),
       body: SafeArea(
@@ -48,95 +54,29 @@ class _TeacherHomePageState extends ConsumerState<TeacherHomePage> {
                       topRight: Radius.circular(12),
                     ),
                   ),
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.only(bottom: 24),
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      spacing: 16,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        intershipCard(
-                          context,
-                          viewType:
-                              InternshipCardViewType.teacherPendingInternships,
-                          internship: Internship(
-                            companyName: 'Tech Solutions Inc.',
-                            description:
-                                'Développement d\'une application mobile pour la gestion des tâches.',
-                            position: 'Développeur Flutter',
-                            startDate: DateTime(2026, 6, 1),
-                            endDate: DateTime(2026, 8, 31),
-                            status: InternshipStatus.pasCommance,
-                            internStudent: Student(
-                              id: "S001",
-                              firstName: "Chedy Amine",
-                              lastName: "El Haj",
-                              email: "elhaj@isimm.me",
-                              department: "Informatique",
-                              level: 3,
-                            ),
-                            supervisorTeacher: Teacher(
-                              id: 'TI002',
-                              firstName: 'Flen',
-                              lastName: 'Ben Flen',
-                              email: 'flen.benflen@isimm-rnu.tn',
-                              department: 'Informatique',
-                            ),
-                          ),
-                        ),
-                        intershipCard(
-                          context,
-                          viewType:
-                              InternshipCardViewType.teacherPendingInternships,
-                          internship: Internship(
-                            companyName: 'Tech Solutions Inc.',
-                            description:
-                                'Développement d\'une application mobile pour la gestion des tâches.',
-                            position: 'Développeur Flutter',
-                            startDate: DateTime(2026, 6, 1),
-                            endDate: DateTime(2026, 8, 31),
-                            status: InternshipStatus.pasCommance,
-                            internStudent: Student(
-                              id: "S001",
-                              firstName: "Chedy Amine",
-                              lastName: "El Haj",
-                              email: "elhaj@isimm.me",
-                              department: "Informatique",
-                              level: 3,
-                            ),
-                            supervisorTeacher: Teacher(
-                              id: 'TI002',
-                              firstName: 'NAFFA',
-                              lastName: 'HAFFAR',
-                              email: 'naffa.haffar@isimm-rnu.tn',
-                              department: 'Informatique',
-                            ),
-                          ),
-                        ),
-                        intershipCard(
-                          context,
-                          viewType:
-                              InternshipCardViewType.teacherPendingInternships,
-                          internship: Internship(
-                            companyName: 'Tech Solutions Inc.',
-                            description:
-                                'Développement d\'une application mobile pour la gestion des tâches.',
-                            position: 'Développeur Flutter',
-                            startDate: DateTime(2026, 6, 1),
-                            endDate: DateTime(2026, 8, 31),
-                            status: InternshipStatus.pasCommance,
-                            internStudent: Student(
-                              id: "S001",
-                              firstName: "Chedy Amine",
-                              lastName: "El Haj",
-                              email: "elhaj@isimm.me",
-                              department: "Informatique",
-                              level: 3,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  child: internshipsAsync.when(
+                    data: (internships) {
+                      if (internships.isEmpty) {
+                        return const Center(child: Text("Aucun stage trouvé."));
+                      }
+                      return ListView.separated(
+                        padding: const EdgeInsets.only(bottom: 24),
+                        itemCount: internships.length,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 16),
+                        itemBuilder: (context, index) {
+                          return intershipCard(
+                            context,
+                            viewType: InternshipCardViewType
+                                .teacherPendingInternships,
+                            internship: internships[index],
+                          );
+                        },
+                      );
+                    },
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
+                    error: (error, _) => Center(child: Text("Erreur: $error")),
                   ),
                 ),
               ),
@@ -149,17 +89,19 @@ class _TeacherHomePageState extends ConsumerState<TeacherHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final userAsync = ref.watch(userDataProvider);
+
     final List<Widget> pages = [
       _buildHomePage(),
-      TeacherInternshipPage(), // My Internships
-      ProfilePage(
-        user: Teacher(
-          id: 'TI001',
-          firstName: 'NAFFA',
-          lastName: 'HAFFAR',
-          email: 'naffa.haffar@isimm-rnu.tn',
-          department: 'Informatique',
-        ),
+      const TeacherInternshipPage(), // My Internships
+      userAsync.when(
+        data: (user) => user != null
+            ? ProfilePage(user: user)
+            : const Center(child: Text('User profile not found')),
+        loading: () =>
+            const Scaffold(body: Center(child: CircularProgressIndicator())),
+        error: (error, _) =>
+            Scaffold(body: Center(child: Text('Error: $error'))),
       ),
       // Profile
     ];
