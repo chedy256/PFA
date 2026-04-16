@@ -43,4 +43,3 @@ Tout tourne autour de ce flux de travail.
 - Assure un accès et une sécurité appropriés pour les données académiques sensibles.
 
 ---
-

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planificateur de Soutenance PFE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- HEADER -->
+  <div id="header">
+    <div class="logo">PFE</div>
+    <div>
+      <h1>Planificateur de Soutenance</h1>
+      <div class="sub">Gestion automatique des soutenances PFE</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="badge" id="status-badge">Configuration</div>
+  </div>
+
+  <!-- TABS -->
+  <div id="tabs">
+    <div class="tab active" data-tab="setup">⚙ Configuration</div>
+    <div class="tab" data-tab="schedule">📅 Planning</div>
+    <div class="tab" data-tab="jury">👥 Jurys</div>
+    <div class="tab" data-tab="conflicts">⚠ Validation</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SETUP PANEL
+  ══════════════════════════════════════════ -->
+  <div class="panel active" id="panel-setup">
+
+    <div class="section-title">Paramètres généraux</div>
+    <div class="setup-grid">
+
+      <div class="field">
+        <label for="f-students">Nombre d'étudiants</label>
+        <input type="number" id="f-students" value="12" min="1" max="300">
+        <div class="hint">Étudiants à soutenir</div>
+      </div>
+
+      <div class="field">
+        <label for="f-rooms">Nombre de salles</label>
+        <input type="number" id="f-rooms" value="3" min="1" max="20">
+        <div class="hint">Salles disponibles</div>
+      </div>
+
+      <div class="field">
+        <label for="f-juries">Nombre de jurys</label>
+        <input type="number" id="f-juries" value="6" min="2" max="100">
+        <div class="hint">Membres de jury disponibles</div>
+      </div>
+
+      <div class="field">
+        <label for="f-jury-size">Membres par jury</label>
+        <input type="number" id="f-jury-size" value="2" min="2" max="5">
+        <div class="hint">Par soutenance (min 2)</div>
+      </div>
+
+      <div class="field">
+        <label for="f-max-per-day">Max soutenances / jury / jour</label>
+        <input type="number" id="f-max-per-day" value="3" min="1" max="15">
+        <div class="hint">Limite par personne par jour</div>
+      </div>
+
+      <div class="field">
+        <label for="f-duration">Durée par soutenance (min)</label>
+        <input type="number" id="f-duration" value="45" min="15" max="180" step="15">
+        <div class="hint">Durée totale avec délibération</div>
+      </div>
+
+      <div class="field">
+        <label for="f-start-hour">Heure de début</label>
+        <input type="number" id="f-start-hour" value="8" min="6" max="12">
+        <div class="hint">Heure (format 24h)</div>
+      </div>
+
+      <div class="field">
+        <label for="f-end-hour">Heure de fin</label>
+        <input type="number" id="f-end-hour" value="18" min="13" max="22">
+        <div class="hint">Heure (format 24h)</div>
+      </div>
+
+    </div>
+
+    <div class="section-title" style="margin-top:28px">Récapitulatif des contraintes</div>
+    <div class="constraints-list" id="constraints-preview"></div>
+
+    <button class="generate-btn" onclick="generate()">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M2 8h12M9 3l5 5-5 5"/>
+      </svg>
+      Générer le planning
+    </button>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SCHEDULE PANEL
+  ══════════════════════════════════════════ -->
+  <div class="panel" id="panel-schedule">
+
+    <div id="schedule-empty" class="empty-state">
+      <div class="big">📅</div>
+      Configurez les paramètres puis cliquez sur <strong>Générer le planning</strong>
+    </div>
+
+    <div id="schedule-view">
+      <div class="schedule-toolbar">
+        <div class="toolbar-stat">Étudiants: <strong id="stat-students">0</strong></div>
+        <div class="toolbar-sep"></div>
+        <div class="toolbar-stat">Salles: <strong id="stat-rooms">0</strong></div>
+        <div class="toolbar-sep"></div>
+        <div class="toolbar-stat">Durée: <strong id="stat-duration">0</strong> min</div>
+        <div class="toolbar-sep"></div>
+        <div class="toolbar-stat">Jours: <strong id="stat-days">1</strong></div>
+        <div class="toolbar-spacer"></div>
+        <button class="toolbar-btn" onclick="openAddModal()">+ Ajouter</button>
+        <button class="toolbar-btn primary" onclick="generate()">↺ Regénérer</button>
+      </div>
+
+      <div class="day-nav" id="day-nav"></div>
+
+      <div class="schedule-scroll">
+        <div class="time-col" id="time-col"></div>
+        <div class="rooms-grid">
+          <div class="rooms-header" id="rooms-header"></div>
+          <div class="rooms-body"   id="rooms-body"></div>
+        </div>
+      </div>
+
+      <div class="legend" id="legend"></div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       JURY PANEL
+  ══════════════════════════════════════════ -->
+  <div class="panel" id="panel-jury">
+    <div id="jury-empty" class="empty-state">
+      <div class="big">👥</div>
+      Générez d'abord un planning pour voir les affectations des jurys.
+    </div>
+    <div id="jury-grid" class="jury-grid"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       CONFLICTS PANEL
+  ══════════════════════════════════════════ -->
+  <div class="panel" id="panel-conflicts">
+    <div id="conflict-empty" class="empty-state">
+      <div class="big">✅</div>
+      Aucun planning à valider pour l'instant.
+    </div>
+    <div id="conflict-list" class="conflict-list"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       MODAL — Edit / Add presentation
+  ══════════════════════════════════════════ -->
+  <div class="modal-overlay hidden" id="modal">
+    <div class="modal" onclick="event.stopPropagation()">
+      <h2 id="modal-title">Modifier la soutenance</h2>
+      <input type="hidden" id="modal-id">
+
+      <div class="modal-field">
+        <label for="modal-student">Étudiant</label>
+        <input type="text" id="modal-student" placeholder="Nom de l'étudiant">
+      </div>
+
+      <div class="modal-field">
+        <label for="modal-room">Salle</label>
+        <select id="modal-room"></select>
+      </div>
+
+      <div class="modal-field">
+        <label for="modal-slot">Créneau horaire</label>
+        <select id="modal-slot"></select>
+      </div>
+
+      <div class="modal-field">
+        <label for="modal-president">Président du jury</label>
+        <select id="modal-president"></select>
+      </div>
+
+      <div class="modal-field">
+        <label for="modal-members">Membres du jury</label>
+        <select id="modal-members" multiple></select>
+        <div class="modal-hint">Maintenez Ctrl (ou ⌘) pour sélectionner plusieurs membres</div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-delete"  id="btn-delete" onclick="deletePresentation()">Supprimer</button>
+        <button class="btn-cancel"  onclick="closeModal()">Annuler</button>
+        <button class="btn-save"    onclick="saveModal()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+
+<script src="app.js"></script>
+</body>
+</html>
