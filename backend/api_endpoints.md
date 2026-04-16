@@ -54,8 +54,16 @@ The admin panel generally needs broader access and document generation capabilit
 * **`POST /documents/generate-fiche`**
   * **Description:** Generates a PDF based on the provided fiche data.
   * **Body:** `FicheData` schema.
-* **`POST /documents/{internship_id}`** *(Admin Only)*
-  * **Description:** Generates a specific document for an internship. Access is strictly blocked for non-admins.
+* **`GET /documents/{internship_id}/document.pdf`** *(Admin Only)*
+  * **Description:** Generates or retrieves a specific PDF document for an internship. Access is strictly blocked for non-admins.
+
+### User Management (Admin Only)
+* **`GET /users/role/{role_name}`**
+  * **Description:** Fetches a paginated list of users by their role (e.g., 'student', 'teacher', 'admin').
+* **`GET /users/make-admin-debug`**
+  * **Description:** Debug endpoint to grant admin privileges to the current user.
 
 ### Shared Endpoints
 Admins will also use `POST /auth/bootstrap` and `GET /auth/me` to log into the web dashboard.
+* **`GET /health`**
+  * **Description:** Health check endpoint to ensure the API is running correctly.
