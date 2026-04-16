@@ -1,0 +1,15 @@
+meta {
+  name: Get Users By Role
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/users/role/{{role_name}}
+  body: none
+  auth: inherit
+}
+
+vars:pre-request {
+  role_name: student
+}

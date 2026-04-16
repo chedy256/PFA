@@ -1,0 +1,26 @@
+meta {
+  name: Bootstrap
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/bootstrap
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "bootstrap_data": "example"
+  }
+}
+
+vars:pre-request {
+  token: eyJhbGciOiJSUzI1NiIsImtpZCI6IjcwZmM5YzU0YjhiMjQyMWZmMTgyOTgxNTQyZmQ0NjRlOWJlYzM1NDUiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQ2hlZHkgQW1pbmUgRWwgSGFqIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0ppdlcyR0pQQUlkWmxnTE5TYmhhanhldlVLWlpISDJMWUJVVVNWa0YxUC1uWkJZbGxKRXc9czk2LWMiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vaXNpbW0taW50ZXJuIiwiYXVkIjoiaXNpbW0taW50ZXJuIiwiYXV0aF90aW1lIjoxNzc2MzU0MDgyLCJ1c2VyX2lkIjoiRkxjcTlCTXpxN1NadXA2dXJrMXJac2FTSmloMiIsInN1YiI6IkZMY3E5Qk16cTdTWnVwNnVyazFyWnNhU0ppaDIiLCJpYXQiOjE3NzYzNTQwODIsImV4cCI6MTc3NjM1NzY4MiwiZW1haWwiOiJjaGVkeWVsaGFqQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTAwOTYxMzIwNDk1OTA4NTU0MzM2Il0sImVtYWlsIjpbImNoZWR5ZWxoYWpAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoiZ29vZ2xlLmNvbSJ9fQ.a70aX0wtVwaSztX5VJW-SBERgtFuq05YcdpXDxTTmiQpAb04hEG3CoepZou-0kIG2PPWpX7aIElbb0R_ifgkwLlt_PmXE1tgROXbTJOXHOkoiy3SaSgdlqin7ozA536ITCG2nDyTetA6uy7IlzSBSS1-oRqlDzGyksFyd4Eb9DQEZr2vmBKBHvm8dJdYs
+  baseUrl: https://pfa-13qu.onrender.com/
+}
