@@ -207,7 +207,7 @@ class QuickLoginOptions extends StatelessWidget {
     return Column(
       children: [
         Text(
-          'Ou connectez-vous avec',
+          'Ou continuez avec',
           style: TextStyle(
             fontSize: 16,
             color: theme.textTheme.bodyMedium?.color,

@@ -35,9 +35,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
     authState.whenData((user) {
       if (user != null) {
-        if (user.role == 'Etudiant') {
+        final role = user.role.toLowerCase();
+        if (role == 'student' || role == 'etudiant') {
           Navigator.pushReplacementNamed(context, '/student');
-        } else if (user.role == 'Enseignant') {
+        } else if (role == 'teacher' || role == 'enseignant') {
           Navigator.pushReplacementNamed(context, '/teacher');
         } else {
           Navigator.pushReplacementNamed(context, '/login');
