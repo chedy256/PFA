@@ -1,0 +1,21 @@
+meta {
+  name: Generate Fiche
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/documents/generate-fiche
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "data": "example"
+  }
+}

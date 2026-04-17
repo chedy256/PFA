@@ -1,0 +1,15 @@
+meta {
+  name: Get Conversation
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/messages/conversation/{{other_user_id}}
+  body: none
+  auth: inherit
+}
+
+vars:pre-request {
+  other_user_id: 123
+}

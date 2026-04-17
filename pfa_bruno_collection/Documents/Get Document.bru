@@ -1,0 +1,15 @@
+meta {
+  name: Get Document
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/documents/{{internship_id}}/document.pdf
+  body: none
+  auth: inherit
+}
+
+vars:pre-request {
+  internship_id: 1
+}

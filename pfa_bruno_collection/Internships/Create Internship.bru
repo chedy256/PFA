@@ -1,0 +1,18 @@
+meta {
+  name: Create Internship
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/internships/
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "string",
+    "description": "string"
+  }
+}

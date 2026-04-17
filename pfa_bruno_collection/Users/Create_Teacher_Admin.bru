@@ -1,0 +1,23 @@
+meta {
+  name: Create Teacher (Admin)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/admin/teachers
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "first_name": "New",
+    "last_name": "Teacher",
+    "email": "teacher1@example.com"
+  }
+}
