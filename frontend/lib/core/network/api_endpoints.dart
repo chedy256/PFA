@@ -9,8 +9,9 @@ class ApiEndpoints {
   // Internships endpoints
   static const String internships = '/internships/';
 
-  // Messages endpoints
-  static const String messages = '/messages/';
-  static String conversation(String otherUserId) =>
-      '/messages/conversation/$otherUserId';
+  // Notifications (Messages) endpoints
+  static const String notifications = '/messages/';
+
+  // Health
+  static const String health = '/health';
 }
