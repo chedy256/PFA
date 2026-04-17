@@ -9,6 +9,7 @@ import 'package:pfa/features/student/submit_internship_page.dart';
 
 Row welcomeWidget(BuildContext context, WidgetRef ref, User user) {
   final theme = Theme.of(context);
+  final displayName = [user.firstName, user.lastName].where((n) => n.isNotEmpty).join(' ');
 
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -27,7 +28,7 @@ Row welcomeWidget(BuildContext context, WidgetRef ref, User user) {
               ),
             ),
             Text(
-              '${user.firstName} ${user.lastName} !',
+              displayName.isNotEmpty ? '$displayName !' : '!',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
@@ -57,7 +58,8 @@ Row welcomeWidget(BuildContext context, WidgetRef ref, User user) {
               radius: 26,
               backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
               child: Text(
-                user.firstName[0] + user.lastName[0],
+                (user.firstName.isNotEmpty ? user.firstName[0].toUpperCase() : '') +
+                (user.lastName.isNotEmpty ? user.lastName[0].toUpperCase() : ''),
                 style: TextStyle(
                   color: theme.colorScheme.primary,
                   fontFamily: 'Outfit',
