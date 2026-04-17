@@ -17,7 +17,7 @@ def me(user: Annotated[User, Depends(get_current_user)]):
 
 @router.get("/make-admin-debug")
 def make_admin(user: Annotated[User, Depends(get_current_user)], db: Annotated[Session, Depends(get_db)]) -> dict[str, str]:
-    if user.uuid == "oyqJZDQTKDhvUTL24ZCdIF4R9s42":
+    if user.id == "oyqJZDQTKDhvUTL24ZCdIF4R9s42":
         from app.models import UserRole
         user.role = UserRole.admin
         db.commit()
