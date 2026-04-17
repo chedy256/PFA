@@ -10,7 +10,7 @@ import 'package:pfa/core/models/user.dart' as model;
 import 'package:pfa/core/providers/auth_provider.dart';
 
 class UserDataNotifier extends AsyncNotifier<model.User?> {
-  final String _baseUrl = 'http://10.0.2.2:8000'; // backend API base URL
+  final String _baseUrl = 'http://192.168.1.193:8000'; // backend API base URL
   final _storage = const FlutterSecureStorage();
   static const _localUserKey = 'local_user_data';
 
@@ -50,9 +50,11 @@ class UserDataNotifier extends AsyncNotifier<model.User?> {
     // Only if we have NO local data, we wait for the backend.
     try {
       final token = await _storage.read(key: 'jwt');
-      if (token == null) return null;
+      if (token == null) {
+        return _createFallbackUser(appUser);
+      }
 
-      final fetchUrl = '$_baseUrl/users/${appUser.uid}';
+      final fetchUrl = '$_baseUrl/auth/me';
       final response = await http
           .get(
             Uri.parse(fetchUrl),
@@ -68,12 +70,41 @@ class UserDataNotifier extends AsyncNotifier<model.User?> {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString(_localUserKey, json.encode(data));
         return _mapToUser(appUser.uid, appUser.email, appUser.role, data);
+      } else {
+        return _createFallbackUser(appUser);
       }
     } catch (e) {
       debugPrint('UserDataNotifier: Initial fetch failed ($e).');
+      return _createFallbackUser(appUser);
     }
+  }
 
-    return null;
+  model.User _createFallbackUser(AppUser appUser) {
+    final isStudent = appUser.role.toLowerCase() == 'student' || appUser.role.toLowerCase() == 'etudiant';
+    if (isStudent) {
+      return Student(
+        id: appUser.uid,
+        firstName: appUser.firstName ?? '',
+        lastName: appUser.lastName ?? '',
+        email: appUser.email,
+        department: '',
+        level: 1,
+        phoneEnabled: false,
+        wsPhoneEnabled: false,
+        emailEnabled: true,
+      );
+    } else {
+      return Teacher(
+        id: appUser.uid,
+        firstName: appUser.firstName ?? '',
+        lastName: appUser.lastName ?? '',
+        email: appUser.email,
+        department: '',
+        phoneEnabled: false,
+        wsPhoneEnabled: false,
+        emailEnabled: true,
+      );
+    }
   }
 
   /// Performs backend fetch and synchronization without blocking the UI.
@@ -86,7 +117,7 @@ class UserDataNotifier extends AsyncNotifier<model.User?> {
       final token = await _storage.read(key: 'jwt');
       if (token == null) return;
 
-      final fetchUrl = '$_baseUrl/users/${appUser.uid}';
+      final fetchUrl = '$_baseUrl/auth/me';
       final response = await http
           .get(
             Uri.parse(fetchUrl),
@@ -160,11 +191,12 @@ class UserDataNotifier extends AsyncNotifier<model.User?> {
     String role,
     Map<String, dynamic> data,
   ) {
-    if (role == 'Etudiant') {
+    final isStudent = role.toLowerCase() == 'student' || role.toLowerCase() == 'etudiant';
+    if (isStudent) {
       return Student(
         id: uid,
-        firstName: data['firstName'] ?? '',
-        lastName: data['lastName'] ?? '',
+        firstName: data['first_name'] ?? data['firstName'] ?? '',
+        lastName: data['last_name'] ?? data['lastName'] ?? '',
         email: email,
         department: data['department'] ?? '',
         level: data['level'] ?? 1,
@@ -177,8 +209,8 @@ class UserDataNotifier extends AsyncNotifier<model.User?> {
     } else {
       return Teacher(
         id: uid,
-        firstName: data['firstName'] ?? '',
-        lastName: data['lastName'] ?? '',
+        firstName: data['first_name'] ?? data['firstName'] ?? '',
+        lastName: data['last_name'] ?? data['lastName'] ?? '',
         email: email,
         department: data['department'] ?? '',
         phone: data['phone'],
