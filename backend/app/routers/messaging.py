@@ -1,3 +1,5 @@
+from app.models import User
+from typing import Annotated
 import uuid
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
@@ -10,7 +12,7 @@ router = APIRouter(prefix="/messages", tags=["messaging"])
 
 @router.post("/", response_model=MessageOut)
 def send_message(
-    data: MessageCreate, user=Depends(get_current_user), db: Session = Depends(get_db)
+    data: MessageCreate, user: Annotated[User, Depends(get_current_user)], db: Annotated[Session, Depends(get_db)]
 ):
     msg = Message(
         id=str(uuid.uuid4()),
@@ -25,13 +27,13 @@ def send_message(
 
 
 @router.get("/", response_model=list[MessageOut])
-def get_my_messages(user=Depends(get_current_user), db: Session = Depends(get_db)):
+def get_my_messages(user: Annotated[User, Depends(get_current_user)], db: Annotated[Session, Depends(get_db)]):
     return db.query(Message).filter(Message.receiver_id == user.id).all()
 
 
 @router.get("/conversation/{other_user_id}", response_model=list[MessageOut])
 def get_conversation(
-    other_user_id: str, user=Depends(get_current_user), db: Session = Depends(get_db)
+    other_user_id: str, user: Annotated[User, Depends(get_current_user)], db: Annotated[Session, Depends(get_db)]
 ):
     messages = (
         db.query(Message)

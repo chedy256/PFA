@@ -1,3 +1,4 @@
+from typing import Annotated
 from fastapi import Depends, Header, HTTPException
 from sqlalchemy.orm import Session
 from app.database import SessionLocal
@@ -13,7 +14,7 @@ def get_db():
         db.close()
 
 
-def get_current_user(authorization: str = Header(...), db: Session = Depends(get_db)):
+def get_current_user(authorization: Annotated[str, Header()], db: Annotated[Session, Depends(get_db)]):
     if not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing Bearer token")
 
@@ -33,7 +34,7 @@ def get_current_user(authorization: str = Header(...), db: Session = Depends(get
     return user
 
 
-def get_current_admin(user=Depends(get_current_user)):
+def get_current_admin(user: Annotated[User, Depends(get_current_user)]):
     if user.role != "admin":
         raise HTTPException(status_code=403, detail="Admin access required")
     return user

@@ -1,3 +1,5 @@
+from app.models import User
+from typing import Annotated
 import uuid
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -11,8 +13,8 @@ router = APIRouter(prefix="/internships", tags=["internships"])
 @router.post("/", response_model=InternshipOut)
 def create_internship(
     data: InternshipCreate,
-    user=Depends(get_current_user),
-    db: Session = Depends(get_db),
+    user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
 ):
     if user.role != "student":
         raise HTTPException(status_code=403)
@@ -38,7 +40,7 @@ def create_internship(
 
 
 @router.get("/", response_model=list[InternshipOut])
-def list_internships(user=Depends(get_current_user), db: Session = Depends(get_db)):
+def list_internships(user: Annotated[User, Depends(get_current_user)], db: Annotated[Session, Depends(get_db)]):
     if user.role == "admin":
         return db.query(Internship).all()
     if user.role == "student":

@@ -1,3 +1,6 @@
+from app.models import User
+from sqlalchemy.orm import Session
+from typing import Annotated
 from typing import Any, Dict, Optional
 from pathlib import Path
 from fastapi import APIRouter, Depends, HTTPException, Response
@@ -66,10 +69,10 @@ async def generate_pdf(request_data: FicheData):
 @router.get("/{internship_id}/document.pdf")
 async def generate_document(
     internship_id: str, 
-    user=Depends(get_current_user),
-    db=Depends(get_db)
+    user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)]
 ):
-    from sqlalchemy.orm import Session
+
     from app.models import Internship
 
     internship = db.query(Internship).filter(Internship.id == internship_id).first()

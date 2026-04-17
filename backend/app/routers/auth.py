@@ -1,4 +1,4 @@
-import uuid
+from typing import Annotated
 from fastapi import APIRouter, Depends, Header, HTTPException
 from sqlalchemy.orm import Session
 from app.deps import get_db, get_current_user
@@ -12,8 +12,8 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 @router.post("/bootstrap", response_model=UserOut)
 def bootstrap(
     data: BootstrapRequest,
-    authorization: str = Header(...),
-    db: Session = Depends(get_db),
+    authorization: Annotated[str, Header()],
+    db: Annotated[Session, Depends(get_db)],
 ):
     if not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Token manquant")
@@ -56,14 +56,14 @@ def bootstrap(
 
 
 @router.get("/me", response_model=UserOut)
-def me(user=Depends(get_current_user)):
+def me(user: Annotated[User, Depends(get_current_user)]):
     return user
 
 
 @router.patch("/fcm-token")
 def update_fcm_token(
-    data: FCMTokenUpdate, user=Depends(get_current_user), db: Session = Depends(get_db)
-):
+    data: FCMTokenUpdate, user: Annotated[User, Depends(get_current_user)], db: Annotated[Session, Depends(get_db)]
+) -> dict[str, str]:
     user.fcm_token = data.fcm_token
     db.commit()
     return {"message": "FCM token mis à jour"}

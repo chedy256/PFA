@@ -14,7 +14,6 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Enum,
-    CheckConstraint,
 )
 from sqlalchemy.dialects.postgresql import UUID, ARRAY
 from sqlalchemy.orm import relationship
