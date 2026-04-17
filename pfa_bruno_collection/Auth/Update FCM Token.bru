@@ -1,0 +1,17 @@
+meta {
+  name: Update FCM Token
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/auth/fcm-token
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "fcm_token": "string"
+  }
+}

@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+sqlalchemy
+psycopg2-binary
+psycopg[binary]
+firebase-admin
+pydantic
+weasyprint
+playwright
+jinja2
+email-validator
