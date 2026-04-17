@@ -3,7 +3,17 @@ name: Deploy Flutter Web (WASM) to GitHub Pages
 on:
   push:
     branches:
-      - main   # change if needed
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -15,13 +25,20 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.41.5'   # or newer
+          flutter-version: '3.41.5'
           channel: 'stable'
+          cache: true
+
+      - name: Flutter version
+        run: flutter --version
 
       - name: Enable web
         run: flutter config --enable-web
@@ -32,21 +49,25 @@ jobs:
           flutter pub get
 
       - name: Build web (WASM)
-        run: flutter build web --wasm --base-href /PFA/
+        run: flutter build web --release --wasm --base-href /PFA/
+
+      - name: Verify build output
+        run: ls -la build/web
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
-          path: build/web
+          path: frontend/build/web
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
 
-    permissions:
-      pages: write
-      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
