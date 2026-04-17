@@ -222,3 +222,58 @@ The admin panel generally needs broader access and document generation capabilit
       "status": "ok"
     }
     ```
+
+---
+## 👑 Admin Endpoints
+
+### Create Teacher
+* **`POST /admin/teachers`**
+  * **Description:** Create a new teacher account (Admin only).
+  * **Headers:** `Authorization: Bearer <token>`
+  * **Request Body (JSON):**
+    ```json
+    {
+      "first_name": "string",
+      "last_name": "string",
+      "email": "string (email)"
+    }
+    ```
+  * **Response (UserOut - 200 OK):**
+    ```json
+    {
+      "id": "uuid",
+      "first_name": "string",
+      "last_name": "string",
+      "email": "string",
+      "role": "teacher",
+      "status": "active"
+    }
+    ```
+
+## 🛠️ Development & Testing Endpoints
+
+### Seed Test Users
+* **`POST /dev/seed-test-users`**
+  * **Description:** Seeds the database with test users for each role (Student, Teacher, Admin). Useful for testing without Firebase.
+  * **Headers:** None required.
+  * **Request Body:** None.
+  * **Response (200 OK):**
+    ```json
+    {
+      "message": "Test users seeded",
+      "tokens": {
+        "student": {
+          "uuid": "string",
+          "token": "test-<uuid>"
+        },
+        "teacher": {
+          "uuid": "string",
+          "token": "test-<uuid>"
+        },
+        "admin": {
+          "uuid": "string",
+          "token": "test-<uuid>"
+        }
+      }
+    }
+    ```

@@ -1,0 +1,21 @@
+meta {
+  name: Admin Bootstrap
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/auth/bootstrap
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "requested_role": "admin"
+  }
+}
