@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from app.database import Base, engine
-from app.routers import users, internships, documents, auth, messaging
+from app.routers import users, internships, documents, auth, messaging, admin, dev
 
 Base.metadata.create_all(bind=engine)
 
@@ -15,3 +15,5 @@ app.include_router(users.router)
 app.include_router(internships.router)
 app.include_router(documents.router)
 app.include_router(messaging.router)
+app.include_router(admin.router)
+app.include_router(dev.router)

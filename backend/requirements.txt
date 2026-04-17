@@ -8,3 +8,4 @@ pydantic
 weasyprint
 playwright
 jinja2
+email-validator

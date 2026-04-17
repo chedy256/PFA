@@ -1,7 +1,6 @@
 import enum
-from time import timezone
 import uuid
-import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column,
@@ -53,10 +52,10 @@ class RegistrationStatus(str, enum.Enum):
 class User(Base):
     __tablename__ = "users"
 
-    uuid = Column(
-        UUID(as_uuid=True),
+    id = Column(
+        String,
         primary_key=True,
-        default=uuid.uuid4,
+        default=lambda: str(uuid.uuid4())
     )
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
@@ -69,6 +68,9 @@ class User(Base):
     phone_number_enabled = Column(Boolean,default=False, nullable=False)
     role = Column(Enum(UserRole), nullable=False)
     department = Column(String, nullable=True)
+    status = Column(String, default="active")
+    requested_role = Column(String, nullable=True)
+    fcm_token = Column(String, nullable=True)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
     # Internships where the user is the primary student
@@ -109,9 +111,9 @@ class Internship(Base):
     __tablename__ = "internships"
 
     id = Column(
-        UUID(as_uuid=True),
+        String,
         primary_key=True,
-        default=uuid.uuid4,
+        default=lambda: str(uuid.uuid4()),
     )
     title = Column(String, nullable=False)
     description = Column(Text, nullable=True)
@@ -140,22 +142,25 @@ class Internship(Base):
     end_date = Column(Date, nullable=True)
 
     student_id = Column(
-        UUID(as_uuid=True),
-        ForeignKey("users.uuid"),
+        String,
+        ForeignKey("users.id"),
         nullable=False,         # primary student — required
     )
     student_id_2 = Column(
-        UUID(as_uuid=True),
-        ForeignKey("users.uuid"),
+        String,
+        ForeignKey("users.id"),
         nullable=True,          # secondary student — optional
     )
 
     teacher_id = Column(
-        UUID(as_uuid=True),
-        ForeignKey("users.uuid"),
+        String,
+        ForeignKey("users.id"),
         nullable=True,
     )
     department = Column(String, nullable=True)
+    status = Column(String, default="active")
+    requested_role = Column(String, nullable=True)
+    fcm_token = Column(String, nullable=True)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     updated_at = Column(
         DateTime,
@@ -194,13 +199,13 @@ class PendingRegistration(Base):
     __tablename__ = "pending_registrations"
 
     id = Column(
-        UUID(as_uuid=True),
+        String,
         primary_key=True,
-        default=uuid.uuid4,
+        default=lambda: str(uuid.uuid4()),
     )
     user_id = Column(
-        UUID(as_uuid=True),
-        ForeignKey("users.uuid"),
+        String,
+        ForeignKey("users.id"),
         nullable=False,
     )
     requested_role = Column(Enum(UserRole), nullable=False)
@@ -228,18 +233,18 @@ class Evaluation(Base):
     __tablename__ = "evaluations"
 
     id = Column(
-        UUID(as_uuid=True),
+        String,
         primary_key=True,
-        default=uuid.uuid4,
+        default=lambda: str(uuid.uuid4()),
     )
     internship_id = Column(
-        UUID(as_uuid=True),
+        String,
         ForeignKey("internships.id"),
         nullable=False,
     )
     teacher_id = Column(
-        UUID(as_uuid=True),
-        ForeignKey("users.uuid"),
+        String,
+        ForeignKey("users.id"),
         nullable=False,
     )
     feedback = Column(Text, nullable=True)
@@ -266,9 +271,9 @@ class Evaluation(Base):
 class Message(Base):
     __tablename__ = "messages"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    sender_id = Column(UUID(as_uuid=True), ForeignKey("users.uuid"), nullable=False)
-    receiver_id = Column(UUID(as_uuid=True), ForeignKey("users.uuid"), nullable=False)
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    sender_id = Column(String, ForeignKey("users.id"), nullable=False)
+    receiver_id = Column(String, ForeignKey("users.id"), nullable=False)
     content = Column(Text, nullable=False)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
