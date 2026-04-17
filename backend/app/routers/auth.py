@@ -19,7 +19,9 @@ def bootstrap(
         raise HTTPException(status_code=401, detail="Token manquant")
 
     token = authorization.replace("Bearer ", "")
-    uid = verify_firebase_token(token)
+    decoded_token = verify_firebase_token(token)
+    uid = decoded_token.get("uid")
+    email = decoded_token.get("email", "")
 
     user = db.get(User, uid)
     if user:
@@ -35,13 +37,13 @@ def bootstrap(
     if data.requested_role == "student":
         role, status = "student", "active"
     elif data.requested_role == "teacher":
-        role, status = "none", "pending"
+        role, status = "pending", "pending"
     else:
         raise HTTPException(status_code=400, detail="Rôle invalide")
 
     new_user = User(
         id=uid,
-        email="",
+        email=email,
         first_name=data.first_name,
         last_name=data.last_name,
         role=role,

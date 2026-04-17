@@ -24,7 +24,8 @@ def get_current_user(authorization: Annotated[str, Header()], db: Annotated[Sess
     if token.startswith("test-"):
         uid = token.replace("test-", "")
     else:
-        uid = verify_firebase_token(token)
+        decoded_token = verify_firebase_token(token)
+        uid = decoded_token.get("uid")
 
 
     user = db.get(User, uid)

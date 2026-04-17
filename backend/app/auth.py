@@ -16,14 +16,14 @@ if not firebase_admin._apps:
         firebase_admin.initialize_app(cred)
 
 
-def verify_firebase_token(token: str) -> str:
+def verify_firebase_token(token: str) -> dict:
     # Allow test tokens for development
     if token.startswith("test-"):
         uid = token.replace("test-", "")
-        return uid
+        return {"uid": uid, "email": f"{uid}@test.local"}
 
     try:
         decoded = auth.verify_id_token(token)
-        return decoded["uid"]
+        return decoded
     except Exception:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
