@@ -5,6 +5,8 @@ import 'package:pfa/core/theme/app_colors.dart';
 import 'package:pfa/features/shared/card_widgets.dart';
 import 'package:pfa/features/student/documents/documents_page.dart';
 import 'package:pfa/features/student/documents/request_document_page.dart';
+import 'package:pfa/core/providers/internship_provider.dart';
+import 'package:pfa/core/providers/user_data_provider.dart';
 
 class StudentHomePage extends ConsumerStatefulWidget {
   const StudentHomePage({super.key});
@@ -17,6 +19,8 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final userAsync = ref.watch(userDataProvider);
+    final internshipsAsync = ref.watch(internshipsProvider);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -28,24 +32,38 @@ class _StudentHomePageState extends ConsumerState<StudentHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(),
-              welcomeWidget(
-                context,
-                ref,
-                Student(
-                  id: 'S001',
-                  firstName: 'Chedy Amine',
-                  lastName: 'El Haj',
-                  email: 'elhaj.chedyamine@isimm.me',
-                  department: 'Informatique',
-                  level: 3,
-                ),
+              userAsync.when(
+                data: (user) {
+                  if (user == null || user is! Student) {
+                    return const SizedBox(); // Fallback if no user
+                  }
+                  return welcomeWidget(context, ref, user);
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, _) => Text('Error loading profile: $error'),
               ),
-              // Placeholder for the internship card - replace with actual data when available Initial State.
-              intershipCard(
-                viewType: InternshipCardViewType.student,
-                context,
-                internship: null,
+
+              // Internships Card
+              internshipsAsync.when(
+                data: (internships) {
+                  if (internships.isEmpty) {
+                    return intershipCard(
+                      viewType: InternshipCardViewType.student,
+                      context,
+                      internship: null,
+                    );
+                  }
+                  return intershipCard(
+                    viewType: InternshipCardViewType.student,
+                    context,
+                    internship:
+                        internships.first, // Show the most recent one or list
+                  );
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, _) => Text('Error loading internships: $error'),
               ),
+
               Expanded(
                 child: Column(
                   crossAxisAlignment: .start,

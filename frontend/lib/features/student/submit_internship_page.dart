@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pfa/core/models/teacher.dart';
+import 'package:pfa/core/services/internship_service.dart';
+import 'package:pfa/core/providers/teacher_provider.dart';
 
 class SubmitInternshipPage extends ConsumerStatefulWidget {
   const SubmitInternshipPage({super.key});
@@ -21,35 +23,6 @@ class _SubmitInternshipPageState extends ConsumerState<SubmitInternshipPage> {
   DateTime? _endDate;
 
   final List<Teacher> _selectedTeachers = [];
-  //example teachers, in real app this should come from backend
-  Teacher t1 = Teacher(
-    id: 'TI001',
-    firstName: 'NAFFAA',
-    lastName: 'HAFFAR',
-    email: 'naffaa.haffar@univ-isimm.tn',
-    department: 'Informatique',
-  );
-  Teacher t2 = Teacher(
-    id: 'TI002',
-    firstName: 'MOKHTAR',
-    lastName: 'BOUZID',
-    email: 'mokhtar.bouzid@univ-isimm.tn',
-    department: 'Informatique',
-  );
-  Teacher t3 = Teacher(
-    id: 'TI003',
-    firstName: 'ABDELKADER',
-    lastName: 'BOUZID',
-    email: 'abdelkader.bouzid@univ-isimm.tn',
-    department: 'Informatique',
-  );
-  Teacher t4 = Teacher(
-    id: 'TI004',
-    firstName: 'HOUSSAM',
-    lastName: 'BEN HAMOUDA',
-    email: 'houssam.benhamouda@univ-isimm.tn',
-    department: 'Informatique',
-  );
 
   @override
   void dispose() {
@@ -60,7 +33,7 @@ class _SubmitInternshipPageState extends ConsumerState<SubmitInternshipPage> {
     super.dispose();
   }
 
-  void _submit() {
+  void _submit() async {
     if (_formKey.currentState!.validate()) {
       if (_startDate == null || _endDate == null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -76,12 +49,29 @@ class _SubmitInternshipPageState extends ConsumerState<SubmitInternshipPage> {
         return;
       }
 
-      //TODO: submit the internship to backend
+      try {
+        final internshipService = InternshipService();
+        await internshipService.createInternship(
+          title: _positionController.text,
+          description: _descriptionController.text,
+          companyName: _companyController.text,
+          // type can be determined based on your app logic, e.g. 'ete' or 'pfe'
+          type: 'ete',
+        );
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Stage soumis avec succès')));
-      Navigator.pop(context);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Stage soumis avec succès')),
+          );
+          Navigator.pop(context);
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Erreur: $e')));
+        }
+      }
     }
   }
 
@@ -110,7 +100,7 @@ class _SubmitInternshipPageState extends ConsumerState<SubmitInternshipPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final availableTeachers = [t1, t2, t3, t4];
+    final teachersAsync = ref.watch(teachersProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Soumettre un stage')),
@@ -205,34 +195,43 @@ class _SubmitInternshipPageState extends ConsumerState<SubmitInternshipPage> {
                 'Choisissez votre encadrant (Max 3):', //TODO: not final
                 style: theme.textTheme.titleMedium,
               ),
-              Wrap(
-                spacing: 8,
-                children: availableTeachers.map((teacher) {
-                  final isSelected = _selectedTeachers.contains(teacher);
-                  return FilterChip(
-                    label: Text('${teacher.firstName} ${teacher.lastName}'),
-                    selected: isSelected,
-                    onSelected: (selected) {
-                      setState(() {
-                        if (selected) {
-                          if (_selectedTeachers.length < 3) {
-                            _selectedTeachers.add(teacher);
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Vous pouvez sélectionner au maximum 3 enseignants',
-                                ),
-                              ),
-                            );
-                          }
-                        } else {
-                          _selectedTeachers.remove(teacher);
-                        }
-                      });
-                    },
+              teachersAsync.when(
+                data: (availableTeachers) {
+                  if (availableTeachers.isEmpty) {
+                    return const Text("Aucun enseignant disponible");
+                  }
+                  return Wrap(
+                    spacing: 8,
+                    children: availableTeachers.map((teacher) {
+                      final isSelected = _selectedTeachers.contains(teacher);
+                      return FilterChip(
+                        label: Text('${teacher.firstName} ${teacher.lastName}'),
+                        selected: isSelected,
+                        onSelected: (selected) {
+                          setState(() {
+                            if (selected) {
+                              if (_selectedTeachers.length < 3) {
+                                _selectedTeachers.add(teacher);
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Vous pouvez sélectionner au maximum 3 enseignants',
+                                    ),
+                                  ),
+                                );
+                              }
+                            } else {
+                              _selectedTeachers.remove(teacher);
+                            }
+                          });
+                        },
+                      );
+                    }).toList(),
                   );
-                }).toList(),
+                },
+                loading: () => const CircularProgressIndicator(),
+                error: (err, _) => Text('Erreur: $err'),
               ),
               const SizedBox(height: 24),
               SizedBox(
