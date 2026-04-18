@@ -33,6 +33,7 @@ class UserRole(str, enum.Enum):
     student = "student"
     teacher = "teacher"
     admin = "admin"
+    pending = "pending"
 
 
 class InternshipStatus(str, enum.Enum):

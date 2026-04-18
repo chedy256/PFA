@@ -5,8 +5,8 @@ import datetime
 class UserOut(BaseModel):
     id: str
     email: str
-    first_name: Optional[str]
-    last_name: Optional[str]
+    first_name: str
+    last_name: str
     cin_number: Optional[str] = None
     role: str
     status: str
@@ -24,8 +24,8 @@ class PaginatedUsersOut(BaseModel):
 
 class BootstrapRequest(BaseModel):
     requested_role: str
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
+    first_name: str
+    last_name: str
     fcm_token: Optional[str] = None
 
 class FCMTokenUpdate(BaseModel):
