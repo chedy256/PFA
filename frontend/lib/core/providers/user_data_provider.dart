@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:pfa/core/network/api_endpoints.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pfa/core/models/student.dart';
 import 'package:pfa/core/models/teacher.dart';
@@ -10,7 +11,7 @@ import 'package:pfa/core/models/user.dart' as model;
 import 'package:pfa/core/providers/auth_provider.dart';
 
 class UserDataNotifier extends AsyncNotifier<model.User?> {
-  final String _baseUrl = 'http://192.168.1.193:8000'; // backend API base URL
+  final String _baseUrl = ApiEndpoints.baseUrl; // backend API base URL
   final _storage = const FlutterSecureStorage();
   static const _localUserKey = 'local_user_data';
 
