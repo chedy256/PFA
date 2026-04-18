@@ -9,6 +9,7 @@ import 'package:pfa/core/theme/app_fonts.dart';
 
 Column infosSection(BuildContext context, User user) {
   final theme = Theme.of(context);
+  final displayName = [user.firstName, user.lastName].where((n) => n.isNotEmpty).join(' ');
 
   return Column(
     children: [
@@ -25,7 +26,8 @@ Column infosSection(BuildContext context, User user) {
           radius: 56,
           backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
           child: Text(
-            user.firstName[0] + user.lastName[0],
+            (user.firstName.isNotEmpty ? user.firstName[0].toUpperCase() : '') +
+            (user.lastName.isNotEmpty ? user.lastName[0].toUpperCase() : ''),
             style: TextStyle(
               color: theme.colorScheme.primary,
               fontFamily: AppFonts.outfit,
@@ -37,16 +39,18 @@ Column infosSection(BuildContext context, User user) {
         ),
       ),
       const SizedBox(height: 16),
-      Text(
-        '${user.firstName} ${user.lastName}',
-        style: TextStyle(
-          fontSize: 26,
-          fontWeight: FontWeight.w800,
-          letterSpacing: 0.5,
-          color: theme.textTheme.titleLarge?.color,
+      if (displayName.isNotEmpty) ...[
+        Text(
+          displayName,
+          style: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.w800,
+            letterSpacing: 0.5,
+            color: theme.textTheme.titleLarge?.color,
+          ),
         ),
-      ),
-      const SizedBox(height: 4),
+        const SizedBox(height: 4),
+      ],
       Text(
         user is Teacher
             ? 'Département: ${user.department}'

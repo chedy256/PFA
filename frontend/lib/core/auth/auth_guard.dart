@@ -26,14 +26,17 @@ class AuthGuard extends ConsumerWidget {
           );
         }
 
+        final normalizedRole = user.role.toLowerCase() == 'etudiant' ? 'student' : user.role.toLowerCase() == 'enseignant' ? 'teacher' : user.role.toLowerCase();
+        final normalizedAllowed = allowedRole?.toLowerCase() == 'etudiant' ? 'student' : allowedRole?.toLowerCase() == 'enseignant' ? 'teacher' : allowedRole?.toLowerCase();
+
         // If a specific role is required and user doesn't have it
-        if (allowedRole != null && user.role != allowedRole) {
+        if (normalizedAllowed != null && normalizedRole != normalizedAllowed) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (user.role == 'Etudiant') {
+            if (normalizedRole == 'student') {
               Navigator.of(
                 context,
               ).pushNamedAndRemoveUntil('/student', (route) => false);
-            } else if (user.role == 'Enseignant') {
+            } else if (normalizedRole == 'teacher') {
               Navigator.of(
                 context,
               ).pushNamedAndRemoveUntil('/teacher', (route) => false);

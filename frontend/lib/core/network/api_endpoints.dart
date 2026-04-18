@@ -1,5 +1,5 @@
 class ApiEndpoints {
-  static const String baseUrl = 'https://pfa-13qu.onrender.com/';
+  static const String baseUrl = 'https://pfa-fdgv.onrender.com';
 
   // Auth endpoints
   static const String bootstrap = '/auth/bootstrap';

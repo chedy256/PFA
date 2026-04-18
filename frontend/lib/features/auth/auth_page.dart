@@ -74,6 +74,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
         switch (userRole) {
+          case 'student':
           case 'Etudiant':
             Navigator.pushNamedAndRemoveUntil(
               context,
@@ -81,6 +82,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               (Route<dynamic> route) => false,
             );
             break;
+          case 'teacher':
           case 'Enseignant':
             Navigator.pushNamedAndRemoveUntil(
               context,

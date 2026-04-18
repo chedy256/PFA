@@ -15,8 +15,8 @@ class BackendAuthService {
     final Map<String, dynamic> body = {};
     if (role != null) body['requested_role'] = role;
     if (fcmToken != null) body['fcm_token'] = fcmToken;
-    if (firstName != null) body['first_name'] = firstName;
-    if (lastName != null) body['last_name'] = lastName;
+    body['first_name'] = firstName ?? '';
+    body['last_name'] = lastName ?? '';
 
     final response = await _apiClient.post(ApiEndpoints.bootstrap, body: body);
 

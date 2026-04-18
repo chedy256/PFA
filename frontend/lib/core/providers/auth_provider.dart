@@ -45,21 +45,41 @@ class AuthNotifier extends AsyncNotifier<AppUser?> {
 
         try {
           final userData = await _backendAuthService.getMe();
+          final fetchedFirstName = userData['first_name'];
+          final fetchedLastName = userData['last_name'];
+          final fetchedRole = userData['role'] ?? 'student';
+
+          if (fetchedFirstName != null) {
+            await _storage.write(key: 'firstName', value: fetchedFirstName);
+          }
+          if (fetchedLastName != null) {
+            await _storage.write(key: 'lastName', value: fetchedLastName);
+          }
+          await _storage.write(key: 'role', value: fetchedRole);
+
           state = AsyncValue.data(
             AppUser(
               uid: firebaseUser.uid,
-              email: firebaseUser.email!,
-              role: userData['role'] ?? 'student',
-              firstName: userData['first_name'],
-              lastName: userData['last_name'],
+              email: firebaseUser.email ?? '',
+              role: fetchedRole,
+              firstName: fetchedFirstName,
+              lastName: fetchedLastName,
             ),
           );
-        } catch (e) {
+        } catch (e, _) {
+          print('Error getting user details: $e');
+          // Read from storage as fallback
+          final savedRole = await _storage.read(key: 'role') ?? 'student';
+          final savedFirstName = await _storage.read(key: 'firstName');
+          final savedLastName = await _storage.read(key: 'lastName');
+
           state = AsyncValue.data(
             AppUser(
               uid: firebaseUser.uid,
-              email: firebaseUser.email!,
-              role: 'student', // Fallback
+              email: firebaseUser.email ?? '',
+              role: savedRole,
+              firstName: savedFirstName,
+              lastName: savedLastName,
             ),
           );
         }
@@ -79,18 +99,35 @@ class AuthNotifier extends AsyncNotifier<AppUser?> {
 
     try {
       final userData = await _backendAuthService.getMe();
+      final fetchedRole = userData['role'] ?? 'student';
+      final fetchedFirstName = userData['first_name'];
+      final fetchedLastName = userData['last_name'];
+
+      if (fetchedFirstName != null) {
+        await _storage.write(key: 'firstName', value: fetchedFirstName);
+      }
+      if (fetchedLastName != null) {
+        await _storage.write(key: 'lastName', value: fetchedLastName);
+      }
+      await _storage.write(key: 'role', value: fetchedRole);
+
       return AppUser(
         uid: currentUser.uid,
         email: currentUser.email!,
-        role: userData['role'] ?? 'student',
-        firstName: userData['first_name'],
-        lastName: userData['last_name'],
+        role: fetchedRole,
+        firstName: fetchedFirstName,
+        lastName: fetchedLastName,
       );
     } catch (e) {
+      final savedRole = await _storage.read(key: 'role') ?? 'student';
+      final savedFirstName = await _storage.read(key: 'firstName');
+      final savedLastName = await _storage.read(key: 'lastName');
       return AppUser(
         uid: currentUser.uid,
         email: currentUser.email!,
-        role: 'student',
+        role: savedRole,
+        firstName: savedFirstName,
+        lastName: savedLastName,
       );
     }
   }
@@ -108,17 +145,44 @@ class AuthNotifier extends AsyncNotifier<AppUser?> {
         await _storage.write(key: 'jwt', value: token);
       }
 
-      final userData = await _backendAuthService.bootstrap(
-        role: role.toLowerCase() == 'enseignant' ? 'teacher' : 'student',
-      );
+      String fetchedRole = role.toLowerCase() == 'enseignant'
+          ? 'teacher'
+          : 'student';
+      String? fetchedFirstName;
+      String? fetchedLastName;
+
+      try {
+        final userData = await _backendAuthService.bootstrap(role: fetchedRole);
+        if (userData['role'] != null) fetchedRole = userData['role'];
+        if (userData['first_name'] != null && userData['first_name'].toString().isNotEmpty) {
+          fetchedFirstName = userData['first_name'];
+        }
+        if (userData['last_name'] != null && userData['last_name'].toString().isNotEmpty) {
+          fetchedLastName = userData['last_name'];
+        }
+
+        if (fetchedFirstName != null) {
+          await _storage.write(key: 'firstName', value: fetchedFirstName);
+        }
+        if (fetchedLastName != null) {
+          await _storage.write(key: 'lastName', value: fetchedLastName);
+        }
+        await _storage.write(key: 'role', value: fetchedRole);
+      } catch (backendError) {
+        print('Backend bootstrap failed during login: $backendError');
+        fetchedFirstName = await _storage.read(key: 'firstName');
+        fetchedLastName = await _storage.read(key: 'lastName');
+        final savedRole = await _storage.read(key: 'role');
+        if (savedRole != null) fetchedRole = savedRole;
+      }
 
       state = AsyncValue.data(
         AppUser(
           uid: credential.user!.uid,
           email: credential.user!.email!,
-          role: userData['role'] ?? role,
-          firstName: userData['first_name'],
-          lastName: userData['last_name'],
+          role: fetchedRole,
+          firstName: fetchedFirstName,
+          lastName: fetchedLastName,
         ),
       );
     } catch (e, st) {
@@ -145,19 +209,43 @@ class AuthNotifier extends AsyncNotifier<AppUser?> {
         await _storage.write(key: 'jwt', value: token);
       }
 
-      final userData = await _backendAuthService.bootstrap(
-        role: role.toLowerCase() == 'enseignant' ? 'teacher' : 'student',
-        firstName: firstName,
-        lastName: lastName,
+      await _storage.write(key: 'firstName', value: firstName);
+      await _storage.write(key: 'lastName', value: lastName);
+      await _storage.write(
+        key: 'role',
+        value: role.toLowerCase() == 'enseignant' ? 'teacher' : 'student',
       );
+
+      String fetchedRole = role.toLowerCase() == 'enseignant'
+          ? 'teacher'
+          : 'student';
+      String fetchedFirstName = firstName;
+      String fetchedLastName = lastName;
+
+      try {
+        final userData = await _backendAuthService.bootstrap(
+          role: fetchedRole,
+          firstName: firstName,
+          lastName: lastName,
+        );
+        if (userData['role'] != null) fetchedRole = userData['role'];
+        if (userData['first_name'] != null && userData['first_name'].toString().isNotEmpty) {
+          fetchedFirstName = userData['first_name'];
+        }
+        if (userData['last_name'] != null && userData['last_name'].toString().isNotEmpty) {
+          fetchedLastName = userData['last_name'];
+        }
+      } catch (backendError) {
+        print('Backend bootstrap failed during signup: $backendError');
+      }
 
       state = AsyncValue.data(
         AppUser(
           uid: credential.user!.uid,
           email: credential.user!.email!,
-          role: userData['role'] ?? role,
-          firstName: userData['first_name'],
-          lastName: userData['last_name'],
+          role: fetchedRole,
+          firstName: fetchedFirstName,
+          lastName: fetchedLastName,
         ),
       );
     } catch (e, st) {
@@ -184,21 +272,42 @@ class AuthNotifier extends AsyncNotifier<AppUser?> {
         final nameParts = user.displayName!.split(' ');
         firstName = nameParts.first;
         lastName = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
+      } else if (user != null && user.email != null) {
+        firstName = user.email!.split('@').first;
       }
 
-      final userData = await _backendAuthService.bootstrap(
-        role: role.toLowerCase() == 'enseignant' ? 'teacher' : 'student',
-        firstName: firstName,
-        lastName: lastName,
-      );
+      String fetchedRole = role.toLowerCase() == 'enseignant' ? 'teacher' : 'student';
+      String fetchedFirstName = firstName;
+      String fetchedLastName = lastName;
+
+      try {
+        final userData = await _backendAuthService.bootstrap(
+          role: fetchedRole,
+          firstName: firstName,
+          lastName: lastName,
+        );
+        if (userData['role'] != null) fetchedRole = userData['role'];
+        if (userData['first_name'] != null && userData['first_name'].toString().isNotEmpty) {
+          fetchedFirstName = userData['first_name'];
+        }
+        if (userData['last_name'] != null && userData['last_name'].toString().isNotEmpty) {
+          fetchedLastName = userData['last_name'];
+        }
+      } catch (backendError) {
+        print('Backend bootstrap failed during login provider: $backendError');
+      }
+
+      await _storage.write(key: 'firstName', value: fetchedFirstName);
+      await _storage.write(key: 'lastName', value: fetchedLastName);
+      await _storage.write(key: 'role', value: fetchedRole);
 
       state = AsyncValue.data(
         AppUser(
           uid: credential.user!.uid,
           email: credential.user!.email!,
-          role: userData['role'] ?? role,
-          firstName: userData['first_name'],
-          lastName: userData['last_name'],
+          role: fetchedRole,
+          firstName: fetchedFirstName,
+          lastName: fetchedLastName,
         ),
       );
     } catch (e, st) {
@@ -225,21 +334,42 @@ class AuthNotifier extends AsyncNotifier<AppUser?> {
         final nameParts = user.displayName!.split(' ');
         firstName = nameParts.first;
         lastName = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
+      } else if (user != null && user.email != null) {
+        firstName = user.email!.split('@').first;
       }
 
-      final userData = await _backendAuthService.bootstrap(
-        role: role.toLowerCase() == 'enseignant' ? 'teacher' : 'student',
-        firstName: firstName,
-        lastName: lastName,
-      );
+      String fetchedRole = role.toLowerCase() == 'enseignant' ? 'teacher' : 'student';
+      String fetchedFirstName = firstName;
+      String fetchedLastName = lastName;
+
+      try {
+        final userData = await _backendAuthService.bootstrap(
+          role: fetchedRole,
+          firstName: firstName,
+          lastName: lastName,
+        );
+        if (userData['role'] != null) fetchedRole = userData['role'];
+        if (userData['first_name'] != null && userData['first_name'].toString().isNotEmpty) {
+          fetchedFirstName = userData['first_name'];
+        }
+        if (userData['last_name'] != null && userData['last_name'].toString().isNotEmpty) {
+          fetchedLastName = userData['last_name'];
+        }
+      } catch (backendError) {
+        print('Backend bootstrap failed during login provider: $backendError');
+      }
+
+      await _storage.write(key: 'firstName', value: fetchedFirstName);
+      await _storage.write(key: 'lastName', value: fetchedLastName);
+      await _storage.write(key: 'role', value: fetchedRole);
 
       state = AsyncValue.data(
         AppUser(
           uid: credential.user!.uid,
           email: credential.user!.email!,
-          role: userData['role'] ?? role,
-          firstName: userData['first_name'],
-          lastName: userData['last_name'],
+          role: fetchedRole,
+          firstName: fetchedFirstName,
+          lastName: fetchedLastName,
         ),
       );
     } catch (e, st) {
@@ -251,6 +381,9 @@ class AuthNotifier extends AsyncNotifier<AppUser?> {
     final authService = ref.read(authServiceProvider);
     await authService.signOut();
     await _storage.delete(key: 'jwt');
+    await _storage.delete(key: 'firstName');
+    await _storage.delete(key: 'lastName');
+    await _storage.delete(key: 'role');
     state = const AsyncValue.data(null);
   }
 }
