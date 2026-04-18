@@ -1,0 +1,14 @@
+meta {
+  name: List All Users (Debug)
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/dev/all-users
+  auth: none
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:8000
+}

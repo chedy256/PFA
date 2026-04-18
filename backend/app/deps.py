@@ -24,12 +24,17 @@ def get_current_user(authorization: Annotated[str, Header()], db: Annotated[Sess
     if token.startswith("test-"):
         uid = token.replace("test-", "")
     else:
-        uid = verify_firebase_token(token)
+        decoded = verify_firebase_token(token)
+        uid = decoded["uid"]
 
 
-    user = db.get(User, uid)
+    try:
+        user = db.query(User).filter(User.firebase_uid == uid).first()
+    except Exception:
+        raise HTTPException(status_code=400, detail="Identifiant mal formé")
+
     if not user:
-        raise HTTPException(status_code=403, detail="User not registered")
+        raise HTTPException(status_code=401, detail="Utilisateur non enregistré")
 
     return user
 

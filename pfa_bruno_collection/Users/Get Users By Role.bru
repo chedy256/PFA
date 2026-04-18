@@ -5,11 +5,15 @@ meta {
 }
 
 get {
-  url: {{baseUrl}}/users/role/{{role_name}}
-  body: none
-  auth: inherit
+  url: {{baseUrl}}/users/role/student
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 vars:pre-request {
-  role_name: student
+  baseUrl: http://localhost:8000
+  token: test-bruno-admin
 }

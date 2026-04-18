@@ -13,6 +13,7 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Enum,
+    JSON,
 )
 from sqlalchemy.dialects.postgresql import UUID, ARRAY
 from sqlalchemy.orm import relationship
@@ -57,15 +58,16 @@ class User(Base):
         primary_key=True,
         default=lambda: str(uuid.uuid4())
     )
+    firebase_uid = Column(String, unique=True, index=True, nullable=False)
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     cin_number = Column(String, nullable=True)
     email = Column(String, unique=True, nullable=False)
-    email_enabled = Column(Boolean,default=True, nullable=False)
+    email_enabled = Column(Boolean, default=True, nullable=False)
     ws_number = Column(Integer, nullable=True)
-    ws_number_enabled = Column(Boolean,default=False, nullable=False)
+    ws_number_enabled = Column(Boolean, default=False, nullable=False)
     phone_number = Column(Integer, nullable=True)
-    phone_number_enabled = Column(Boolean,default=False, nullable=False)
+    phone_number_enabled = Column(Boolean, default=False, nullable=False)
     role = Column(Enum(UserRole), nullable=False)
     department = Column(String, nullable=True)
     status = Column(String, default="active")
@@ -100,6 +102,18 @@ class User(Base):
     evaluations = relationship(
         "Evaluation",
         back_populates="teacher",
+    )
+    # Devices registered to the user
+    devices = relationship(
+        "Device",
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
+    # Notification history
+    notifications = relationship(
+        "Notification",
+        back_populates="user",
+        cascade="all, delete-orphan",
     )
 
 
@@ -279,3 +293,32 @@ class Message(Base):
 
     sender = relationship("User", foreign_keys=[sender_id])
     receiver = relationship("User", foreign_keys=[receiver_id])
+
+class Device(Base):
+    __tablename__ = "devices"
+
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String, ForeignKey("users.id"), nullable=False)
+    platform = Column(String, nullable=False)  # 'android', 'ios', 'web'
+    fcm_token = Column(String, nullable=True) # For Mobile/Web via FCM
+    web_subscription = Column(JSON, nullable=True) # For native Web Push (endpoint, keys)
+    is_active = Column(Boolean, default=True)
+    last_seen = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    user = relationship("User", back_populates="devices")
+
+class Notification(Base):
+    __tablename__ = "notifications"
+
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String, ForeignKey("users.id"), nullable=False)
+    title = Column(String, nullable=False)
+    body = Column(String, nullable=False)
+    data = Column(JSON, nullable=True)
+    status = Column(String, default="pending") # 'pending', 'sent', 'failed'
+    fail_reason = Column(String, nullable=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    sent_at = Column(DateTime, nullable=True)
+
+    user = relationship("User", back_populates="notifications")

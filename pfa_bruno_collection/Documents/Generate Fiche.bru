@@ -16,6 +16,16 @@ auth:bearer {
 
 body:json {
   {
-    "data": "example"
+    "template": "ete",
+    "data": {
+      "student_name": "Bruno Tester",
+      "company_name": "Test Company",
+      "title": "Amazing Internship"
+    }
   }
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:8000
+  token: test-bruno-user
 }

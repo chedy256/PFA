@@ -73,3 +73,19 @@ class MessageOut(BaseModel):
 
     class Config:
         from_attributes = True
+
+class DeviceCreate(BaseModel):
+    platform: str
+    fcm_token: Optional[str] = None
+    web_subscription: Optional[dict] = None
+
+class NotificationOut(BaseModel):
+    id: str
+    title: str
+    body: str
+    data: Optional[dict] = None
+    status: str
+    created_at: datetime.datetime
+
+    class Config:
+        from_attributes = True

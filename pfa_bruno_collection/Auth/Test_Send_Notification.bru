@@ -1,11 +1,11 @@
 meta {
-  name: Bootstrap
+  name: Test Send Notification
   type: http
-  seq: 2
+  seq: 8
 }
 
 post {
-  url: {{baseUrl}}/auth/bootstrap
+  url: {{baseUrl}}/auth/test-send
   body: json
   auth: bearer
 }
@@ -16,9 +16,8 @@ auth:bearer {
 
 body:json {
   {
-    "first_name": "Bruno",
-    "last_name": "Tester",
-    "requested_role": "student"
+    "title": "Bruno Alert",
+    "body": "Sent from Bruno API Client!"
   }
 }
 

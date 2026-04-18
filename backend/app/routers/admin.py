@@ -26,8 +26,10 @@ def create_teacher(
 
     # Generate a dummy UUID since Firebase user might not exist yet, 
     # or you can implement a logic to create them in Firebase Admin SDK.
+    new_user_id = str(uuid.uuid4())
     new_user = User(
-        id=str(uuid.uuid4()),
+        id=new_user_id,
+        firebase_uid=f"pending-{new_user_id}", # Placeholder until they log in
         first_name=data.first_name,
         last_name=data.last_name,
         email=data.email,

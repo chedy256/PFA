@@ -37,3 +37,4 @@ app.*.map.json
 # Ignore credentials and environment variables
 .env
 backend/firebase.json
+backend/test_notifications.ps1
