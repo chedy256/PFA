@@ -49,10 +49,12 @@ class AuthNotifier extends AsyncNotifier<AppUser?> {
           final fetchedLastName = userData['last_name'];
           final fetchedRole = userData['role'] ?? 'student';
 
-          if (fetchedFirstName != null)
+          if (fetchedFirstName != null) {
             await _storage.write(key: 'firstName', value: fetchedFirstName);
-          if (fetchedLastName != null)
+          }
+          if (fetchedLastName != null) {
             await _storage.write(key: 'lastName', value: fetchedLastName);
+          }
           await _storage.write(key: 'role', value: fetchedRole);
 
           state = AsyncValue.data(
@@ -101,10 +103,12 @@ class AuthNotifier extends AsyncNotifier<AppUser?> {
       final fetchedFirstName = userData['first_name'];
       final fetchedLastName = userData['last_name'];
 
-      if (fetchedFirstName != null)
+      if (fetchedFirstName != null) {
         await _storage.write(key: 'firstName', value: fetchedFirstName);
-      if (fetchedLastName != null)
+      }
+      if (fetchedLastName != null) {
         await _storage.write(key: 'lastName', value: fetchedLastName);
+      }
       await _storage.write(key: 'role', value: fetchedRole);
 
       return AppUser(
@@ -157,10 +161,12 @@ class AuthNotifier extends AsyncNotifier<AppUser?> {
           fetchedLastName = userData['last_name'];
         }
 
-        if (fetchedFirstName != null)
+        if (fetchedFirstName != null) {
           await _storage.write(key: 'firstName', value: fetchedFirstName);
-        if (fetchedLastName != null)
+        }
+        if (fetchedLastName != null) {
           await _storage.write(key: 'lastName', value: fetchedLastName);
+        }
         await _storage.write(key: 'role', value: fetchedRole);
       } catch (backendError) {
         print('Backend bootstrap failed during login: $backendError');
